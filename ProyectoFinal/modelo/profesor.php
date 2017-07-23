@@ -1,10 +1,11 @@
 <?php
 
-/* Gestion de los usuarios */
+/* Gestion de los profesores */
 
 require_once "conexionDB.php";
+require_once "usuario.php";
 
-abstract class profesor extends usuario {
+class profesor extends usuario {
 
     private $mensaje;
     
@@ -30,9 +31,6 @@ abstract class profesor extends usuario {
     public function setColCursos($colCursos) {
         $this->colCursos = $colCursos;
     }
-
-
-
 
 }
 
