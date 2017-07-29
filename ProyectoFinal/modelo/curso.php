@@ -2,9 +2,9 @@
 
 /* Gestion de los cursos */
 
-require_once "conexionDB.php";
+require_once "manejador.php";
 
-class curso extends conexionDB {
+class curso extends manejador {
 
     private $mensaje;
     
@@ -79,28 +79,6 @@ class curso extends conexionDB {
 
     public function setColTemas($colTemas) {
         $this->colTemas = $colTemas;
-    }
-
-    
-    function listarAlumnosPorCurso($nombreCurso) {
-        $this->conectar();
-        $query = $this->consulta("SELECT U.nombre, U.apellido
-            FROM usuarios AS U
-            INNER JOIN cursos AS C
-            ON C.nombre = U.curso
-            WHERE U.categoria_usuario = 'alumno'
-            AND C.nombre = '$nombreCurso';");
-        $this->cerrarDB();
-        if ($this->cantidadRegistros($query) > 0) { // existe -> datos correctos
-            //se llenan los datos en un array
-            while ($array = $this->retornarRegistros($query)) {
-                $datos[] = $array;
-            }
-
-            return $datos;
-        } else {
-            $this->mensaje = "No hay alumnos para el curso seleccionado";
-        }
     }
 
 }

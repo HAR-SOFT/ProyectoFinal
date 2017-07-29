@@ -60,44 +60,6 @@ class tema extends conexionDB {
     public function setIndice($indice) {
         $this->indice = $indice;
     }
-   
-        
-    function listarTemasPorCurso($nombreCurso) {
-        $this->conectar();
-        $query = $this->consulta("SELECT ASCCTSE.nombre_tema
-            FROM asc_cursos_temas_subtemas_ejercicio AS ASCCTSE
-            WHERE ASCCTSE.nombre = '$nombreCurso';");
-        $this->cerrarDB();
-        if ($this->cantidadRegistros($query) > 0) { // existe -> datos correctos
-            //se llenan los datos en un array
-            while ($array = $this->retornarRegistros($query)) {
-                $datos[] = $array;
-            }
-
-            return $datos;
-        } else {
-            $this->mensaje = "No hay temas para el curso seleccionado";
-        }
-    }
-    
-    function listarTemasSubTemasPorCurso($nombreCurso) {
-        $this->conectar();
-        $query = $this->consulta("SELECT ASCCTSE.nombre_tema, 
-            ASCCTSE.nombre_subtema
-            FROM asc_cursos_temas_subtemas_ejercicio AS ASCCTSE
-            WHERE ASCCTSE.nombre = '$nombreCurso';");
-        $this->cerrarDB();
-        if ($this->cantidadRegistros($query) > 0) { // existe -> datos correctos
-            //se llenan los datos en un array
-            while ($array = $this->retornarRegistros($query)) {
-                $datos[] = $array;
-            }
-
-            return $datos;
-        } else {
-            $this->mensaje = "No hay temas para el curso seleccionado";
-        }
-    }
 
 }
 

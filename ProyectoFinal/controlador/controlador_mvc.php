@@ -1,8 +1,6 @@
 <?php
 
-require "modelo/curso.php";
-require "modelo/cursos.php";
-require "modelo/usuarios.php";
+require_once "../modelo/curso.php";
 
 class controlador_mvc {
 

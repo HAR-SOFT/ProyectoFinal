@@ -1,8 +1,8 @@
 <?PHP
 
-require_once "../modelo/cursos.php";
-$cursos = new cursos();
-$resultado = $cursos->listarCursos();
+require_once "../modelo/manejador.php";
+$manejador = new manejador();
+$resultado = $manejador->listarCursos();
 
 ?>
 <!DOCTYPE html>
