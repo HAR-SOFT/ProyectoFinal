@@ -36,6 +36,10 @@
     </head>
     <body>
         
+        <!-- Inicio header  -->
+        #Header#
+        <!-- Fin header  -->
+        
         <!-- Inicio contenido  -->
         #Contenido#
         <!-- Fin contenido  -->

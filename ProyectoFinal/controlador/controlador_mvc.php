@@ -1,11 +1,11 @@
 <?php
 
-require_once "../modelo/curso.php";
+require_once "modelo/curso.php";
 
 class controlador_mvc {
 
     function load_template($title = "Sin Titulo") {
-        $pagina = $this->load_page("vistas/pagina.php");
+        $pagina = $this->load_page("vistas/plantilla.php");
         return $pagina;
     }
 
@@ -24,9 +24,11 @@ class controlador_mvc {
     function prueba() {
         $pagina = $this->load_template("Prueba");
         $html = $this->load_page("vistas/header.php");
-        $pagina = $this->replace_content('/\#Contenido\#/ms', $html, $pagina);
+        $pagina = $this->replace_content('/\#Header\#/ms', $html, $pagina);
         $this->view_page($pagina);
     }
+    
+    function login()
 
     /* function buscar($carrera, $cantidad) {
       $universitario = new universitario();
