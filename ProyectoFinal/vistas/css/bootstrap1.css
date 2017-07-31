@@ -1,25 +1,25 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,700");
+/*!
+ * bootswatch v3.3.7
+ * Homepage: http://bootswatch.com
+ * Copyright 2012-2016 Thomas Park
+ * Licensed under MIT
+ * Based on Bootstrap
+*/
+/*!
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 body {
-  background: url('../img/2.jpg');
-  background-size: cover;
-}
-.padre {
-  /* IMPORTANTE */
-  text-align: center;
-}
-
-.hijo {
-  background-color: yellow;
-  padding: 10px;
-  margin: 10px;
-
-  /* IMPORTANTE */
-  display: inline-block;
+    background: url('../img/2.jpg');
+    background-size: cover;
 }
 article,
 aside,
@@ -71,9 +71,6 @@ dfn {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
-  text-align: center;
-  color: inherit;
-
 }
 mark {
   background: #ff0;
@@ -194,7 +191,6 @@ optgroup {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  margin-bottom: 10px;
 }
 td,
 th {
@@ -252,7 +248,6 @@ th {
   }
   .navbar {
     display: none;
-
   }
   .btn > .caret,
   .dropup > .btn > .caret {
@@ -1165,7 +1160,6 @@ hr {
   height: 1px;
   margin: -1px;
   padding: 0;
-  margin-bottom: 10px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
@@ -1593,14 +1587,15 @@ pre code {
   overflow-y: scroll;
 }
 .container {
-  margin-right: 5em;
-  margin-left: 5em;
-  margin-top: 10em;
-  margin-bottom: 10em ;
+  margin-right: auto;
+  margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #eeeeee;
 }
+.contTabla{
+
+}
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -1619,16 +1614,16 @@ pre code {
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .row {
-  margin-left: -10px;
-  margin-right: -10px;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
-  min-height: 2px;
+  min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -2402,7 +2397,7 @@ table th[class*="col-"] {
 .table > thead > tr.info > th,
 .table > tbody > tr.info > th,
 .table > tfoot > tr.info > th {
-  background-color: #d34615;
+  background-color: #d9edf7;
 }
 .table-hover > tbody > tr > td.info:hover,
 .table-hover > tbody > tr > th.info:hover,
@@ -2537,8 +2532,7 @@ input[type="checkbox"] {
   line-height: normal;
 }
 input[type="file"] {
-  display: none;
-
+  display: block;
 }
 input[type="range"] {
   display: block;
@@ -2564,7 +2558,7 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 40px;
+  height: 38px;
   padding: 8px 12px;
   font-size: 14px;
   line-height: 1.42857143;
@@ -2644,10 +2638,7 @@ input[type="search"] {
   }
 }
 .form-group {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-  margin-bottom: auto;
+  margin-bottom: 15px;
 }
 .radio,
 .checkbox {
@@ -2925,10 +2916,9 @@ select[multiple].input-lg {
   top: 0;
 }
 .help-block {
-  align:'center';
-  margin-left: 15px;
+  display: block;
   margin-top: 5px;
-
+  margin-bottom: 10px;
   color: #737373;
 }
 @media (min-width: 768px) {
@@ -3450,7 +3440,9 @@ fieldset[disabled] .btn-link:focus {
   color: #aea79f;
   text-decoration: none;
 }
-.btn-lg,
+.btn-lg{
+
+}
 .btn-group-lg > .btn {
   padding: 14px 16px;
   font-size: 18px;
@@ -3544,6 +3536,8 @@ tbody.collapse.in {
   display: none;
   float: left;
   min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
   list-style: none;
   font-size: 14px;
   text-align: left;
@@ -3618,7 +3612,6 @@ tbody.collapse.in {
 }
 .dropdown-header {
   display: block;
-  margin: 0px 5px 0px 5px;
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.42857143;
@@ -3846,7 +3839,7 @@ tbody.collapse.in {
   z-index: 2;
   float: left;
   width: 100%;
-  margin-bottom: 5px 5px 5px 5px;
+  margin-bottom: 0;
 }
 .input-group .form-control:focus {
   z-index: 3;
@@ -4974,11 +4967,11 @@ a.badge:focus {
   margin-left: 3px;
 }
 .jumbotron {
-    margin-top: 10px;
   padding-top: 30px;
   padding-bottom: 30px;
+  margin-bottom: 30px;
   color: inherit;
-  background-color: #D3D3D3;
+  background-color: #eeeeee;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4986,28 +4979,20 @@ a.badge:focus {
 }
 .jumbotron p {
   margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 200;
 }
 .jumbotron > hr {
   border-top-color: #d5d5d5;
 }
-.container .jumbotron{
-    border-radius: 6px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
+.container .jumbotron,
 .container-fluid .jumbotron {
   border-radius: 6px;
   padding-left: 15px;
   padding-right: 15px;
 }
 .jumbotron .container {
-  max-width: 50%;
-  align-self: auto;
-  border-radius: 6px;
-  padding-left: 15px;
-  padding-right: 15px;
+  max-width: 100%;
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
@@ -5018,10 +5003,14 @@ a.badge:focus {
   .container-fluid .jumbotron {
     padding-left: 60px;
     padding-right: 60px;
+    margin-left: 5px;
+
+
   }
   .jumbotron h1,
   .jumbotron .h1 {
     font-size: 63px;
+
   }
 }
 .thumbnail {
@@ -6127,6 +6116,7 @@ button.close {
   border-bottom-color: #000000;
 }
 .popover {
+  max-height: 485px;
   position: absolute;
   top: 0;
   left: 0;
@@ -6158,6 +6148,7 @@ button.close {
   border-radius: 6px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll;
 }
 .popover.top {
   margin-top: -10px;
