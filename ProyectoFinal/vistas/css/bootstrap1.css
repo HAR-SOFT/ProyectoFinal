@@ -37,7 +37,17 @@ summary {
   display: block;
 }
 audio,
-canvas,
+canvas {
+  margin: auto;
+  display: block;
+}
+
+}
+#lienzo
+{
+    background-color: #f0f0f0;
+
+}
 progress,
 video {
   display: inline-block;
