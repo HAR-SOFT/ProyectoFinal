@@ -2,7 +2,7 @@
 
 require_once "../modelo/manejador.php";
 $manejador = new manejador();
-$resultado = $manejador->listarCursos();
+$resultado = $manejador->armarMer("PerroCucha");
 
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ $resultado = $manejador->listarCursos();
     </head>
     <body>
         <?PHP
-            echo $resultado[0]["nombre"];
+            echo $resultado;
         ?>
     </body>
 </html>

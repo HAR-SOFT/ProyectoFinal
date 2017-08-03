@@ -1,6 +1,7 @@
 <?php
 
 require_once "conexionDB.php";
+require_once "mer.php";
 
 class manejador extends conexionDB {
     
@@ -68,6 +69,16 @@ class manejador extends conexionDB {
         return $this->listar($this->query, $this->mensaje);
     }
     
+    function buscarUsuario($ciUsuario, $claveUsuario) {
+        $this->query = "SELECT * "
+                . "FROM dim_usuarios AS U"
+                . "WHERE U.ci = '$ciUsuario'"
+                . "AND U.clave = '$claveUsuario';";
+        $this->mensaje = "CI o clave incorrecta";
+        
+        return $this->listar($this->query, $this->mensaje);
+    }
+    
     function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema
             FROM asc_cursos_temas_subtemas_ejercicio AS ASCCTSE
@@ -86,6 +97,27 @@ class manejador extends conexionDB {
         
         return $this->listar($this->query, $this->mensaje);
     }
+    
+    function armarMer($nombreMer) {
+        $this->query = "SELECT M.nombre, 
+            M.colEntidades,
+            M.colRelaciones,
+            M.colAgregaciones,
+            M.tipo,
+            M.nombreEjercicio
+            FROM sol_mer AS M
+            WHERE M.nombre = '$nombreMer';";
+        $this->mensaje = "No hay un MER con el nombre indicado";
+        $resultado = $this->listar($this->query, $this->mensaje);
+        
+        /*for($i = 0, $size = count($people); $i < $size; ++$i) {
+            $people[$i]['salt'] = mt_rand(000000, 999999);
+        }*/
+        
+        return count($resultado[0]);
+    }
+    
+
 }
 
 ?>
