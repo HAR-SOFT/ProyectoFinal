@@ -27,8 +27,6 @@ class controlador_mvc {
         $pagina = $this->replace_content('/\#Header\#/ms', $html, $pagina);
         $this->view_page($pagina);
     }
-    
-    function login()
 
     /* function buscar($carrera, $cantidad) {
       $universitario = new universitario();
