@@ -71,6 +71,7 @@ class controlador_mvc {
       $pagina = $this->replace_content('/\#CONTENIDO\#/ms', $buscador, $pagina);
       $this->view_page($pagina);
       } */
+
 }
 
 ?>
