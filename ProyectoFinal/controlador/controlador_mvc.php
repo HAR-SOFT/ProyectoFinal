@@ -28,7 +28,7 @@ class controlador_mvc {
         $this->view_page($pagina);
     }
     
-    function login()
+    function login(){}
 
     /* function buscar($carrera, $cantidad) {
       $universitario = new universitario();
@@ -75,5 +75,4 @@ class controlador_mvc {
       } */
 
 }
-
 ?>
