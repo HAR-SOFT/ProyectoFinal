@@ -146,6 +146,35 @@ class manejador extends conexionDB {
         }
     }
     
+    function altaProfesor()
+        //    $ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario
+            {
+    
+        $ciUsuario = $_POST('');
+        $apellidoUsuario = 
+        $sexoUsuario = 
+        
+        
+       $claveUsuario= md5($ciUsuario);
+       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','profesor')";
+     
+      $this->mensaje = "Profesor no insertado";
+      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
+      return $resultado;
+    }
+    
+    
+     function altaAlumno($ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario) {
+    
+       $claveUsuario= md5($ciUsuario);
+       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
+     
+      $this->mensaje = "Alumno no insertado";
+      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
+      return $resultado;
+          }
 }
 
 ?>
