@@ -110,14 +110,23 @@ class manejador extends conexionDB {
         $this->mensaje = "No hay un MER con el nombre indicado";
         $resultado = $this->listar($this->query, $this->mensaje);
         
-        /*for($i = 0, $size = count($people); $i < $size; ++$i) {
-            $people[$i]['salt'] = mt_rand(000000, 999999);
-        }*/
-        
-        return count($resultado[0]);
+        if ($resultado <> $this->mensaje) {
+            $nombreMer = $resultado[0][0];
+            $colEntidadesMer = [$resultado[0][1]];
+            $colRelacionesMer = [$resultado[0][2]];
+            $colAgregacionesMer = [$resultado[0][3]];
+            $tipoMer = $resultado[0][4];
+            $nombreEjercicioMer = $resultado[0][5];
+            
+            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer, $colAgregacionesMer, $tipoMer, $nombreEjercicioMer);
+            
+            return $mer;
+        }
+        else {
+            return $resultado;
+        }
     }
     
-
 }
 
 ?>

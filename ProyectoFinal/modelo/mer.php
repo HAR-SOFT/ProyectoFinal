@@ -12,11 +12,10 @@ class mer extends conexionDB {
     private $colEntidades;
     private $colRelaciones;
     private $colAgregaciones;
-    private $enum;
+    private $tipo;
     private $nombreEjercicio;
 
-    public function __construct($mensaje, $nombre, $colEntidades, $colRelaciones, $colAgregaciones, $enum, $nombreEjercicio) {
-        $this->mensaje = $mensaje;
+    public function __construct($nombre, $colEntidades, $colRelaciones, $colAgregaciones, $enum, $nombreEjercicio) {
         $this->nombre = $nombre;
         $this->colEntidades = $colEntidades;
         $this->colRelaciones = $colRelaciones;
