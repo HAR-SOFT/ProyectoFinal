@@ -10,10 +10,7 @@ $manejador= new manejador();
 $username = $_POST['usuarioCI'];
 $password = $_POST['usuarioPass'];
  
-listarUsuarios();
-
-$result = $DB->consulta($sql);
-
+$result= buscarUsuario($username, $password);
 
 if ($result->num_rows > 0) {     
  }
@@ -25,8 +22,6 @@ if ($result->num_rows > 0) {
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (10 * 60);
 
- } else { 
-   echo "Username o Password estan incorrectos.";
  }
 cerrarDB();
 ?>
