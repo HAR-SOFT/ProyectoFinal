@@ -8,7 +8,7 @@ class manejador extends conexionDB {
     private $mensaje;
     private $query;
 
-    function listar($queryParametro, $mensajeParametro) {
+    function ejecutarQuery($queryParametro, $mensajeParametro) {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
@@ -29,7 +29,7 @@ class manejador extends conexionDB {
         $this->query = "SELECT * FROM dim_cursos;";
         $this->mensaje = "No hay cursos para mostrar";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarAlumnosPorCurso($curso) {
@@ -41,7 +41,7 @@ class manejador extends conexionDB {
             AND C.nombre = '$curso';";
         $this->mensaje = "No hay alumnos para el curso seleccionado";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarCursosActivos() {
@@ -50,7 +50,7 @@ class manejador extends conexionDB {
             WHERE C.activo = 1;";
         $this->mensaje = "No hay cursos activos";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarCursosInactivos() {
@@ -59,14 +59,14 @@ class manejador extends conexionDB {
             WHERE C.activo = 0;";
         $this->mensaje = "No hay cursos inactivos";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarUsuarios() {
         $this->query = "SELECT * FROM dim_usuarios;";
         $this->mensaje = "No hay usuarios para mostrar";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function buscarUsuario($ciUsuario, $claveUsuario) {
@@ -76,7 +76,7 @@ class manejador extends conexionDB {
                 . "AND U.clave = '$claveUsuario';";
         $this->mensaje = "CI o clave incorrecta";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarTemasPorCurso($nombreCurso) {
@@ -85,7 +85,7 @@ class manejador extends conexionDB {
             WHERE ASCCTSE.nombre = '$nombreCurso';";
         $this->mensaje = "No hay temas para el curso seleccionado";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function listarTemasSubTemasPorCurso($nombreCurso) {
@@ -95,7 +95,7 @@ class manejador extends conexionDB {
             WHERE ASCCTSE.nombre = '$nombreCurso';";
         $this->mensaje = "No hay temas para el curso seleccionado";
         
-        return $this->listar($this->query, $this->mensaje);
+        return $this->ejecutarQuery($this->query, $this->mensaje);
     }
     
     function armarMer($nombreMer) {
@@ -108,7 +108,7 @@ class manejador extends conexionDB {
             FROM sol_mer AS M
             WHERE M.nombre = '$nombreMer';";
         $this->mensaje = "No hay un MER con el nombre indicado";
-        $resultado = $this->listar($this->query, $this->mensaje);
+        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
         
         if ($resultado <> $this->mensaje) {
             $nombreMer = $resultado[0][0];
@@ -127,6 +127,35 @@ class manejador extends conexionDB {
         }
     }
     
+    function altaProfesor()
+        //    $ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario
+            {
+    
+        $ciUsuario = $_POST('');
+        $apellidoUsuario = 
+        $sexoUsuario = 
+        
+        
+       $claveUsuario= md5($ciUsuario);
+       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','profesor')";
+     
+      $this->mensaje = "Profesor no insertado";
+      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
+      return $resultado;
+    }
+    
+    
+     function altaAlumno($ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario) {
+    
+       $claveUsuario= md5($ciUsuario);
+       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
+     
+      $this->mensaje = "Alumno no insertado";
+      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
+      return $resultado;
+          }
 }
 
 ?>
