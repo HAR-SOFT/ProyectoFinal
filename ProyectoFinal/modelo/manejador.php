@@ -148,15 +148,18 @@ class manejador extends conexionDB {
     
     function altaProfesor()
             {
+        
+         $valor = $_POST('sexo');
     
         //Faltan los nombre de los inputs
-        $ciUsuario = $_POST('');
-        $apellidoUsuario = $_POST('');
-        $sexoUsuario = $_POST('');
-        $emailUsuario = $_POST('');
+        $ciUsuario = $_POST('inputCI');
+        $nombreUsuario = $_POST('inputNombre');
+        $apellidoUsuario = $_POST('inputApellido');
+        $sexoUsuario = $_POST('$valor');
+        $emailUsuario = $_POST('inputMail');
         $claveUsuario= md5($ciUsuario);
-        $telefonoUsuario = $_POST('');
-        $celularUsuario = $_POST('');
+        $telefonoUsuario = $_POST('inputTelefono');
+        $celularUsuario = $_POST('inputCelular');
         
  
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
@@ -170,14 +173,17 @@ class manejador extends conexionDB {
     
      function altaAlumno() {
     
+         
+         $valor = $_POST('sexo');
           //Faltan los nombre de los inputs
-        $ciUsuario = $_POST('');
-        $apellidoUsuario = $_POST('');
-        $sexoUsuario = $_POST('');
-        $emailUsuario = $_POST('');
+        $ciUsuario = $_POST('inputCI');
+        $nombreUsuario = $_POST('inputNombre');
+        $apellidoUsuario = $_POST('inputApellido');
+        $sexoUsuario = $_POST('$valor');
+        $emailUsuario = $_POST('inputMail');
         $claveUsuario= md5($ciUsuario);
-        $telefonoUsuario = $_POST('');
-        $celularUsuario = $_POST('');
+        $telefonoUsuario = $_POST('inputTelefono');
+        $celularUsuario = $_POST('inputCelular');
                
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
