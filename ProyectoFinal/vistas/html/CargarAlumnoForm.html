@@ -45,26 +45,26 @@
             <div class="page-header" id="tables">
                 <h1 style="color:#d3d3d3;" align="center">Cargar alumno</h1>
             </div>
-            <form class="form-horizontal">
+                  <form class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">Cedula</label>
                         <div class="col-lg-8">
-                            <input type="number" class="form-control" id="inputCI" placeholder="Cedula 12345678">
+                            <input type="number" class="form-control" id="inputCI" name="inputCI"placeholder="Cedula 12345678">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">Nombre</label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" id="inputNombre" placeholder="Nombre">
+                            <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Nombre">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">Apellido</label>
                         <div class="col-lg-8">
-                            <input type="email" class="form-control" id="inputApellido" placeholder="Apellido">
+                            <input type="email" class="form-control" id="inputApellido" name="inputApellido" placeholder="Apellido">
                         </div>
                     </div>
 
@@ -73,11 +73,11 @@
                         <div class="col-lg-10">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="hombre" value="Masculino" checked="">
+                                    <input type="radio" name="optionsMasculino" id="hombre" value="Masculino" checked="">
                                     Masculino
                                 </label>
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="mujer" value="Femenino">
+                                    <input type="radio" name="optionsFemenino" id="mujer" value="Femenino">
                                     Femenino
                                 </label>
                             </div>
@@ -87,28 +87,28 @@
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">e-mail</label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" id="inputMail" placeholder="ejemplo@ejemplo.com">
+                            <input type="text" class="form-control" id="inputMail" name="inputMail" placeholder="ejemplo@ejemplo.com">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">Telefono</label>
                         <div class="col-lg-8">
-                            <input type="number" class="form-control" id="inputTelefono" placeholder="12345678">
+                            <input type="number" class="form-control" id="inputTelefono" name="inputTelefono" placeholder="12345678">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="text" class="col-lg-2 control-label">Celular</label>
                         <div class="col-lg-8">
-                            <input type="number" class="form-control" id="inputTelefono" placeholder="091234567">
+                            <input type="number" class="form-control" id="inputTelefono" name="inputTelefono" placeholder="091234567">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="select" class="col-lg-2 control-label">Asignar curso</label>
                         <div class="col-lg-8">
-                            <select class="form-control" id="select">
+                            <select class="form-control" id="select"name="asignarCurso">
                                 <option>ATI 20-22</option>
                                 <option>ING 8-12</option>
                                 <option>jhadlfkj </option>
@@ -120,8 +120,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-10 col-lg-offset-2">
-                            <button type="reset" class="btn btn-default">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="reset" class="btn btn-default" name="btnCancel">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" name="btnAgregar">Agregar</button>
                         </div>
                     </div>
                 </fieldset>
