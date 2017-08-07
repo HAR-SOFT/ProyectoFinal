@@ -147,15 +147,18 @@ class manejador extends conexionDB {
     }
     
     function altaProfesor()
-        //    $ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario
             {
     
+        //Faltan los nombre de los inputs
         $ciUsuario = $_POST('');
-        $apellidoUsuario = 
-        $sexoUsuario = 
+        $apellidoUsuario = $_POST('');
+        $sexoUsuario = $_POST('');
+        $emailUsuario = $_POST('');
+        $claveUsuario= md5($ciUsuario);
+        $telefonoUsuario = $_POST('');
+        $celularUsuario = $_POST('');
         
-        
-       $claveUsuario= md5($ciUsuario);
+ 
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','profesor')";
      
@@ -165,9 +168,17 @@ class manejador extends conexionDB {
     }
     
     
-     function altaAlumno($ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario) {
+     function altaAlumno() {
     
-       $claveUsuario= md5($ciUsuario);
+          //Faltan los nombre de los inputs
+        $ciUsuario = $_POST('');
+        $apellidoUsuario = $_POST('');
+        $sexoUsuario = $_POST('');
+        $emailUsuario = $_POST('');
+        $claveUsuario= md5($ciUsuario);
+        $telefonoUsuario = $_POST('');
+        $celularUsuario = $_POST('');
+               
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
      
