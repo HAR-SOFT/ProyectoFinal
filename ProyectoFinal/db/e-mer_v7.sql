@@ -16,107 +16,70 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asc_curso_tema_subtema_ejercicio`
+-- Table structure for table `asc_cursos_temas_subtemas_ejercicios`
 --
 
-DROP TABLE IF EXISTS `asc_curso_tema_subtema_ejercicio`;
+DROP TABLE IF EXISTS `asc_cursos_temas_subtemas_ejercicios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `asc_curso_tema_subtema_ejercicio` (
+CREATE TABLE `asc_cursos_temas_subtemas_ejercicios` (
   `nombre_curso` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_tema` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_subtema` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_ejercicio` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  KEY `FK_nombreCurso_idx` (`nombre_curso`),
-  KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_curso` (`nombre_curso`),
-  KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_subtema` (`nombre_subtema`),
-  KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_ejercicio` (`nombre_ejercicio`),
-  KEY `FK_nombreSubTema_idx` (`nombre_subtema`),
-  KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_tema` (`nombre_tema`),
-  CONSTRAINT `FK_nombreCurso` FOREIGN KEY (`nombre_curso`) REFERENCES `dim_curso` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombreSubTema` FOREIGN KEY (`nombre_subtema`) REFERENCES `dim_subtema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombre_Ejercicio` FOREIGN KEY (`nombre_ejercicio`) REFERENCES `dim_ejercicio` (`nombre`),
-  CONSTRAINT `FK_nombre_Tema` FOREIGN KEY (`nombre_tema`) REFERENCES `dim_tema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`nombre_curso`,`nombre_tema`,`nombre_subtema`,`nombre_ejercicio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asc_curso_tema_subtema_ejercicio`
+-- Dumping data for table `asc_cursos_temas_subtemas_ejercicios`
 --
 
-LOCK TABLES `asc_curso_tema_subtema_ejercicio` WRITE;
-/*!40000 ALTER TABLE `asc_curso_tema_subtema_ejercicio` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asc_curso_tema_subtema_ejercicio` ENABLE KEYS */;
+LOCK TABLES `asc_cursos_temas_subtemas_ejercicios` WRITE;
+/*!40000 ALTER TABLE `asc_cursos_temas_subtemas_ejercicios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asc_cursos_temas_subtemas_ejercicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `asc_curso_usuario`
+-- Table structure for table `dim_cursos`
 --
 
-DROP TABLE IF EXISTS `asc_curso_usuario`;
+DROP TABLE IF EXISTS `dim_cursos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `asc_curso_usuario` (
-  `nombre_curso` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_usuario` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `apellido_usuario` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  KEY `FK_curso_idx` (`nombre_curso`),
-  KEY `idx_asc_curso_usuario_nombre_usuario` (`nombre_usuario`),
-  KEY `FK_nombre_usuario_idx` (`nombre_usuario`),
-  KEY `idx_asc_curso_usuario_apellido_usuario` (`apellido_usuario`),
-  KEY `FK_apellido_usuario_idx` (`apellido_usuario`),
-  CONSTRAINT `FK_apellido_usuario` FOREIGN KEY (`apellido_usuario`) REFERENCES `dim_usuario` (`apellido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_curso` FOREIGN KEY (`nombre_curso`) REFERENCES `dim_curso` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombre_usuario` FOREIGN KEY (`nombre_usuario`) REFERENCES `dim_usuario` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asc_curso_usuario`
---
-
-LOCK TABLES `asc_curso_usuario` WRITE;
-/*!40000 ALTER TABLE `asc_curso_usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asc_curso_usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `dim_curso`
---
-
-DROP TABLE IF EXISTS `dim_curso`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dim_curso` (
+CREATE TABLE `dim_cursos` (
   `id_curso` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `ci_profesor` char(8) COLLATE utf8_spanish_ci NOT NULL,
   `anio` int(11) NOT NULL,
   `horario` varchar(9) COLLATE utf8_spanish_ci NOT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
   `estado` int(11) NOT NULL,
   PRIMARY KEY (`nombre`),
-  UNIQUE KEY `id_curso` (`id_curso`)
+  UNIQUE KEY `id_curso` (`id_curso`),
+  KEY `FK_ciProfesor_idx` (`ci_profesor`),
+  CONSTRAINT `FK_ciProfesor` FOREIGN KEY (`ci_profesor`) REFERENCES `dim_usuarios` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dim_curso`
+-- Dumping data for table `dim_cursos`
 --
 
-LOCK TABLES `dim_curso` WRITE;
-/*!40000 ALTER TABLE `dim_curso` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dim_curso` ENABLE KEYS */;
+LOCK TABLES `dim_cursos` WRITE;
+/*!40000 ALTER TABLE `dim_cursos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dim_cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dim_ejercicio`
+-- Table structure for table `dim_ejercicios`
 --
 
-DROP TABLE IF EXISTS `dim_ejercicio`;
+DROP TABLE IF EXISTS `dim_ejercicios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dim_ejercicio` (
+CREATE TABLE `dim_ejercicios` (
   `id_ejercicio` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `letra` longtext COLLATE utf8_spanish_ci NOT NULL,
@@ -126,23 +89,23 @@ CREATE TABLE `dim_ejercicio` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dim_ejercicio`
+-- Dumping data for table `dim_ejercicios`
 --
 
-LOCK TABLES `dim_ejercicio` WRITE;
-/*!40000 ALTER TABLE `dim_ejercicio` DISABLE KEYS */;
-INSERT INTO `dim_ejercicio` VALUES (1,'PerroCucha','Letra de ejercicio');
-/*!40000 ALTER TABLE `dim_ejercicio` ENABLE KEYS */;
+LOCK TABLES `dim_ejercicios` WRITE;
+/*!40000 ALTER TABLE `dim_ejercicios` DISABLE KEYS */;
+INSERT INTO `dim_ejercicios` VALUES (1,'PerroCucha','Letra de ejercicio');
+/*!40000 ALTER TABLE `dim_ejercicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dim_subtema`
+-- Table structure for table `dim_subtemas`
 --
 
-DROP TABLE IF EXISTS `dim_subtema`;
+DROP TABLE IF EXISTS `dim_subtemas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dim_subtema` (
+CREATE TABLE `dim_subtemas` (
   `id_sub_tema` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `letra` blob NOT NULL,
@@ -150,54 +113,52 @@ CREATE TABLE `dim_subtema` (
   PRIMARY KEY (`nombre`,`nombreTema`),
   UNIQUE KEY `UNIQUE` (`id_sub_tema`),
   KEY `FK_nombreTema_idx` (`nombreTema`),
-  KEY `idx_dim_subtema_nombre` (`nombre`),
-  CONSTRAINT `FK_nombreTema` FOREIGN KEY (`nombreTema`) REFERENCES `dim_tema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_nombreTema` FOREIGN KEY (`nombreTema`) REFERENCES `dim_temas` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dim_subtema`
+-- Dumping data for table `dim_subtemas`
 --
 
-LOCK TABLES `dim_subtema` WRITE;
-/*!40000 ALTER TABLE `dim_subtema` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dim_subtema` ENABLE KEYS */;
+LOCK TABLES `dim_subtemas` WRITE;
+/*!40000 ALTER TABLE `dim_subtemas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dim_subtemas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dim_tema`
+-- Table structure for table `dim_temas`
 --
 
-DROP TABLE IF EXISTS `dim_tema`;
+DROP TABLE IF EXISTS `dim_temas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dim_tema` (
+CREATE TABLE `dim_temas` (
   `id_tema` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `letra` blob NOT NULL,
   PRIMARY KEY (`nombre`) USING BTREE,
-  UNIQUE KEY `UNIQUE` (`id_tema`),
-  KEY `idx_dim_tema_nombre` (`nombre`)
+  UNIQUE KEY `UNIQUE` (`id_tema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dim_tema`
+-- Dumping data for table `dim_temas`
 --
 
-LOCK TABLES `dim_tema` WRITE;
-/*!40000 ALTER TABLE `dim_tema` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dim_tema` ENABLE KEYS */;
+LOCK TABLES `dim_temas` WRITE;
+/*!40000 ALTER TABLE `dim_temas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dim_temas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dim_usuario`
+-- Table structure for table `dim_usuarios`
 --
 
-DROP TABLE IF EXISTS `dim_usuario`;
+DROP TABLE IF EXISTS `dim_usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dim_usuario` (
+CREATE TABLE `dim_usuarios` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `ci` char(8) COLLATE utf8_spanish_ci NOT NULL,
   `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
@@ -207,22 +168,22 @@ CREATE TABLE `dim_usuario` (
   `clave` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `telefono` char(8) COLLATE utf8_spanish_ci NOT NULL,
   `celular` char(9) COLLATE utf8_spanish_ci NOT NULL,
+  `curso` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `categoria_usuario` enum('Administrativo','Alumno','Profesor') COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`ci`,`nombre`,`apellido`),
+  PRIMARY KEY (`ci`),
   UNIQUE KEY `id_usuario` (`id_usuario`),
-  KEY `idx_dim_usuario_nombre_apellido` (`nombre`,`apellido`),
-  KEY `idx_dim_usuario_nombre` (`nombre`),
-  KEY `idx_dim_usuario_apellido` (`apellido`)
+  KEY `FK_curso_idx` (`curso`),
+  CONSTRAINT `FK_curso` FOREIGN KEY (`curso`) REFERENCES `dim_cursos` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dim_usuario`
+-- Dumping data for table `dim_usuarios`
 --
 
-LOCK TABLES `dim_usuario` WRITE;
-/*!40000 ALTER TABLE `dim_usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dim_usuario` ENABLE KEYS */;
+LOCK TABLES `dim_usuarios` WRITE;
+/*!40000 ALTER TABLE `dim_usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dim_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -330,7 +291,7 @@ CREATE TABLE `sol_entidad` (
 
 LOCK TABLES `sol_entidad` WRITE;
 /*!40000 ALTER TABLE `sol_entidad` DISABLE KEYS */;
-INSERT INTO `sol_entidad` VALUES (2,'Cucha','\"Color\" => \"Color\"',NULL,'PerroCucha'),(1,'Perro','\"Nombre\" => \"Nombre\", \"Raza\" => \"Raza',NULL,'PerroCucha');
+INSERT INTO `sol_entidad` VALUES (2,'Cucha','[\"Color\" => \"Color\"]',NULL,'PerroCucha'),(1,'Perro','[\"Nombre\" => \"Nombre\", \"Raza\" => \"Raza]',NULL,'PerroCucha');
 /*!40000 ALTER TABLE `sol_entidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +366,7 @@ CREATE TABLE `sol_mer` (
   PRIMARY KEY (`nombre`,`tipo`),
   UNIQUE KEY `id_mer` (`id_mer`),
   KEY `FK_nombreEjercicio_idx` (`nombreEjercicio`),
-  CONSTRAINT `FK_nombreEjercicio` FOREIGN KEY (`nombreEjercicio`) REFERENCES `dim_ejercicio` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_nombreEjercicio` FOREIGN KEY (`nombreEjercicio`) REFERENCES `dim_ejercicios` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -415,7 +376,7 @@ CREATE TABLE `sol_mer` (
 
 LOCK TABLES `sol_mer` WRITE;
 /*!40000 ALTER TABLE `sol_mer` DISABLE KEYS */;
-INSERT INTO `sol_mer` VALUES (1,'PerroCucha','\"Perro\" => \"Perro\", \"Cucha\" => \"Cucha\"','\"PerroCucha\" => \"PerroCucha\"',NULL,'sol_sistema','PerroCucha');
+INSERT INTO `sol_mer` VALUES (1,'PerroCucha','[\"Perro\" => \"Perro\", \"Cucha\" => \"Cucha\"]','[\"PerroCucha\" => \"PerroCucha\"',NULL,'sol_sistema','PerroCucha');
 /*!40000 ALTER TABLE `sol_mer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -462,4 +423,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-08-13 15:34:58
+-- Dump completed on 2017-08-02 21:06:55

@@ -11,8 +11,8 @@ class profesor extends usuario {
     
     private $colCursos;
     
-    public function __construct($nombre, $ci, $sexo, $email, $clave, $colCursos) {
-        parent::__construct($nombre, $ci, $sexo, $email, $clave);
+    public function __construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $colCursos) {
+        parent::__construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono);
         $this->colCursos = $colCursos;
     }
     

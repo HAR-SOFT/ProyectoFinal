@@ -1,8 +1,11 @@
 <?php
 
-require_once "modelo/curso.php";
+require_once "modelo/manejador.php";
 
 class controlador_mvc {
+    
+    private $mensaje;
+    private $manejador;
 
     function load_template($title = "Sin Titulo") {
         $pagina = $this->load_page("vistas/plantilla.php");
@@ -17,18 +20,48 @@ class controlador_mvc {
         echo $html;
     }
 
-    private function replace_content($in = '/\#CONTENIDO\#/ms', $out, $pagina) {
+    private function replace_content($in = '/Contenido/', $out, $pagina) {
         return preg_replace($in, $out, $pagina);
     }
 
-    function prueba() {
-        $pagina = $this->load_template("Prueba");
-        $html = $this->load_page("vistas/header.php");
-        $pagina = $this->replace_content('/\#Header\#/ms', $html, $pagina);
+    function inicio() {
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerInicio.html");
+        $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
         $this->view_page($pagina);
     }
     
-    function login(){}
+//    function ingresar() {
+//        $this->manejador = new manejador();
+//        $this->manejador->login();
+//        $pagina = $this->load_template("inicio");
+//        $header = $this->load_page("vistas/html/headerInicio.html");
+//        $pagina = $this->replace_content('/\#Header\#/ms', $header, $pagina);
+//        $pagina = $this->replace_content('/\#Titulo\#/ms', "Bienvenido", $pagina);
+//        $this->view_page($pagina);
+//    }
+    
+    function ingresar() {
+        if (isset($_REQUEST["ingresar"])) {
+            $ci = $_REQUEST["ci"];
+            $clave = md5($_REQUEST["clave"]);
+            
+            $this->manejador = new manejador();
+            $this->manejador->login($ci, $clave);
+            
+            if (gettype($this->manejador) == "string") {
+                $this->mensaje = $this->manejador;
+                $pagina = $this->replace_content("/Mensaje/", "$this->mensaje", $pagina);
+            }
+            
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerInicio.html");
+            $pagina = $this->replace_content('/Header/', $header, $pagina);
+            $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
+            $this->view_page($pagina);
+        }
+    }
 
     /* function buscar($carrera, $cantidad) {
       $universitario = new universitario();
