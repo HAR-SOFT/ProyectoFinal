@@ -235,15 +235,21 @@ class manejador extends conexionDB {
     }
     
     function altaProfesor()
-        //    $ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario
             {
+        
+         $valor = $_POST('sexo');
     
-        $ciUsuario = $_POST('');
-        $apellidoUsuario = 
-        $sexoUsuario = 
+        //Faltan los nombre de los inputs
+        $ciUsuario = $_POST('inputCI');
+        $nombreUsuario = $_POST('inputNombre');
+        $apellidoUsuario = $_POST('inputApellido');
+        $sexoUsuario = $_POST('$valor');
+        $emailUsuario = $_POST('inputMail');
+        $claveUsuario= md5($ciUsuario);
+        $telefonoUsuario = $_POST('inputTelefono');
+        $celularUsuario = $_POST('inputCelular');
         
-        
-       $claveUsuario= md5($ciUsuario);
+ 
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','profesor')";
      
@@ -253,9 +259,20 @@ class manejador extends conexionDB {
     }
     
     
-     function altaAlumno($ciUsuario, $nombreUsuario, $apellidoUsuario, $sexoUsuario, $emailUsuario, $claveUsuario, $telefonoUsuario,$celularUsuario) {
+     function altaAlumno() {
     
-       $claveUsuario= md5($ciUsuario);
+         
+         $valor = $_POST('sexo');
+          //Faltan los nombre de los inputs
+        $ciUsuario = $_POST('inputCI');
+        $nombreUsuario = $_POST('inputNombre');
+        $apellidoUsuario = $_POST('inputApellido');
+        $sexoUsuario = $_POST('$valor');
+        $emailUsuario = $_POST('inputMail');
+        $claveUsuario= md5($ciUsuario);
+        $telefonoUsuario = $_POST('inputTelefono');
+        $celularUsuario = $_POST('inputCelular');
+               
        $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
      

@@ -219,8 +219,17 @@
             </div>
             <br>
             <p align="left">
-                <input type="file" id="selectedFile" style="display:none;" class="btn btn-primary btn-lg" value="Importar Cursos"/>
-                <input type="button" value="Importar Cursos" onclick="document.getElementById('selectedFile').click();" class="btn btn-primary btn-lg" />
+                
+                <form action='../importarCursos.php' method='post' enctype="multipart/form-data">
+
+            <input type="file" name='archivos-excel' id="selectedFile" style="display:none;" class="btn btn-primary btn-lg"  />
+
+            <input type="button"  value="Importar Cursos" onclick="document.getElementById('selectedFile').click();" class="btn btn-primary btn-lg" />
+
+            <button type="submit" name = "submit" class="btn btn-primary btn-lg">Aceptar</button>
+
+        </form>
+                
             </p>
         </div>
 
