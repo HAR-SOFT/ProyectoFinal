@@ -11,8 +11,8 @@ class alumno extends usuario {
     
     private $cursoActual;
     
-    public function __construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $cursoActual) {
-        parent::__construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono);
+    public function __construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $celular, $cursoActual) {
+        parent::__construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $celular);
         $this->cursoActual = $cursoActual;
     }
     

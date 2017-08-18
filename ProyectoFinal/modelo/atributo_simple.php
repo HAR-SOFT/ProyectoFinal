@@ -9,15 +9,13 @@ class atributo_simple extends conexionDB {
     private $mensaje;
     
     private $nombre;
-    private $esPK;
     private $nombreEntidad;
     private $nombreEntidadSuperTipo;
     private $nombreEntidadSubTipo;
     
-    public function __construct($mensaje, $nombre, $esPK, $nombreEntidad, $nombreEntidadSuperTipo, $nombreEntidadSubTipo) {
+    public function __construct($mensaje, $nombre, $nombreEntidad, $nombreEntidadSuperTipo, $nombreEntidadSubTipo) {
         $this->mensaje = $mensaje;
         $this->nombre = $nombre;
-        $this->esPK = $esPK;
         $this->nombreEntidad = $nombreEntidad;
         $this->nombreEntidadSuperTipo = $nombreEntidadSuperTipo;
         $this->nombreEntidadSubTipo = $nombreEntidadSubTipo;
@@ -29,10 +27,6 @@ class atributo_simple extends conexionDB {
 
     public function getNombre() {
         return $this->nombre;
-    }
-
-    public function getEsPK() {
-        return $this->esPK;
     }
 
     public function getNombreEntidad() {
@@ -53,10 +47,6 @@ class atributo_simple extends conexionDB {
 
     public function setNombre($nombre) {
         $this->nombre = $nombre;
-    }
-
-    public function setEsPK($esPK) {
-        $this->esPK = $esPK;
     }
 
     public function setNombreEntidad($nombreEntidad) {

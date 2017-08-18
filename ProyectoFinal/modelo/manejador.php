@@ -79,16 +79,29 @@ class manejador extends conexionDB {
             . " ON C.nombre = U.curso"
             . " WHERE U.categoria_usuario = 'alumno'"
             . " AND C.nombre = '$curso';";
-        $msjListarAlumnosPorCurso = "No hay alumnos para el curso seleccionado";
+        $msjListarAlumnosPorCurso = "No hay alumnos para el curso seleccionado.";
         
         return $this->ejecutarQuery($this->query, $msjListarAlumnosPorCurso);
+    }
+    
+    function buscarCursoDeUsuario($ciUsuario) {
+        $this->query = "SELECT C.nombre"
+            . " FROM dim_curso AS C"
+            . " INNER JOIN asc_curso_usuario AS CU"
+            . " ON C.nombre = CU.nombre_curso"
+            . " WHERE C.estado = 1"
+            . " AND CU.ci_usuario = $ciUsuario";
+        $buscarCursoDeUsuario = "No tiene ningún curso activo asigando."
+            . " Comuníquese con Bedelía.";
+        
+        return $this->ejecutarQuery($this->query, $buscarCursoDeUsuario);
     }
     
     function listarCursosActivos() {
         $this->query = "SELECT *"
             . " FROM dim_curso AS C"
             . " WHERE C.activo = 1;";
-        $msjListarCursosActivos = "No hay cursos activos";
+        $msjListarCursosActivos = "No hay cursos activos.";
         
         return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
     }
@@ -97,14 +110,14 @@ class manejador extends conexionDB {
         $this->query = "SELECT *"
             . " FROM dim_curso AS C"
             . " WHERE C.activo = 0;";
-        $msjListarCursosInactivos = "No hay cursos inactivos";
+        $msjListarCursosInactivos = "No hay cursos inactivos.";
         
         return $this->ejecutarQuery($this->query, $msjListarCursosInactivos);
     }
     
     function listarUsuarios() {
         $this->query = "SELECT * FROM dim_usuario;";
-        $msjListarUsuarios = "No hay usuarios para mostrar";
+        $msjListarUsuarios = "No hay usuarios para mostrar.";
         
         return $this->ejecutarQuery($this->query, $msjListarUsuarios);
     }
@@ -122,7 +135,7 @@ class manejador extends conexionDB {
                 . " FROM dim_usuario AS U"
                 . " WHERE U.ci = '$ciUsuario'"
                 . " AND U.clave = '$claveUsuario';";
-        $msjBuscarUsuario = "CI o clave incorrecta";
+        $msjBuscarUsuario = "CI o clave incorrecta.";
         
         return $this->ejecutarQuery($this->query, $msjBuscarUsuario);
     }
@@ -134,40 +147,44 @@ class manejador extends conexionDB {
         $resultado = $this->buscarUsuario($ci, $clave);
 
         if (!$resultado == NULL) {
-            $categroiaUsuario = $resultado[0][8];
+            $cursoUsuario = $this->buscarCursoDeUsuario($ci);
+            if (!$cursoUsuario == NULL) {
+                $categroiaUsuario = $resultado[0][8];
 
-            switch ($categroiaUsuario) {
-                case "Alumno";
-                    $usuario = new alumno($resultado[0][0], $resultado[0][1], 
-                            $resultado[0][2], 
-                            $resultado[0][3], 
-                            $resultado[0][4], 
-                            $resultado[0][5], 
-                            $resultado[0][6], 
-                            $resultado[0][7]);
-                    break;
-                case "Administrativo";
-                    $usuario = new administrativo($resultado[0][0], 
-                            $resultado[0][1], 
-                            $resultado[0][2], 
-                            $resultado[0][3], 
-                            $resultado[0][4], 
-                            $resultado[0][5], 
-                            $resultado[0][6]);
-                    break;
-                case "Profesor";
-                    $usuario = new profesor($resultado[0][0], $resultado[0][1], 
-                            $resultado[0][2], 
-                            $resultado[0][3], 
-                            $resultado[0][4], 
-                            $resultado[0][5], 
-                            $resultado[0][6], 
-                            $resultado[0][7]);
-                    break;
+                switch ($categroiaUsuario) {
+                    case "Alumno";
+                        $usuario = new alumno($resultado[0][0], $resultado[0][1], 
+                                $resultado[0][2], 
+                                $resultado[0][3], 
+                                $resultado[0][4], 
+                                $resultado[0][5], 
+                                $resultado[0][6], 
+                                $resultado[0][7],
+                                $categroiaUsuario);
+                        break;
+                    case "Administrativo";
+                        $usuario = new administrativo($resultado[0][0], 
+                                $resultado[0][1], 
+                                $resultado[0][2], 
+                                $resultado[0][3], 
+                                $resultado[0][4], 
+                                $resultado[0][5], 
+                                $resultado[0][6]);
+                        break;
+                    case "Profesor";
+                        $usuario = new profesor($resultado[0][0], $resultado[0][1], 
+                                $resultado[0][2], 
+                                $resultado[0][3], 
+                                $resultado[0][4], 
+                                $resultado[0][5], 
+                                $resultado[0][6], 
+                                $resultado[0][7]);
+                        break;
+                }
+
+                session_start();
+                $_SESSION["usuario"] = $usuario;
             }
-            
-            session_start();
-            $_SESSION["usuario"] = $usuario;
         }
     }
     
@@ -175,7 +192,7 @@ class manejador extends conexionDB {
         $this->query = "SELECT ASCCTSE.nombre_tema"
             . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
             . " WHERE ASCCTSE.nombre = '$nombreCurso';";
-        $msjListarTemasPorCurso = "No hay temas para el curso seleccionado";
+        $msjListarTemasPorCurso = "No hay temas para el curso seleccionado.";
         
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
@@ -185,7 +202,7 @@ class manejador extends conexionDB {
             . " ASCCTSE.nombre_subtema"
             . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
             . " WHERE ASCCTSE.nombre = '$nombreCurso';";
-        $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado";
+        $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado.";
         
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
@@ -199,7 +216,7 @@ class manejador extends conexionDB {
             . " M.nombreEjercicio"
             . " FROM sol_mer AS M"
             . " WHERE M.nombre = '$nombreMer';";
-        $msjArmarMer = "No hay un MER con el nombre indicado";
+        $msjArmarMer = "No hay un MER con el nombre indicado.";
         
         $resultado = $this->ejecutarQuery($this->query, $msjArmarMer);
         
