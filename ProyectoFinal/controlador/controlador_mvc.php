@@ -5,7 +5,17 @@ require_once "modelo/manejador.php";
 class controlador_mvc {
     
     private $manejador;
+    private $mensaje;
+    
+    public function getMensaje() {
+        return $this->mensaje;
+    }
 
+    public function setMensaje($mensaje) {
+        $this->mensaje = $mensaje;
+    }
+
+    
     function load_template($title = "Sin Titulo") {
         $pagina = $this->load_page("vistas/plantilla.php");
         return $pagina;
@@ -45,8 +55,12 @@ class controlador_mvc {
             $pagina = $this->replace_content('/Header/', $header, $pagina);
             $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
             
+//            if (!$this->manejador->getMensaje() == NULL) {
+//                $pagina = $this->replace_content("/Mensaje/", $this->manejador->getMensaje(), $pagina);
+//                $pagina = $this->replace_content("/none/", "block", $pagina);
+//            }
             if (!$this->manejador->getMensaje() == NULL) {
-                $pagina = $this->replace_content("/Mensaje/", $this->manejador->getMensaje(), $pagina);
+                echo $this->manejador->getMensaje();
             }
             
             $this->view_page($pagina);

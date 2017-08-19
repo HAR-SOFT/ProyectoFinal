@@ -1,8 +1,7 @@
 <?php
 
 require "controlador/controlador_mvc.php";
-
-//se instancia al controlador 
+ 
 $mvc = new controlador_mvc();
 
 if (isset($_REQUEST["action"])) {
