@@ -10,7 +10,8 @@ class manejador extends conexionDB {
 
     private $mensaje;
     private $query;
-
+    private $usuario;
+    
     public function __construct() {
         
     }
@@ -42,24 +43,26 @@ class manejador extends conexionDB {
             }
 
             return $datos;
-        } else {
-            $this->mensaje = $msjParametro;
-            /* $this->mensaje = "<div class='modal'>
-              <div class='modal-dialog'>
-              <div class='modal-content'>
-              <div class='modal-header'>
-              <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-              <h4 class='modal-title'>Modal title</h4>
-              </div>
-              <div class='modal-body'>
-              <p>$msjParametro</p>
-              </div>
-              <div class='modal-footer'>
-              <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-              </div>
-              </div>
-              </div>
-              </div>"; */
+        }
+        else {
+//            $this->mensaje = $msjParametro;
+            $this->mensaje = 
+                    "<div class='modal' style='display: block;'>
+                        <div class='modal-dialog'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                                    <h4 class='modal-title'>Atención:</h4>
+                                </div>
+                                <div class='modal-body'>
+                                    <p>$msjParametro</p>
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
         }
     }
 
@@ -147,30 +150,57 @@ class manejador extends conexionDB {
         if (!$resultado == NULL) {
             $cursoUsuario = $this->buscarCursoDeUsuario($ci);
             if (!$cursoUsuario == NULL) {
-                $categroiaUsuario = $resultado[0][8];
+                $categroiaUsuario = $resultado[0]["categoria_usuario"];
 
                 switch ($categroiaUsuario) {
                     case "Alumno";
-                        $usuario = new alumno($resultado[0][0], $resultado[0][1], $resultado[0][2], $resultado[0][3], $resultado[0][4], $resultado[0][5], $resultado[0][6], $resultado[0][7], $categroiaUsuario);
+                        $usuario = new alumno($resultado[0]["ci"], 
+                                $resultado[0]["nombre"], 
+                                $resultado[0]["apellido"], 
+                                $resultado[0]["sexo"], 
+                                $resultado[0]["email"], 
+                                $resultado[0]["clave"], 
+                                $resultado[0]["telefono"], 
+                                $resultado[0]["celular"],
+                                $cursoUsuario);
                         break;
                     case "Administrativo";
-                        $usuario = new administrativo($resultado[0][0], $resultado[0][1], $resultado[0][2], $resultado[0][3], $resultado[0][4], $resultado[0][5], $resultado[0][6]);
+                        $usuario = new administrativo($resultado[0]["ci"], 
+                                $resultado[0]["nombre"], 
+                                $resultado[0]["apellido"], 
+                                $resultado[0]["sexo"], 
+                                $resultado[0]["email"], 
+                                $resultado[0]["clave"], 
+                                $resultado[0]["telefono"]);
                         break;
                     case "Profesor";
-                        $usuario = new profesor($resultado[0][0], $resultado[0][1], $resultado[0][2], $resultado[0][3], $resultado[0][4], $resultado[0][5], $resultado[0][6], $resultado[0][7]);
+                        $usuario = new profesor($resultado[0]["ci"], 
+                                $resultado[0]["nombre"], 
+                                $resultado[0]["apellido"], 
+                                $resultado[0]["sexo"], 
+                                $resultado[0]["email"], 
+                                $resultado[0]["clave"], 
+                                $resultado[0]["telefono"], 
+                                $resultado[0]["celular"]);
                         break;
                 }
 
                 session_start();
                 $_SESSION["usuario"] = $usuario;
+                $this->usuario = $usuario;
+                
+//                header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=ingresar");
             }
         }
     }
+    
+    function irInicioUsuario($usuario) {
+    }
+    
+    function contenidoCursos($usuario){
 
-    function contenidoCurso($_SESSION = ["usuario"]) {
 
-        
-                        $this->query = " SELECT 
+    $this->query = " SELECT 
                         acu.nombre_curso,
                         ascctse.nombre_tema,
                         ascctse.nombre_subtema,
@@ -183,7 +213,7 @@ class manejador extends conexionDB {
         
         
     }
-
+            
     function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema"
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"

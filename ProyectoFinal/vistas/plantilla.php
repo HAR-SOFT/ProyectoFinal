@@ -10,11 +10,6 @@
         <link rel="stylesheet" href="vistas/css/bootstrap.min.css">
     </head>
     <body>
-        <!-- Inicio mensajes  -->
-        Mensaje
-        <div id="mensaje" style="visibility: hidden;"></div>
-        <!-- Fin mensajes  -->
-        
         <!-- Inicio header  -->
         Header
         <!-- Fin header  -->
