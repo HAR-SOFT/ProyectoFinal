@@ -33,7 +33,7 @@ class controlador_mvc {
         return preg_replace($in, $out, $pagina);
     }
     
-
+    
     function inicio() {
         $pagina = $this->load_template("inicio");
         $header = $this->load_page("vistas/html/headerInicio.html");
@@ -65,6 +65,15 @@ class controlador_mvc {
             
             $this->view_page($pagina);
         }
+    }
+    
+    function datosUsuario() {
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "Teórico curso", $pagina);
+        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["usuario"]->getCursoActual(), $pagina);
+        $this->view_page($pagina);
     }
     
 }

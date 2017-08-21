@@ -10,6 +10,7 @@ class manejador extends conexionDB {
     
     private $mensaje;
     private $query;
+    private $usuario;
     
     public function __construct() {
         
@@ -187,10 +188,17 @@ class manejador extends conexionDB {
 
                 session_start();
                 $_SESSION["usuario"] = $usuario;
+                $this->usuario = $usuario;
+                
+//                header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=ingresar");
             }
         }
     }
     
+    function irInicioUsuario($usuario) {
+        
+    }
+            
     function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema"
             . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
