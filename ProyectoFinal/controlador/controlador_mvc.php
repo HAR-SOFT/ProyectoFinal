@@ -53,6 +53,30 @@ class controlador_mvc {
         }
     }
     
+    
+    function altaAlumno() {
+        if (isset($_REQUEST["ingresar"])) {
+            $ci = $_REQUEST["ci"];
+            $clave = md5($_REQUEST["clave"]);
+            
+            $this->manejador = new manejador();
+            $this->manejador->login($ci, $clave);
+            
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerInicio.html");
+            $pagina = $this->replace_content('/Header/', $header, $pagina);
+            $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
+            
+            if (!$this->manejador->getMensaje() == NULL) {
+                $pagina = $this->replace_content("/Mensaje/", $this->manejador->getMensaje(), $pagina);
+            }
+            
+            $this->view_page($pagina);
+        }
+    }
+    
+    
+    
 }
 
 ?>
