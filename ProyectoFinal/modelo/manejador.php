@@ -11,7 +11,7 @@ class manejador extends conexionDB {
     private $mensaje;
     private $query;
     private $usuario;
-    
+
     public function __construct() {
         
     }
@@ -43,11 +43,9 @@ class manejador extends conexionDB {
             }
 
             return $datos;
-        }
-        else {
+        } else {
 //            $this->mensaje = $msjParametro;
-            $this->mensaje = 
-                    "<div class='modal' style='display: block;'>
+            $this->mensaje = "<div class='modal' style='display: block;'>
                         <div class='modal-dialog'>
                             <div class='modal-content'>
                                 <div class='modal-header'>
@@ -154,66 +152,75 @@ class manejador extends conexionDB {
 
                 switch ($categroiaUsuario) {
                     case "Alumno";
-                        $usuario = new alumno($resultado[0]["ci"], 
-                                $resultado[0]["nombre"], 
-                                $resultado[0]["apellido"], 
-                                $resultado[0]["sexo"], 
-                                $resultado[0]["email"], 
-                                $resultado[0]["clave"], 
-                                $resultado[0]["telefono"], 
-                                $resultado[0]["celular"],
-                                $cursoUsuario);
+                        $usuario = new alumno($resultado[0]["ci"], $resultado[0]["nombre"], $resultado[0]["apellido"], $resultado[0]["sexo"], $resultado[0]["email"], $resultado[0]["clave"], $resultado[0]["telefono"], $resultado[0]["celular"], $cursoUsuario);
                         break;
                     case "Administrativo";
-                        $usuario = new administrativo($resultado[0]["ci"], 
-                                $resultado[0]["nombre"], 
-                                $resultado[0]["apellido"], 
-                                $resultado[0]["sexo"], 
-                                $resultado[0]["email"], 
-                                $resultado[0]["clave"], 
-                                $resultado[0]["telefono"]);
+                        $usuario = new administrativo($resultado[0]["ci"], $resultado[0]["nombre"], $resultado[0]["apellido"], $resultado[0]["sexo"], $resultado[0]["email"], $resultado[0]["clave"], $resultado[0]["telefono"]);
                         break;
                     case "Profesor";
-                        $usuario = new profesor($resultado[0]["ci"], 
-                                $resultado[0]["nombre"], 
-                                $resultado[0]["apellido"], 
-                                $resultado[0]["sexo"], 
-                                $resultado[0]["email"], 
-                                $resultado[0]["clave"], 
-                                $resultado[0]["telefono"], 
-                                $resultado[0]["celular"]);
+                        $usuario = new profesor($resultado[0]["ci"], $resultado[0]["nombre"], $resultado[0]["apellido"], $resultado[0]["sexo"], $resultado[0]["email"], $resultado[0]["clave"], $resultado[0]["telefono"], $resultado[0]["celular"]);
                         break;
                 }
 
                 session_start();
                 $_SESSION["usuario"] = $usuario;
                 $this->usuario = $usuario;
-                
+
 //                header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=ingresar");
             }
         }
     }
-    
+
     function irInicioUsuario($usuario) {
-    }
-    
-    function contenidoCursos($usuario){
-
-
-    $this->query = " SELECT 
-                        acu.nombre_curso,
-                        ascctse.nombre_tema,
-                        ascctse.nombre_subtema,
-                        ascctse.nombre_ejercicio
-                        FROM 
-                        asc_curso_tema_subtema_ejercicio as ascctse  ,
-                        asc_curso_usuario as acu 
-                        WHERE acu.nombre_curso = ascctse.nombre_curso
-                        AND acu.nombre_usuario ='$usuario'";
-        
         
     }
+
+    function contenidoCurso($usuario) {
+
+        
+        $resultado = $this->listarTemasSubTemasPorCurso($this->usuario->getCursoActual());
+        
+        foreach ($resultado as $row_tema=>$menu_tema){
             
+             foreach($menu_item as $row_tema => $sub_menu){
+            
+             //echo' <li><a href="# '. $row_tema['nombre_tema']. '">' . $row_tema['nombre_tema'] . ' </a></li> ';
+            echo "<li><a href='#'>".$menu_tema."</a>";
+           
+            if (isset($sub_tema)){
+			echo "<ul>";
+			foreach($sub_tema as $item){
+				echo "<li><a href='#'>".$item."</a>";
+			}
+			echo "</ul>";
+		}
+	   echo "</li>";
+            
+            
+             
+  
+	}
+}
+        
+        $this->query = " SELECT "
+                . "acu.nombre_curso,"
+                . "ascctse.nombre_tema,"
+                . "ascctse.nombre_subtema,"
+                . "ascctse.nombre_ejercicio "
+                . "FROM asc_curso_tema_subtema_ejercicio AS ascctse,"
+                . "asc_curso_usuario AS acu "
+                . "WHERE acu.nombre_curso = ascctse.nombre_curs "
+                . "AND acu.nombre_usuario ='nombre'";
+
+
+        $msjListarContenidoDelCurso = "No hay contenidos para el usuario seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjListarContenidoDelCurso);
+        
+        
+        
+    }
+
     function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema"
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
@@ -227,7 +234,7 @@ class manejador extends conexionDB {
         $this->query = "SELECT ASCCTSE.nombre_tema, "
                 . " ASCCTSE.nombre_subtema"
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
-                . " WHERE ASCCTSE.nombre = '$nombreCurso';";
+                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso';";
         $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
