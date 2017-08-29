@@ -8,11 +8,10 @@ require_once "usuario.php";
 class profesor extends usuario {
 
     private $mensaje;
-    
     private $colCursos;
     
-    public function __construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $colCursos) {
-        parent::__construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono);
+    public function __construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $celular, $colCursos) {
+        parent::__construct($ci, $nombre, $apellido, $sexo, $email, $clave, $telefono, $celular);
         $this->colCursos = $colCursos;
     }
     

@@ -7,7 +7,7 @@ class conexionDB {
     private $conexion;
     var $error;
 
-    function conectar() {
+    public function conectar() {
         try {
             $this->conexion = mysqli_connect("localhost", "root", "", "e-mer");
         } catch (Exception $ex) {
@@ -15,7 +15,7 @@ class conexionDB {
         }
     }
 
-    function seleccionDB($nombreDB) {
+    public function seleccionDB($nombreDB) {
         try {
             $db = mysqli_select_db($this->conexion, $nombreDB);
             return $db;
@@ -24,7 +24,7 @@ class conexionDB {
         }
     }
 
-    function consulta($sql) {
+    public function consulta($sql) {
         try {
             $resultado = mysqli_query($this->conexion, $sql);
             return $resultado;
@@ -33,7 +33,7 @@ class conexionDB {
         }
     }
 
-    function cantidadRegistros($resultado) {
+    public function cantidadRegistros($resultado) {
         try {
             $cant = mysqli_num_rows($resultado);
             return $cant;
@@ -42,7 +42,7 @@ class conexionDB {
         }
     }
 
-    function retornarRegistros($resultado) {
+    public function retornarRegistros($resultado) {
         try {
             $reg = mysqli_fetch_array($resultado);
             return $reg;
@@ -51,7 +51,7 @@ class conexionDB {
         }
     }
 
-    function cerrarDB() {
+    public function cerrarDB() {
         try {
             mysqli_close($this->conexion);
         } catch (Exception $ex) {

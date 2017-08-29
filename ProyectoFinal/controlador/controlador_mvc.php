@@ -2,11 +2,13 @@
 
 require_once "modelo/manejador.php";
 
-class controlador_mvc {
+class controlador_mvc extends manejador {
     
-    private $manejador;
     private $mensaje;
-    
+    private $usuario;
+    private $nombreUsuario;
+    private $apellidoUsuario;
+
     public function getMensaje() {
         return $this->mensaje;
     }
@@ -14,9 +16,34 @@ class controlador_mvc {
     public function setMensaje($mensaje) {
         $this->mensaje = $mensaje;
     }
-
     
-    function load_template($title = "Sin Titulo") {
+    public function getUsuario() {
+        return $this->usuario;
+    }
+
+    public function setUsuario($usuario) {
+        $this->usuario = $usuario;
+    }
+    
+    public function getNombreUsuario() {
+        return $this->nombreUsuario;
+    }
+
+    public function getApellidoUsuario() {
+        return $this->apellidoUsuario;
+    }
+
+    public function setNombreUsuario($nombreUsuario) {
+        $this->nombreUsuario = $nombreUsuario;
+    }
+
+    public function setApellidoUsuario($apellidoUsuario) {
+        $this->apellidoUsuario = $apellidoUsuario;
+    }
+
+                
+    
+    public function load_template($title = "Sin Titulo") {
         $pagina = $this->load_page("vistas/plantilla.php");
         return $pagina;
     }
@@ -34,48 +61,108 @@ class controlador_mvc {
     }
     
     
-    function inicio() {
+    public function inicio() {
         $pagina = $this->load_template("inicio");
         $header = $this->load_page("vistas/html/headerInicio.html");
         $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Contenido/', "Logo", $pagina);
         $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
         $this->view_page($pagina);
     }
     
-    function ingresar() {
+    public function ingresar() {
         if (isset($_REQUEST["ingresar"])) {
             $ci = $_REQUEST["ci"];
             $clave = md5($_REQUEST["clave"]);
             
-            $this->manejador = new manejador();
-            $this->manejador->login($ci, $clave);
+            $this->login($ci, $clave);
             
-            $pagina = $this->load_template("inicio");
-            $header = $this->load_page("vistas/html/headerInicio.html");
-            $pagina = $this->replace_content('/Header/', $header, $pagina);
-            $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
-            
-//            if (!$this->manejador->getMensaje() == NULL) {
-//                $pagina = $this->replace_content("/Mensaje/", $this->manejador->getMensaje(), $pagina);
-//                $pagina = $this->replace_content("/none/", "block", $pagina);
-//            }
-            if (!$this->manejador->getMensaje() == NULL) {
-                echo $this->manejador->getMensaje();
+            if (!$this->getMensajeManejador() == NULL) {
+                $pagina = $this->load_template("inicio");
+                $header = $this->load_page("vistas/html/headerInicio.html");
+                $pagina = $this->replace_content('/Header/', $header, $pagina);
+                $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
+                echo $this->getMensajeManejador();
+            }
+            else {
+                session_start();
+                $_SESSION["nombreUsuario"] = $this->getNombreUsuarioManejador();
+                $_SESSION["apellidoUsuario"] = $this->getApellidoUsuarioManejador();
+                $_SESSION["categoriaUsuario"] = $this->getCategoriaUsuarioManejador();
+                switch (get_class($this->getUsuarioManejador())) {
+                    case("alumno");
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
+                        $pagina = $this->replace_content('/Header/', $header, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Titulo/', "Teórico curso", $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        break;
+                    case("profesor");
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $contenido = $this->load_page("vistas/html/Profesor.html");
+                        $pagina = $this->replace_content('/Header/', $header, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Titulo/', "Cursos Asignados", $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        break;
+                    case("administrativo");
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $contenido = $this->load_page("vistas/html/Administrativo.html");
+                        $pagina = $this->replace_content('/Header/', $header, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Titulo/', "Menú de Administrativo", $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        break;
+                }
             }
             
             $this->view_page($pagina);
         }
     }
     
-    function datosUsuario() {
+    public function cerrarSesion() {
+        session_start();
+        unset($_SESSION["nombreUsuario"]);
+        unset($_SESSION["apellidoUsuario"]);
+        unset($_SESSION["categoriaUsuario"]);
+        session_destroy();
+        
+        $this->inicio();
+    }
+    
+    public function cambiarClave() {
+        session_start();
         $pagina = $this->load_template("inicio");
         $header = $this->load_page("vistas/html/headerLogueado.html");
+        $contenido = $this->load_page("vistas/html/menuUsuario.html");
         $pagina = $this->replace_content('/Header/', $header, $pagina);
-        $pagina = $this->replace_content('/Titulo/', "Teórico curso", $pagina);
-        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["usuario"]->getCursoActual(), $pagina);
+        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "Cambio de clave", $pagina);
+        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
         $this->view_page($pagina);
     }
     
+    public function cambioClave() {
+        session_start();
+        if (isset($_REQUEST["aceptar"])) {
+            $claveActual = md5($_REQUEST["claveActual"]);
+            $claveNueva = md5($_REQUEST["claveNueva"]);
+            $claveNuevaRep = md5($_REQUEST["claveNuevaRep"]);
+        }
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $contenido = $this->load_page("vistas/html/menuUsuario.html");
+        $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "Cambio de clave", $pagina);
+        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+        $this->view_page($pagina);
+    }
+ 
 }
 
 ?>

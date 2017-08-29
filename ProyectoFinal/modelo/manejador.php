@@ -2,6 +2,7 @@
 
 require_once "conexionDB.php";
 require_once "mer.php";
+require_once "usuario.php";
 require_once "alumno.php";
 require_once "administrativo.php";
 require_once "profesor.php";
@@ -11,29 +12,65 @@ class manejador extends conexionDB {
     private $mensaje;
     private $query;
     private $usuario;
+    private $nombreUsuario;
+    private $apellidoUsuario;
+    private $categoriaUsuario;
     
     public function __construct() {
         
     }
     
-    public function getMensaje() {
+    public function getMensajeManejador() {
         return $this->mensaje;
     }
 
-    public function getQuery() {
+    public function getQueryManejador() {
         return $this->query;
     }
 
-    public function setMensaje($mensaje) {
+    public function setMensajeManejador($mensaje) {
         $this->mensaje = $mensaje;
     }
 
-    public function setQuery($query) {
+    public function setQueryManejador($query) {
         $this->query = $query;
     }
-
     
-    function ejecutarQuery($queryParametro, $msjParametro) {
+    public function getUsuarioManejador() {
+        return $this->usuario;
+    }
+
+    public function setUsuarioManejador($usuario) {
+        $this->usuario = $usuario;
+    }
+    
+    public function getNombreUsuarioManejador() {
+        return $this->nombreUsuario;
+    }
+
+    public function getApellidoUsuarioManejador() {
+        return $this->apellidoUsuario;
+    }
+
+    public function setNombreUsuarioManejador($nombreUsuario) {
+        $this->nombreUsuario = $nombreUsuario;
+    }
+
+    public function setApellidoUsuarioManejador($apellidoUsuario) {
+        $this->apellidoUsuario = $apellidoUsuario;
+    }
+
+    public function getCategoriaUsuarioManejador() {
+        return $this->categoriaUsuario;
+    }
+
+    public function setCategoriaUsuarioManejador($categoriaUsuario) {
+        $this->categoriaUsuario = $categoriaUsuario;
+    }
+
+        
+    
+    public function ejecutarQuery($queryParametro, $msjParametro) {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
@@ -67,14 +104,14 @@ class manejador extends conexionDB {
         }
     }
     
-    function listarCursos() {
+    public function listarCursos() {
         $this->query = "SELECT * FROM dim_curso;";
         $msjListarCursos = "No hay cursos para mostrar";
         
         return $this->ejecutarQuery($this->query, $msjListarCursos);
     }
     
-    function listarAlumnosPorCurso($curso) {
+    public function listarAlumnosPorCurso($curso) {
         $this->query = "SELECT U.nombre, U.apellido"
             . " FROM dim_usuario AS U"
             . " INNER JOIN dim_curso AS C"
@@ -86,20 +123,17 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarAlumnosPorCurso);
     }
     
-    function buscarCursoDeUsuario($ciUsuario) {
-        $this->query = "SELECT C.nombre"
-            . " FROM dim_curso AS C"
-            . " INNER JOIN asc_curso_usuario AS CU"
-            . " ON C.nombre = CU.nombre_curso"
-            . " WHERE C.estado = 1"
-            . " AND CU.ci_usuario = $ciUsuario";
+    public function buscarCursoDeUsuario($ciUsuario) {
+        $this->query = "SELECT C.nombre_curso"
+            . " FROM asc_curso_usuario AS C"
+            . " WHERE C.ci_usuario = $ciUsuario";
         $buscarCursoDeUsuario = "No tiene ningún curso activo asigando."
             . " Comuníquese con Bedelía.";
         
         return $this->ejecutarQuery($this->query, $buscarCursoDeUsuario);
     }
     
-    function listarCursosActivos() {
+    public function listarCursosActivos() {
         $this->query = "SELECT *"
             . " FROM dim_curso AS C"
             . " WHERE C.activo = 1;";
@@ -108,7 +142,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
     }
     
-    function listarCursosInactivos() {
+    public function listarCursosInactivos() {
         $this->query = "SELECT *"
             . " FROM dim_curso AS C"
             . " WHERE C.activo = 0;";
@@ -117,14 +151,14 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarCursosInactivos);
     }
     
-    function listarUsuarios() {
+    public function listarUsuarios() {
         $this->query = "SELECT * FROM dim_usuario;";
         $msjListarUsuarios = "No hay usuarios para mostrar.";
         
         return $this->ejecutarQuery($this->query, $msjListarUsuarios);
     }
     
-    function buscarUsuario($ciUsuario, $claveUsuario) {
+    public function buscarUsuario($ciUsuario, $claveUsuario) {
         $this->query = "SELECT U.ci,"
                 . " U.nombre,"
                 . " U.apellido,"
@@ -142,19 +176,18 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjBuscarUsuario);
     }
     
-    function login($ciParam, $claveParam) {
+    public function login($ciParam, $claveParam) {
         $ci = $ciParam;
         $clave = $claveParam;
 
         $resultado = $this->buscarUsuario($ci, $clave);
 
         if (!$resultado == NULL) {
-            $cursoUsuario = $this->buscarCursoDeUsuario($ci);
-            if (!$cursoUsuario == NULL) {
-                $categroiaUsuario = $resultado[0]["categoria_usuario"];
-
-                switch ($categroiaUsuario) {
-                    case "Alumno";
+            $categroiaUsuario = $resultado[0]["categoria_usuario"];
+            switch ($categroiaUsuario) {
+                case "Alumno";
+                    $cursoUsuario = $this->buscarCursoDeUsuario($ci);
+                    if (!$cursoUsuario == NULL) {
                         $usuario = new alumno($resultado[0]["ci"], 
                                 $resultado[0]["nombre"], 
                                 $resultado[0]["apellido"], 
@@ -163,18 +196,22 @@ class manejador extends conexionDB {
                                 $resultado[0]["clave"], 
                                 $resultado[0]["telefono"], 
                                 $resultado[0]["celular"],
-                                $cursoUsuario);
-                        break;
-                    case "Administrativo";
-                        $usuario = new administrativo($resultado[0]["ci"], 
-                                $resultado[0]["nombre"], 
-                                $resultado[0]["apellido"], 
-                                $resultado[0]["sexo"], 
-                                $resultado[0]["email"], 
-                                $resultado[0]["clave"], 
-                                $resultado[0]["telefono"]);
-                        break;
-                    case "Profesor";
+                                $cursoUsuario);                        
+                    }
+                    break;
+                case "Administrativo";
+                    $usuario = new administrativo($resultado[0]["ci"], 
+                            $resultado[0]["nombre"], 
+                            $resultado[0]["apellido"], 
+                            $resultado[0]["sexo"], 
+                            $resultado[0]["email"], 
+                            $resultado[0]["clave"], 
+                            $resultado[0]["telefono"],
+                            $resultado[0]["celular"]);
+                    break;
+                case "Profesor";
+                    $cursosProfesor = $this->buscarCursoDeUsuario($ci);
+                    if (!$cursosProfesor == NULL) {
                         $usuario = new profesor($resultado[0]["ci"], 
                                 $resultado[0]["nombre"], 
                                 $resultado[0]["apellido"], 
@@ -182,24 +219,22 @@ class manejador extends conexionDB {
                                 $resultado[0]["email"], 
                                 $resultado[0]["clave"], 
                                 $resultado[0]["telefono"], 
-                                $resultado[0]["celular"]);
-                        break;
-                }
-
-                session_start();
-                $_SESSION["usuario"] = $usuario;
-                $this->usuario = $usuario;
-                
-//                header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=ingresar");
+                                $resultado[0]["celular"],
+                                $cursosProfesor);
+                    }
+                    break;
             }
+            
+            if (!$this->mensaje) {
+                $this->usuario = $usuario;
+                $this->nombreUsuario = $usuario->getNombre();
+                $this->apellidoUsuario = $usuario->getApellido();
+                $this->categoriaUsuario = $categroiaUsuario;
+            }       
         }
     }
-    
-    function irInicioUsuario($usuario) {
-        
-    }
             
-    function listarTemasPorCurso($nombreCurso) {
+    public function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema"
             . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
             . " WHERE ASCCTSE.nombre = '$nombreCurso';";
@@ -208,7 +243,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
     
-    function listarTemasSubTemasPorCurso($nombreCurso) {
+    public function listarTemasSubTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema, "
             . " ASCCTSE.nombre_subtema"
             . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
@@ -218,7 +253,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
     
-    function armarMer($nombreMer) {
+    public function armarMer($nombreMer) {
         $this->query = "SELECT M.nombre, "
             . " M.colEntidades,"
             . " M.colRelaciones,"
@@ -245,7 +280,7 @@ class manejador extends conexionDB {
         }
     }
     
-    function altaProfesor()
+    public function altaProfesor()
             {
         
          $valor = $_POST('sexo');
@@ -270,7 +305,7 @@ class manejador extends conexionDB {
     }
     
     
-     function altaAlumno() {
+    public function altaAlumno() {
     
          
          $valor = $_POST('sexo');
