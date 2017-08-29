@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
         $fecha_fin = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
 
         
-            $sql = "INSERT INTO `dim_cursos`(`id_curso`, `nombre`,`anio`, `horario`, `fecha_inicio`, `fecha_fin`,`estado`)"
+            $sql = "INSERT INTO `dim_curso`(`id_curso`, `nombre`,`anio`, `horario`, `fecha_inicio`, `fecha_fin`,`estado`)"
                     . "values(null,'$nombre','$anio','$horario','$fecha_inicio','$fecha_fin',1)";
 
 
@@ -47,15 +47,11 @@ if (isset($_POST['submit'])) {
 
             if ($resultado == false) {
 
-                $sql_nombre = "select * from dim_cursos where nombre = $nombre and fecha_inicio = $fecha_inicio";
+                //$sql_nombre = "select * from dim_cursos where nombre = $nombre and fecha_inicio = $fecha_inicio";
                 
                
 
-                if ($sql_nombre) {
-
-               
-                    echo "el curso $nombre con fecha de inicion $fecha_inicio de la fila $i ya existe en el sistema <br> ";
-                }
+                echo "el curso $nombre con fecha de inicio $fecha_inicio de la fila $i ya existe en el sistema <br> ";
 
 
                 /*

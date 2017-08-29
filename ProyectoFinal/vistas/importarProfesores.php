@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
         $pass = md5($ci);
 
-        $sql = "INSERT INTO `dim_usuarios`(`id_usuario`, `ci`, `nombre`, `apellido`, `sexo`, `email`, `clave`, `telefono`, `celular`, `categoria_usuario`)"
+        $sql = "INSERT INTO `dim_usuario`(`id_usuario`, `ci`, `nombre`, `apellido`, `sexo`, `email`, `clave`, `telefono`, `celular`, `categoria_usuario`)"
                 . "values(null,'$ci','$nombre','$apellido','$sexo','$email','$pass','$telefono','$celular', 'profesor')";
 
         // var_dump($sql);
@@ -48,15 +48,13 @@ if (isset($_POST['submit'])) {
 
         if ($resultado == false) {
 
-            $sql_nombre = "select * from dim_usuarios where nombre = $ci ";
+            //$sql_nombre = "select * from dim_usuarios where nombre = $ci ";
+
+            //if ($sql_nombre) {
 
 
-
-            if ($sql_nombre) {
-
-
-                echo "el profesor con CI $ci ya existe en el sistema <br> ";
-            }
+                echo "el profesor con CI $ci de la fila $i ya existe en el sistema <br> ";
+            
 
             /*
              * 

@@ -8,7 +8,7 @@ require_once "administrativo.php";
 require_once "profesor.php";
 
 class manejador extends conexionDB {
-    
+
     private $mensaje;
     private $query;
     private $usuario;
@@ -79,13 +79,11 @@ class manejador extends conexionDB {
             while ($array = $this->retornarRegistros($query)) {
                 $datos[] = $array;
             }
-            
+
             return $datos;
-        }
-        else {
+        } else {
 //            $this->mensaje = $msjParametro;
-            $this->mensaje = 
-                    "<div class='modal' style='display: block;'>
+            $this->mensaje = "<div class='modal' style='display: block;'>
                         <div class='modal-dialog'>
                             <div class='modal-content'>
                                 <div class='modal-header'>
@@ -107,19 +105,19 @@ class manejador extends conexionDB {
     public function listarCursos() {
         $this->query = "SELECT * FROM dim_curso;";
         $msjListarCursos = "No hay cursos para mostrar";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarCursos);
     }
     
     public function listarAlumnosPorCurso($curso) {
         $this->query = "SELECT U.nombre, U.apellido"
-            . " FROM dim_usuario AS U"
-            . " INNER JOIN dim_curso AS C"
-            . " ON C.nombre = U.curso"
-            . " WHERE U.categoria_usuario = 'alumno'"
-            . " AND C.nombre = '$curso';";
+                . " FROM dim_usuario AS U"
+                . " INNER JOIN dim_curso AS C"
+                . " ON C.nombre = U.curso"
+                . " WHERE U.categoria_usuario = 'alumno'"
+                . " AND C.nombre = '$curso';";
         $msjListarAlumnosPorCurso = "No hay alumnos para el curso seleccionado.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarAlumnosPorCurso);
     }
     
@@ -128,33 +126,33 @@ class manejador extends conexionDB {
             . " FROM asc_curso_usuario AS C"
             . " WHERE C.ci_usuario = $ciUsuario";
         $buscarCursoDeUsuario = "No tiene ningún curso activo asigando."
-            . " Comuníquese con Bedelía.";
-        
+                . " Comuníquese con Bedelía.";
+
         return $this->ejecutarQuery($this->query, $buscarCursoDeUsuario);
     }
     
     public function listarCursosActivos() {
         $this->query = "SELECT *"
-            . " FROM dim_curso AS C"
-            . " WHERE C.activo = 1;";
+                . " FROM dim_curso AS C"
+                . " WHERE C.estado = 1;";
         $msjListarCursosActivos = "No hay cursos activos.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
     }
     
     public function listarCursosInactivos() {
         $this->query = "SELECT *"
-            . " FROM dim_curso AS C"
-            . " WHERE C.activo = 0;";
+                . " FROM dim_curso AS C"
+                . " WHERE C.estado = 0;";
         $msjListarCursosInactivos = "No hay cursos inactivos.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarCursosInactivos);
     }
     
     public function listarUsuarios() {
         $this->query = "SELECT * FROM dim_usuario;";
         $msjListarUsuarios = "No hay usuarios para mostrar.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarUsuarios);
     }
     
@@ -172,7 +170,7 @@ class manejador extends conexionDB {
                 . " WHERE U.ci = '$ciUsuario'"
                 . " AND U.clave = '$claveUsuario';";
         $msjBuscarUsuario = "CI o clave incorrecta.";
-        
+
         return $this->ejecutarQuery($this->query, $msjBuscarUsuario);
     }
     
@@ -236,36 +234,36 @@ class manejador extends conexionDB {
             
     public function listarTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema"
-            . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
-            . " WHERE ASCCTSE.nombre = '$nombreCurso';";
+                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
+                . " WHERE ASCCTSE.nombre = '$nombreCurso';";
         $msjListarTemasPorCurso = "No hay temas para el curso seleccionado.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
     
     public function listarTemasSubTemasPorCurso($nombreCurso) {
         $this->query = "SELECT ASCCTSE.nombre_tema, "
-            . " ASCCTSE.nombre_subtema"
-            . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
-            . " WHERE ASCCTSE.nombre = '$nombreCurso';";
+                . " ASCCTSE.nombre_subtema"
+                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
+                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso';";
         $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado.";
-        
+
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
     
     public function armarMer($nombreMer) {
         $this->query = "SELECT M.nombre, "
-            . " M.colEntidades,"
-            . " M.colRelaciones,"
-            . " M.colAgregaciones,"
-            . " M.tipo,"
-            . " M.nombreEjercicio"
-            . " FROM sol_mer AS M"
-            . " WHERE M.nombre = '$nombreMer';";
+                . " M.colEntidades,"
+                . " M.colRelaciones,"
+                . " M.colAgregaciones,"
+                . " M.tipo,"
+                . " M.nombreEjercicio"
+                . " FROM sol_mer AS M"
+                . " WHERE M.nombre = '$nombreMer';";
         $msjArmarMer = "No hay un MER con el nombre indicado.";
-        
+
         $resultado = $this->ejecutarQuery($this->query, $msjArmarMer);
-        
+
         if (!$resultado == NULL) {
             $nombreMer = $resultado[0][0];
             $colEntidadesMer = [$resultado[0][1]];
@@ -273,9 +271,9 @@ class manejador extends conexionDB {
             $colAgregacionesMer = [$resultado[0][3]];
             $tipoMer = $resultado[0][4];
             $nombreEjercicioMer = $resultado[0][5];
-            
+
             $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer, $colAgregacionesMer, $tipoMer, $nombreEjercicioMer);
-            
+
             return $mer;
         }
     }
@@ -291,17 +289,17 @@ class manejador extends conexionDB {
         $apellidoUsuario = $_POST('inputApellido');
         $sexoUsuario = $_POST('$valor');
         $emailUsuario = $_POST('inputMail');
-        $claveUsuario= md5($ciUsuario);
+        $claveUsuario = md5($ciUsuario);
         $telefonoUsuario = $_POST('inputTelefono');
         $celularUsuario = $_POST('inputCelular');
-        
- 
-       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
-               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','profesor')";
-     
-      $this->mensaje = "Profesor no insertado";
-      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
-      return $resultado;
+
+
+        $this->query = "INSERT INTO dim_usuario (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor')";
+
+        $this->mensaje = "Profesor no insertado";
+        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
+        return $resultado;
     }
     
     
@@ -315,17 +313,18 @@ class manejador extends conexionDB {
         $apellidoUsuario = $_POST('inputApellido');
         $sexoUsuario = $_POST('$valor');
         $emailUsuario = $_POST('inputMail');
-        $claveUsuario= md5($ciUsuario);
+        $claveUsuario = md5($ciUsuario);
         $telefonoUsuario = $_POST('inputTelefono');
         $celularUsuario = $_POST('inputCelular');
-               
-       $this->query ="INSERT INTO dim_usuarios (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
-               . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','alumno')";
-     
-      $this->mensaje = "Alumno no insertado";
-      $resultado=$this->ejecutarQuery($this->query, $this->mensaje);
-      return $resultado;
-          }
+
+        $this->query = "INSERT INTO dim_usuario (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,celular,categoria_usuario) "
+                . "VALUE ('null','$ciUsuario','$nombreUsuario', '$apellidoUsuario', '$sexoUsuario', '$emailUsuario', '$claveUsuario', '$telefonoUsuario','$celularUsuario','Alumno')";
+
+        $this->mensaje = "Alumno no insertado";
+        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
+        return $resultado;
+    }
+
 }
 
 ?>
