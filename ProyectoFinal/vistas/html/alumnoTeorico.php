@@ -54,50 +54,61 @@
             $DB->conectar();
 
             //consulta  para listar los temas
-            $sql1 = "SELECT DISTINCT
+            $sqlTema = "SELECT DISTINCT
                      ASCCTSE.nombre_tema
                      FROM
                      asc_curso_tema_subtema_ejercicio AS ASCCTSE
                      WHERE
                      ASCCTSE.nombre_curso = 'ATI 2017 20-22'";
 
-            //se ejecuta la consulta
-            $resultado = $DB->consulta($sql1);
+            //se ejecuta la consulta de temas
+            $resultado = $DB->consulta($sqlTema);
 
-            //se itera sobre los temas  
+
             foreach ($resultado as $menu => $menu_tema) {
                 echo'<li class="active">'
                 . '<a class="dropdown-toggle" data-toggle="dropdown"'
-                . ' href="" aria-expanded="false"> '
+                . ' href="#" aria-expanded="false"> '
                 . '' . $menu_tema['nombre_tema'] . ''
-                . '</a><span class="caret"></span>';
+                . '<span class="caret"></span></a>';
 
-                //se captura el nombre del tema
+
+
                 $tema = $menu_tema['nombre_tema'];
 
-                //consulta para iterar segun el tema los subtemas
-                $sql2 = " SELECT ASCCTSE.nombre_subtema  "
+
+                $sqlSubTema = " SELECT "
+                        . "ASCCTSE.nombre_tema,"
+                        . "ASCCTSE.nombre_subtema  "
                         . "FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
                         . "WHERE ASCCTSE.nombre_curso = 'ATI 2017 20-22'"
                         . "and ASCCTSE.nombre_tema = '$tema'";
 
-                //se ejecuta la consulta de los subtemas   
-                $resultado2 = $DB->consulta($sql2);
 
-                //se itera sobre los subtemas
 
-                while ($sub_tema = mysqli_fetch_array($resultado2)) {
+                $resultado2 = $DB->consulta($sqlSubTema);
 
-                    //foreach ($row as $sub_tema) {
-                    echo'<ul class="dropdown-menu">
-                         <li><a href="#" >' . $sub_tema['nombre_subtema'] . '</a></li>
-                         </ul>';
+                if (!$sqlSubTema == NULL) {
 
-                    echo' </li>';
+                    echo'
+                         <ul class="dropdown-menu">';
+
+                    while ($sub_tema = mysqli_fetch_array($resultado2)) {
+
+
+                        echo ' <li><a href="#" >' . $sub_tema['nombre_subtema'] . '</a></li>';
+                    }
+
+                    echo '</ul></li>';
+                } else {
+
+
+                    echo '</li>';
                 }
             }
-            //}
-            echo' </li>';
+
+
+            echo '</ul>';
             ?>
     </div>
     <!--  -->
@@ -110,36 +121,13 @@
                     <h1>Introduccion</h1>
                     <p>M.E.R<br>
 
-                                         
-  <?php
 
 
-    if (isset($boton)) {
-        
-        
-        echo" Modelo conceptual gráfico, usado para representar 
+
+     Modelo conceptual gráfico, usado para representar 
               estructuras que almacenan información.No contiene lenguaje 
               para representar operaciones de manipulación información.
-              Se utilizan Entidades, Conjuntos de Entidades y Relaciones";
-    }    
-        else{
-
-    var_dump($tema);
-
-    $sql = " select dt.letra
-            from dim_tema dt
-            where dt.nombre = '$tema'";
-
-    var_dump($sql);
-
-    $resultado = $DB->consulta($sql);
-
-    $tema_seleccionado = $DB->retornarRegistros($resultado);
-
-    echo $tema_seleccionado['letra'];
-    
-}
-?>
+              Se utilizan Entidades, Conjuntos de Entidades y Relaciones
 
 
 
