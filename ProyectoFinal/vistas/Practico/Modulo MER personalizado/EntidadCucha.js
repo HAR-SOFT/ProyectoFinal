@@ -3,7 +3,7 @@ draw2d.EntidadCucha=function()
   draw2d.ImageFigure.call(this,this.type+".png");
   this.outputPort = null;
   this.inputPort= null;
-  this.setDimension(99,100);
+  this.setDimension(160,145);
 
 };
 
