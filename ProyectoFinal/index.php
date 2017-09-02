@@ -21,6 +21,8 @@ else {
         case "cambiarclave":
             $mvc->cambiarClave();
             break;
+        case "cambioclave":
+            $mvc->cambioClave();
         case "tema":
             $mvc->verTema();
             break;

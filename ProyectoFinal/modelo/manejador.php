@@ -6,18 +6,19 @@ require_once "usuario.php";
 require_once "alumno.php";
 require_once "administrativo.php";
 require_once "profesor.php";
-require_once "../html/alumnoTeorico.php";
 
 class manejador extends conexionDB {
 
     private $mensaje;
     private $query;
     private $usuario;
+    private $ciUsuario;
     private $nombreUsuario;
     private $apellidoUsuario;
+    private $claveActualUsuario;
     private $categoriaUsuario;
-    private $tema;
-
+    private $cursoUsuario;
+    
     public function __construct() {
         
     }
@@ -69,36 +70,53 @@ class manejador extends conexionDB {
     public function setCategoriaUsuarioManejador($categoriaUsuario) {
         $this->categoriaUsuario = $categoriaUsuario;
     }
+    
+    public function getCiUsuarioManejador() {
+        return $this->ciUsuario;
+    }
 
+    public function getClaveActualUsuarioManejador() {
+        return $this->claveActualUsuario;
+    }
+
+    public function setCiUsuarioManejador($ciUsuario) {
+        $this->ciUsuario = $ciUsuario;
+    }
+
+    public function setClaveActualUsuarioManejador($claveActualUsuario) {
+        $this->claveActualUsuario = $claveActualUsuario;
+    }
+    
+    public function getCursoUsuarioManejador() {
+        return $this->cursoUsuario;
+    }
+
+    public function setCursoUsuarioManejador($cursoUsuario) {
+        $this->cursoUsuario = $cursoUsuario;
+    }
+
+    
+        
+    
     public function ejecutarQuery($queryParametro, $msjParametro) {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
-        if (!$this->cantidadRegistros($query) == 0) { // existe -> datos correctos
-            //se llenan los datos en un array
-            while ($array = $this->retornarRegistros($query)) {
-                $datos[] = $array;
-            }
+//        var_dump(strpos($queryParametro, "UPDATE"));
+        if (strpos($queryParametro, "UPDATE") !== false) {
+            $this->mensaje = $msjParametro;
+        }
+        else {
+            if (!$this->cantidadRegistros($query) == 0) {
+                while ($array = $this->retornarRegistros($query)) {
+                    $datos[] = $array;
+                }
 
-            return $datos;
-        } else {
-//            $this->mensaje = $msjParametro;
-            $this->mensaje = "<div class='modal' style='display: block;'>
-                        <div class='modal-dialog'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                                    <h4 class='modal-title'>Atención:</h4>
-                                </div>
-                                <div class='modal-body'>
-                                    <p>$msjParametro</p>
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>";
+                return $datos;
+            } 
+            else {
+                $this->mensaje = $msjParametro;
+            }
         }
     }
 
@@ -186,7 +204,16 @@ class manejador extends conexionDB {
                 case "Alumno";
                     $cursoUsuario = $this->buscarCursoDeUsuario($ci);
                     if (!$cursoUsuario == NULL) {
-                        $usuario = new alumno($resultado[0]["ci"], $resultado[0]["nombre"], $resultado[0]["apellido"], $resultado[0]["sexo"], $resultado[0]["email"], $resultado[0]["clave"], $resultado[0]["telefono"], $resultado[0]["celular"], $cursoUsuario);
+                        $usuario = new alumno($resultado[0]["ci"], 
+                                $resultado[0]["nombre"], 
+                                $resultado[0]["apellido"], 
+                                $resultado[0]["sexo"], 
+                                $resultado[0]["email"], 
+                                $resultado[0]["clave"], 
+                                $resultado[0]["telefono"], 
+                                $resultado[0]["celular"],
+                                $cursoUsuario); 
+                        $this->cursoUsuario = $cursoUsuario;
                     }
                     break;
                 case "Administrativo";
@@ -195,22 +222,33 @@ class manejador extends conexionDB {
                 case "Profesor";
                     $cursosProfesor = $this->buscarCursoDeUsuario($ci);
                     if (!$cursosProfesor == NULL) {
-                        $usuario = new profesor($resultado[0]["ci"], $resultado[0]["nombre"], $resultado[0]["apellido"], $resultado[0]["sexo"], $resultado[0]["email"], $resultado[0]["clave"], $resultado[0]["telefono"], $resultado[0]["celular"], $cursosProfesor);
+                        $usuario = new profesor($resultado[0]["ci"], 
+                                $resultado[0]["nombre"], 
+                                $resultado[0]["apellido"], 
+                                $resultado[0]["sexo"], 
+                                $resultado[0]["email"], 
+                                $resultado[0]["clave"], 
+                                $resultado[0]["telefono"], 
+                                $resultado[0]["celular"],
+                                $cursosProfesor);
+                        $this->cursoUsuario = $cursosProfesor;
                     }
                     break;
             }
 
             if (!$this->mensaje) {
                 $this->usuario = $usuario;
+                $this->ciUsuario = $usuario->getCi();
                 $this->nombreUsuario = $usuario->getNombre();
                 $this->apellidoUsuario = $usuario->getApellido();
+                $this->claveActualUsuario = $usuario->getClave();
                 $this->categoriaUsuario = $categroiaUsuario;
             }
         }
     }
 
     public function listarTemasPorCurso($nombreCurso) {
-        $this->query = "SELECT ASCCTSE.nombre_tema"
+        $this->query = "SELECT DISTINCT ASCCTSE.nombre_tema"
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
                 . " WHERE ASCCTSE.nombre = '$nombreCurso';";
         $msjListarTemasPorCurso = "No hay temas para el curso seleccionado.";
@@ -218,12 +256,18 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
 
-    public function listarTemasSubTemasPorCurso($nombreCurso) {
-        $this->query = "SELECT ASCCTSE.nombre_tema, "
-                . " ASCCTSE.nombre_subtema"
-                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
-                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso';";
+    public function listarSubTemasPorCursoYTema($nombreCurso,$tema) {
+        $this->query = " SELECT ASCCTSE.nombre_subtema  "
+                    . "FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
+                    . "WHERE ASCCTSE.nombre_curso = '$nombreCurso'"
+                    . "and ASCCTSE.nombre_tema = '$tema'";
         $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado.";
+        
+     
+        
+        
+        
+        
 
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
@@ -254,11 +298,22 @@ class manejador extends conexionDB {
             return $mer;
         }
     }
+    
+    public function cambiarClaveManejador($ci, $claveNuevaParam) {
+        $this->query = "UPDATE"
+        . " dim_usuario"
+        . " SET clave = '$claveNuevaParam'"
+        . " WHERE ci = '$ci';";
+        $msjCambiarClaveManejador = "Clave actualizada correctamente.";
 
-    public function altaProfesor() {
-
-        $valor = $_POST('sexo');
-
+        return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
+    }
+    
+    public function altaProfesor()
+            {
+        
+         $valor = $_POST('sexo');
+    
         //Faltan los nombre de los inputs
         $ciUsuario = $_POST('inputCI');
         $nombreUsuario = $_POST('inputNombre');
@@ -300,29 +355,7 @@ class manejador extends conexionDB {
         return $resultado;
     }
 
-    function menuManejador($nombreCurso) {
-
-        
-        //consulta para listar los Temas
-         $this->queryTema = "SELECT DISTINCT
-                     ASCCTSE.nombre_tema,
-                     dt.indice
-                     FROM
-                     asc_curso_tema_subtema_ejercicio AS ASCCTSE , dim_tema dt
-                     WHERE
-                     dt.nombre= ASCCTSE.nombre_tema
-                     AND ASCCTSE.nombre_curso = '$nombreCurso'
-                     order by dt.indice
-                     ";
-
-        //se ejecuta la consulta de temas
-        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
-
-        
-   
-
-        
-    }
+    
 
     function temaManejador($tema) {
 
@@ -339,7 +372,6 @@ class manejador extends conexionDB {
         $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
 
 
-        //var_dump($resultado);
 
         if ($resultado) {
 
