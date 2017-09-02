@@ -2,7 +2,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Bootstrap 3 responsive centered columns">
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="../css/bootstrap1.css">
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <title>Alumno</title>
@@ -48,67 +48,14 @@
 
 
             <?php
-            include '../../modelo/conexionDB.php';
-
-            $DB = new conexionDB();
-            $DB->conectar();
-
-            //consulta  para listar los temas
-            $sqlTema = "SELECT DISTINCT
-                     ASCCTSE.nombre_tema
-                     FROM
-                     asc_curso_tema_subtema_ejercicio AS ASCCTSE
-                     WHERE
-                     ASCCTSE.nombre_curso = 'ATI 2017 20-22'";
-
-            //se ejecuta la consulta de temas
-            $resultado = $DB->consulta($sqlTema);
-
-
-            foreach ($resultado as $menu => $menu_tema) {
-                echo'<li class="active">'
-                . '<a class="dropdown-toggle" data-toggle="dropdown"'
-                . ' href="#" aria-expanded="false"> '
-                . '' . $menu_tema['nombre_tema'] . ''
-                . '<span class="caret"></span></a>';
-
-
-
-                $tema = $menu_tema['nombre_tema'];
-
-
-                $sqlSubTema = " SELECT "
-                        . "ASCCTSE.nombre_tema,"
-                        . "ASCCTSE.nombre_subtema  "
-                        . "FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
-                        . "WHERE ASCCTSE.nombre_curso = 'ATI 2017 20-22'"
-                        . "and ASCCTSE.nombre_tema = '$tema'";
-
-
-
-                $resultado2 = $DB->consulta($sqlSubTema);
-
-                if (!$sqlSubTema == NULL) {
-
-                    echo'
-                         <ul class="dropdown-menu">';
-
-                    while ($sub_tema = mysqli_fetch_array($resultado2)) {
-
-
-                        echo ' <li><a href="#" >' . $sub_tema['nombre_subtema'] . '</a></li>';
-                    }
-
-                    echo '</ul></li>';
-                } else {
-
-
-                    echo '</li>';
-                }
-            }
-
-
-            echo '</ul>';
+            
+            include '../../modelo/manejador.php';
+            
+            $manejador = new manejador();
+            
+            $manejador->menuManejador();
+            
+            
             ?>
     </div>
     <!--  -->
@@ -121,18 +68,13 @@
                     <h1>Introduccion</h1>
                     <p>M.E.R<br>
 
+<?php
+ 
+           
 
-
-
-     Modelo conceptual gráfico, usado para representar 
-              estructuras que almacenan información.No contiene lenguaje 
-              para representar operaciones de manipulación información.
-              Se utilizan Entidades, Conjuntos de Entidades y Relaciones
-
-
-
-
-                    </p>
+                     
+                        
+?>                    </p>
                     <p align="right">
                         <input type="button" class="btn btn-primary btn-lg" value="Practica tu mismo" onClick="" />
                     </p>

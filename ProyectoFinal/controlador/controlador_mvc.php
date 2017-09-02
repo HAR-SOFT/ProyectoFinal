@@ -69,7 +69,7 @@ class controlador_mvc extends manejador {
         $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
         $this->view_page($pagina);
     }
-    
+       
     public function ingresar() {
         if (isset($_REQUEST["ingresar"])) {
             $ci = $_REQUEST["ci"];
@@ -162,6 +162,110 @@ class controlador_mvc extends manejador {
         $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
         $this->view_page($pagina);
     }
+
+    
+    public function menuAlumno() {
+        session_start();
+        
+        $this->menuManejador();
+        
+        
+        
+        
+        $sqlTema = $this->queryTema = "SELECT DISTINCT
+                     ASCCTSE.nombre_tema,
+                     dt.indice
+                     FROM
+                     asc_curso_tema_subtema_ejercicio AS ASCCTSE , dim_tema dt
+                     WHERE
+                     dt.nombre= ASCCTSE.nombre_tema
+                     AND ASCCTSE.nombre_curso = 'ATI 2017 20-22'
+                     order by dt.indice
+                     ";
+
+        //se ejecuta la consulta de temas
+        $resultado = $this->ejecutarQuery($this->queryTema, $this->mensaje);
+
+        //Se itera sobre los Temas
+        foreach ($resultado as $menu => $menu_tema) {
+            echo'<li class="active">'
+            . '<a class="dropdown-toggle" data-toggle="dropdown"'
+            . ' href="" aria-expanded="false"> '
+            . '' . $menu_tema['nombre_tema'] . ''
+            . '<span class="caret"></span></a>';
+
+
+            // Se captura el nombre del tema  
+            $tema = $menu_tema['nombre_tema'];
+
+
+            $sqlSubTema = $this->query = " SELECT "
+                    . "ASCCTSE.nombre_tema,"
+                    . "ASCCTSE.nombre_subtema  "
+                    . "FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
+                    . "WHERE ASCCTSE.nombre_curso = 'ATI 2017 20-22'"
+                    . "and ASCCTSE.nombre_tema = '$tema'";
+
+
+            // Se ejecuta consulta de SubTemas
+            // $resultado2 = $DB->consulta($sqlSubTema);
+
+            $resultado2 = $this->ejecutarQuery($this->querySubtema, $this->mensaje);
+
+            //si la consulta es distinto de NULL
+
+            if (!$sqlSubTema == NULL) {
+
+                echo'<ul class="dropdown-menu">';
+                
+                var_dump($resultado2);
+               
+                while ($sub_tema = mysqli_fetch_array($resultado2)){
+                                     
+                    echo ' <li><a href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema" >' . $sub_tema['nombre_subtema'] . '</a></li>';
+                }
+
+                echo '</ul></li>';
+            } else {
+
+
+                echo '</li>';
+            }
+        }
+
+
+        echo '</ul>';
+        
+              
+        
+        $pagina = $this->load_template("Inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $contenido = $this->load_page("vistas/html/alumnoTeorico.html");
+        $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "$tema", $pagina);
+        $this->view_page($pagina);
+        
+        
+    }
+        
+    
+    public function verTema() {
+        session_start();
+        
+        $this->temaManejador();
+        
+        $pagina = $this->load_template("Inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $contenido = $this->load_page("vistas/html/alumnoTeorico.html");
+        $pagina = $this->replace_content('/Header/', $header, $pagina);
+        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+        $pagina = $this->replace_content('/Titulo/', "$tema", $pagina);
+        $this->view_page($pagina);
+        
+    }
+    
+    
  
 }
 
