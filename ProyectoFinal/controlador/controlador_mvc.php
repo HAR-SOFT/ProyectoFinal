@@ -60,7 +60,6 @@ class controlador_mvc extends manejador {
         return preg_replace($in, $out, $pagina);
     }
     
-    
     public function inicio() {
         $pagina = $this->load_template("inicio");
         $header = $this->load_page("vistas/html/headerInicio.html");
@@ -70,6 +69,27 @@ class controlador_mvc extends manejador {
         $this->view_page($pagina);
     }
     
+    public function modal($msjModal) {
+        $modal = "<div class='modal' style='display: block;'>
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                                    <h4 class='modal-title'>Atención:</h4>
+                                </div>
+                                <div class='modal-body'>
+                                    <p>$msjModal</p>
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+        
+        echo $modal;
+    }
+    
     public function ingresar() {
         if (isset($_REQUEST["ingresar"])) {
             $ci = $_REQUEST["ci"];
@@ -77,18 +97,22 @@ class controlador_mvc extends manejador {
             
             $this->login($ci, $clave);
             
+//            var_dump($this->getMensajeManejador());
             if (!$this->getMensajeManejador() == NULL) {
                 $pagina = $this->load_template("inicio");
                 $header = $this->load_page("vistas/html/headerInicio.html");
                 $pagina = $this->replace_content('/Header/', $header, $pagina);
                 $pagina = $this->replace_content('/Titulo/', "Bienvenido", $pagina);
-                echo $this->getMensajeManejador();
+                $this->modal($this->getMensajeManejador());
             }
             else {
                 session_start();
+                $_SESSION["ciUsuario"] = $this->getCiUsuarioManejador();
                 $_SESSION["nombreUsuario"] = $this->getNombreUsuarioManejador();
                 $_SESSION["apellidoUsuario"] = $this->getApellidoUsuarioManejador();
+                $_SESSION["claveUsuario"] = $this->getClaveActualUsuarioManejador();
                 $_SESSION["categoriaUsuario"] = $this->getCategoriaUsuarioManejador();
+                $_SESSION["cursoUsuario"] = $this->getCursoUsuarioManejador();
                 switch (get_class($this->getUsuarioManejador())) {
                     case("alumno");
                         $pagina = $this->load_template("inicio");
@@ -126,9 +150,12 @@ class controlador_mvc extends manejador {
     
     public function cerrarSesion() {
         session_start();
+        unset($_SESSION["ciUsuario"]);
         unset($_SESSION["nombreUsuario"]);
         unset($_SESSION["apellidoUsuario"]);
+        unset($_SESSION["claveUsuario"]);
         unset($_SESSION["categoriaUsuario"]);
+        unset($_SESSION["cursoUsuario"]);
         session_destroy();
         
         $this->inicio();
@@ -152,14 +179,31 @@ class controlador_mvc extends manejador {
             $claveActual = md5($_REQUEST["claveActual"]);
             $claveNueva = md5($_REQUEST["claveNueva"]);
             $claveNuevaRep = md5($_REQUEST["claveNuevaRep"]);
+            
+            if ($claveActual <> $_SESSION["claveUsuario"]) {
+                $this->modal("Clave actual incorrecta.");
+            }
+            else {
+                if ($claveNueva <> $claveNuevaRep) {
+                    $this->modal("La clave nueva no coincide con la validación.");
+                }
+                else {
+                    $this->cambiarClaveManejador($_SESSION["ciUsuario"], $claveNueva);
+                }
+            }
+            
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $contenido = $this->load_page("vistas/html/menuUsuario.html");
+            $pagina = $this->replace_content('/Header/', $header, $pagina);
+            $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+            $pagina = $this->replace_content('/Titulo/', "Cambio de clave", $pagina);
+            $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                
+            if (!$this->getMensajeManejador() == NULL) {
+                $this->modal($this->getMensajeManejador());
+            }
         }
-        $pagina = $this->load_template("inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/menuUsuario.html");
-        $pagina = $this->replace_content('/Header/', $header, $pagina);
-        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
-        $pagina = $this->replace_content('/Titulo/', "Cambio de clave", $pagina);
-        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
         $this->view_page($pagina);
     }
  

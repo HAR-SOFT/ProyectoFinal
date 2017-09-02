@@ -12,9 +12,12 @@ class manejador extends conexionDB {
     private $mensaje;
     private $query;
     private $usuario;
+    private $ciUsuario;
     private $nombreUsuario;
     private $apellidoUsuario;
+    private $claveActualUsuario;
     private $categoriaUsuario;
+    private $cursoUsuario;
     
     public function __construct() {
         
@@ -67,38 +70,53 @@ class manejador extends conexionDB {
     public function setCategoriaUsuarioManejador($categoriaUsuario) {
         $this->categoriaUsuario = $categoriaUsuario;
     }
+    
+    public function getCiUsuarioManejador() {
+        return $this->ciUsuario;
+    }
 
+    public function getClaveActualUsuarioManejador() {
+        return $this->claveActualUsuario;
+    }
+
+    public function setCiUsuarioManejador($ciUsuario) {
+        $this->ciUsuario = $ciUsuario;
+    }
+
+    public function setClaveActualUsuarioManejador($claveActualUsuario) {
+        $this->claveActualUsuario = $claveActualUsuario;
+    }
+    
+    public function getCursoUsuarioManejador() {
+        return $this->cursoUsuario;
+    }
+
+    public function setCursoUsuarioManejador($cursoUsuario) {
+        $this->cursoUsuario = $cursoUsuario;
+    }
+
+    
         
     
     public function ejecutarQuery($queryParametro, $msjParametro) {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
-        if (!$this->cantidadRegistros($query) == 0) { // existe -> datos correctos
-            //se llenan los datos en un array
-            while ($array = $this->retornarRegistros($query)) {
-                $datos[] = $array;
-            }
+//        var_dump(strpos($queryParametro, "UPDATE"));
+        if (strpos($queryParametro, "UPDATE") !== false) {
+            $this->mensaje = $msjParametro;
+        }
+        else {
+            if (!$this->cantidadRegistros($query) == 0) {
+                while ($array = $this->retornarRegistros($query)) {
+                    $datos[] = $array;
+                }
 
-            return $datos;
-        } else {
-//            $this->mensaje = $msjParametro;
-            $this->mensaje = "<div class='modal' style='display: block;'>
-                        <div class='modal-dialog'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                                    <h4 class='modal-title'>Atención:</h4>
-                                </div>
-                                <div class='modal-body'>
-                                    <p>$msjParametro</p>
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>";
+                return $datos;
+            } 
+            else {
+                $this->mensaje = $msjParametro;
+            }
         }
     }
     
@@ -194,7 +212,8 @@ class manejador extends conexionDB {
                                 $resultado[0]["clave"], 
                                 $resultado[0]["telefono"], 
                                 $resultado[0]["celular"],
-                                $cursoUsuario);                        
+                                $cursoUsuario); 
+                        $this->cursoUsuario = $cursoUsuario;
                     }
                     break;
                 case "Administrativo";
@@ -219,14 +238,17 @@ class manejador extends conexionDB {
                                 $resultado[0]["telefono"], 
                                 $resultado[0]["celular"],
                                 $cursosProfesor);
+                        $this->cursoUsuario = $cursosProfesor;
                     }
                     break;
             }
             
             if (!$this->mensaje) {
                 $this->usuario = $usuario;
+                $this->ciUsuario = $usuario->getCi();
                 $this->nombreUsuario = $usuario->getNombre();
                 $this->apellidoUsuario = $usuario->getApellido();
+                $this->claveActualUsuario = $usuario->getClave();
                 $this->categoriaUsuario = $categroiaUsuario;
             }       
         }
@@ -276,6 +298,16 @@ class manejador extends conexionDB {
 
             return $mer;
         }
+    }
+    
+    public function cambiarClaveManejador($ci, $claveNuevaParam) {
+        $this->query = "UPDATE"
+        . " dim_usuario"
+        . " SET clave = '$claveNuevaParam'"
+        . " WHERE ci = '$ci';";
+        $msjCambiarClaveManejador = "Clave actualizada correctamente.";
+
+        return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
     }
     
     public function altaProfesor()
