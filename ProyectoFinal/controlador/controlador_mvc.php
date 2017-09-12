@@ -477,7 +477,6 @@ class controlador_mvc extends manejador {
     
     public function cursosProfesor(){
     
-    
         echo'<div class="item">
         <table class="table table-striped table-hover ">
             <thead>
