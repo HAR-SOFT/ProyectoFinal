@@ -273,31 +273,77 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
     
-    public function armarMer($nombreMer) {
-        $this->query = "SELECT M.nombre, "
-                . " M.colEntidades,"
-                . " M.colRelaciones,"
-                . " M.colAgregaciones,"
-                . " M.tipo,"
-                . " M.nombreEjercicio"
+    public function listarTemasSubTemasEjercicioPorCurso($nombreCurso) {
+        $this->query = "SELECT ASCCTSE.nombre_tema, "
+                . " ASCCTSE.nombre_subtema,"
+                . " ASCCTSE.nombre_ejercicio"
+                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
+                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso';";
+        $msjListarTemasSubTemasPorCurso = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
+    }
+    
+    public function armarMerSolucionSistema($nombreEjercicio) {
+        $this->query = "SELECT M.nombre "
                 . " FROM sol_mer AS M"
-                . " WHERE M.nombre = '$nombreMer';";
-        $msjArmarMer = "No hay un MER con el nombre indicado.";
+                . " WHERE M.nombre_ejercicio = '$nombreEjercicio'"
+                . " AND M.tipo = 'sol_sistema';";
+        $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
 
-        $resultado = $this->ejecutarQuery($this->query, $msjArmarMer);
+        $resutado = $this->ejecutarQuery($this->query, $msjArmarMer);
+        $nombreMer = $resutado[0]["nombre"];
+        
+        if (isset($nombreMer)) {
+            $this->query = "SELECT E.nombre, "
+                    . " E.tipo_entidad, "
+                    . " E.entidad_supertipo, "
+                    . " E.atributo_simple, "
+                    . " E.atributo_multivaluado, "
+                    . " E.agregacion, "
+                    . " E.nombre_mer, "
+                    . " E.tipo_categorizacion "
+                    . " FROM sol_entidad AS E"
+                    . " WHERE E.nombre_mer = '$nombreMer'";
+            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
 
-        if (!$resultado == NULL) {
-            $nombreMer = $resultado[0][0];
-            $colEntidadesMer = [$resultado[0][1]];
-            $colRelacionesMer = [$resultado[0][2]];
-            $colAgregacionesMer = [$resultado[0][3]];
-            $tipoMer = $resultado[0][4];
-            $nombreEjercicioMer = $resultado[0][5];
+            $colEntidades = $this->ejecutarQuery($this->query, $msjArmarMer);
+        }
+        
+        if (isset($colEntidades)) {
+            $this->query = "SELECT R.nombre, "
+                    . " R.nombre_entidadA, "
+                    . " R.nombre_entidadB, "
+                    . " R.cardinalidadA, "
+                    . " R.cardinalidadB, "
+                    . " R.nombre_atributo_simple, "
+                    . " R.nombre_mer "
+                    . " FROM sol_relacion AS R"
+                    . " WHERE R.nombre_mer = '$nombreMer'";
+            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
 
-            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer, $colAgregacionesMer, $tipoMer, $nombreEjercicioMer);
+            $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
+        }
+        
+        if (!$this->mensaje) {
+            $nombreMer = $nombreMer;
+            $colEntidadesMer = $colEntidades[0];
+            $colRelacionesMer = $colRelaciones[0];
+
+            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer);
 
             return $mer;
         }
+    }
+    
+    public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
+        $this->query = "UPDATE"
+        . " dim_usuario"
+        . " SET clave = '$claveNuevaParam'"
+        . " WHERE ci = '$ci';";
+        $msjCambiarClaveManejador = "Clave actualizada correctamente.";
+
+        return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
     }
     
     public function cambiarClaveManejador($ci, $claveNuevaParam) {

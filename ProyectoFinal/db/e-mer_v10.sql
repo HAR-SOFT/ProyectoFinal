@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `asc_curso_tema_subtema_ejercicio`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `asc_curso_tema_subtema_ejercicio` (
   `nombre_curso` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_tema` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_subtema` varchar(40) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `nombre_ejercicio` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_tema` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_subtema` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_ejercicio` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   KEY `FK_nombreCurso_idx` (`nombre_curso`),
   KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_curso` (`nombre_curso`),
   KEY `idx_asc_curso_tema_subtema_ejercicio_nombre_subtema` (`nombre_subtema`),
@@ -46,7 +46,6 @@ CREATE TABLE `asc_curso_tema_subtema_ejercicio` (
 
 LOCK TABLES `asc_curso_tema_subtema_ejercicio` WRITE;
 /*!40000 ALTER TABLE `asc_curso_tema_subtema_ejercicio` DISABLE KEYS */;
-INSERT INTO `asc_curso_tema_subtema_ejercicio` VALUES ('ATI2017','Entidades','','PerroCucha'),('ATI2017','Atributos','Atributos Simples','PerroCucha'),('ATI2017','Atributos','Atributos Multivaluados','PerroCucha'),('ATI2017','Entidades Debiles','Atributos Complejos','PerroCucha'),('ATI2017','Relaciones','Relacion con Atributos','PerroCucha'),('ATI2017','Autorelacion','Atributos Complejos','PerroCucha'),('ATI2017','Categorizacion ','Categorizacion Completa','PerroCucha'),('ING2017','Relaciones','Relacion con Atributos','PerroCucha'),('ING2017','Atributos','Atributos Multivaluados','PerroCucha');
 /*!40000 ALTER TABLE `asc_curso_tema_subtema_ejercicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +72,7 @@ CREATE TABLE `asc_curso_usuario` (
 
 LOCK TABLES `asc_curso_usuario` WRITE;
 /*!40000 ALTER TABLE `asc_curso_usuario` DISABLE KEYS */;
-INSERT INTO `asc_curso_usuario` VALUES ('ATI2017','38072948'),('ATI2017','12345679'),('ING2017','12345679');
+INSERT INTO `asc_curso_usuario` VALUES ('ATI2017','38072948'),('ATI2017','12345679');
 /*!40000 ALTER TABLE `asc_curso_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +93,7 @@ CREATE TABLE `dim_curso` (
   `estado` int(11) NOT NULL,
   PRIMARY KEY (`nombre`),
   UNIQUE KEY `id_curso` (`id_curso`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +102,7 @@ CREATE TABLE `dim_curso` (
 
 LOCK TABLES `dim_curso` WRITE;
 /*!40000 ALTER TABLE `dim_curso` DISABLE KEYS */;
-INSERT INTO `dim_curso` VALUES (1,'ATI2017',2017,'20-22','2017-08-07','2017-08-15',1),(2,'ING2017',2017,'16-18','2017-05-10','2017-09-30',1);
+INSERT INTO `dim_curso` VALUES (1,'ATI2017',2017,'20-22','2017-08-07','2017-08-15',1);
 /*!40000 ALTER TABLE `dim_curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,11 +115,11 @@ DROP TABLE IF EXISTS `dim_ejercicio`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dim_ejercicio` (
   `id_ejercicio` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `letra` longtext COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`nombre`),
   UNIQUE KEY `UNIQUE` (`id_ejercicio`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +128,7 @@ CREATE TABLE `dim_ejercicio` (
 
 LOCK TABLES `dim_ejercicio` WRITE;
 /*!40000 ALTER TABLE `dim_ejercicio` DISABLE KEYS */;
-INSERT INTO `dim_ejercicio` VALUES (3,'PerroChulo','Letra de ejercicio'),(2,'PerroCucha','Letra de ejercicio');
+INSERT INTO `dim_ejercicio` VALUES (1,'PerroCucha','Letra de ejercicio');
 /*!40000 ALTER TABLE `dim_ejercicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +213,7 @@ CREATE TABLE `dim_usuario` (
   KEY `idx_dim_usuario_nombre_apellido` (`nombre`,`apellido`),
   KEY `idx_dim_usuario_nombre` (`nombre`),
   KEY `idx_dim_usuario_apellido` (`apellido`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,8 +222,86 @@ CREATE TABLE `dim_usuario` (
 
 LOCK TABLES `dim_usuario` WRITE;
 /*!40000 ALTER TABLE `dim_usuario` DISABLE KEYS */;
-INSERT INTO `dim_usuario` VALUES (4,'00000000','Sistema','Sistema','M','admin@admin.com','00000000000000000000000000000000','00000000','000000000','Administrativo'),(2,'12345678','Administrativo','Administrativo','M','admin@admin.com','21232f297a57a5a743894a0e4a801fc3','12345678','091123456','Administrativo'),(3,'12345679','Profe','Profe','F','profe@profe.com','1145cbf42070c6704b66d6ac75347726','12345678','091123456','Profesor'),(1,'38072948','Henry','Foth','M','henry.foth.m@gmail.com','027e4180beedb29744413a7ea6b84a42','23546772','091320029','Alumno');
+INSERT INTO `dim_usuario` VALUES (2,'12345678','Admin','Admin','M','admin@admin.com','21232f297a57a5a743894a0e4a801fc3','12345678','091123456','Administrativo'),(3,'12345679','Profe','Profe','F','profe@profe.com','1145cbf42070c6704b66d6ac75347726','12345678','091123456','Profesor'),(1,'38072948','Henry','Foth','M','henry.foth.m@gmail.com','027e4180beedb29744413a7ea6b84a42','23546772','091320029','Alumno');
 /*!40000 ALTER TABLE `dim_usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sol_agregacion`
+--
+
+DROP TABLE IF EXISTS `sol_agregacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_agregacion` (
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `colEntidades` longtext COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_agregacion`
+--
+
+LOCK TABLES `sol_agregacion` WRITE;
+/*!40000 ALTER TABLE `sol_agregacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sol_agregacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sol_atributo_multivaluado`
+--
+
+DROP TABLE IF EXISTS `sol_atributo_multivaluado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_atributo_multivaluado` (
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `colAtributosSimples` longtext COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_atributo_multivaluado`
+--
+
+LOCK TABLES `sol_atributo_multivaluado` WRITE;
+/*!40000 ALTER TABLE `sol_atributo_multivaluado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sol_atributo_multivaluado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sol_atributo_simple`
+--
+
+DROP TABLE IF EXISTS `sol_atributo_simple`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_atributo_simple` (
+  `id_atributo_simple` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `nombreEntidad` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `nombreEntidadSuperTipo` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `nombreEntidadSubTipo` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`nombre`),
+  UNIQUE KEY `id_atributo_simple` (`id_atributo_simple`),
+  KEY `FK_nombreEntidad_idx` (`nombreEntidad`),
+  KEY `FK_nombreEntidadSuperTipo_idx` (`nombreEntidadSuperTipo`),
+  KEY `FK_nombreEntidadSubTipo_idx` (`nombreEntidadSubTipo`),
+  CONSTRAINT `FK_nombreEntidad` FOREIGN KEY (`nombreEntidad`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_nombreEntidadSubTipo` FOREIGN KEY (`nombreEntidadSubTipo`) REFERENCES `sol_entidad_subtipo` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_nombreEntidadSuperTipo` FOREIGN KEY (`nombreEntidadSuperTipo`) REFERENCES `sol_entidad_supertipo` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_atributo_simple`
+--
+
+LOCK TABLES `sol_atributo_simple` WRITE;
+/*!40000 ALTER TABLE `sol_atributo_simple` DISABLE KEYS */;
+INSERT INTO `sol_atributo_simple` VALUES (6,'Color','Cucha',NULL,NULL),(4,'Nombre','Perro',NULL,NULL),(5,'Raza','Perro',NULL,NULL);
+/*!40000 ALTER TABLE `sol_atributo_simple` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -237,21 +314,14 @@ DROP TABLE IF EXISTS `sol_entidad`;
 CREATE TABLE `sol_entidad` (
   `id_entidad` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `tipo_entidad` enum('comun','supertipo','subtipo') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'comun',
-  `entidad_supertipo` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `atributo_simple` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  `atributo_multivaluado` varchar(40) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `agregacion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `tipo_categorizacion` enum('N/A','Solapada','Disjunta') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'N/A',
-  `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`nombre`,`tipo_entidad`,`atributo_simple`,`nombre_mer`,`ci_usuario`),
+  `colAtributosSimples` longtext COLLATE utf8_spanish_ci NOT NULL,
+  `colAtributosMultivaluados` longtext COLLATE utf8_spanish_ci,
+  `nombreMer` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`nombre`),
   UNIQUE KEY `id_entidad` (`id_entidad`),
-  KEY `FK_nombre_mer_idx` (`nombre_mer`),
-  KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  CONSTRAINT `FK_ci_usuario_2` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombre_mer_2` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `FK_nombreMER_idx` (`nombreMer`),
+  CONSTRAINT `FK_nombreMER` FOREIGN KEY (`nombreMer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,8 +330,61 @@ CREATE TABLE `sol_entidad` (
 
 LOCK TABLES `sol_entidad` WRITE;
 /*!40000 ALTER TABLE `sol_entidad` DISABLE KEYS */;
-INSERT INTO `sol_entidad` VALUES (6,'Cucha','comun',NULL,'Color',NULL,NULL,'N/A','PerroCucha','00000000'),(7,'Cucha','comun','','Tamaño',NULL,NULL,'N/A','PerroCucha','00000000'),(8,'Perro','comun',NULL,'Peso',NULL,NULL,'N/A','PerroCucha','00000000'),(5,'Perro','comun',NULL,'Raza',NULL,NULL,'N/A','PerroCucha','00000000');
+INSERT INTO `sol_entidad` VALUES (2,'Cucha','\"Color\" => \"Color\"',NULL,'PerroCucha'),(1,'Perro','\"Nombre\" => \"Nombre\", \"Raza\" => \"Raza',NULL,'PerroCucha');
 /*!40000 ALTER TABLE `sol_entidad` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sol_entidad_subtipo`
+--
+
+DROP TABLE IF EXISTS `sol_entidad_subtipo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_entidad_subtipo` (
+  `id_entidad_subtipo` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `colAtributosSimples` longtext COLLATE utf8_spanish_ci,
+  `colAtributosMultivaluados` longtext COLLATE utf8_spanish_ci,
+  `nombreMer` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`nombre`),
+  UNIQUE KEY `id_entidad_subtipo` (`id_entidad_subtipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_entidad_subtipo`
+--
+
+LOCK TABLES `sol_entidad_subtipo` WRITE;
+/*!40000 ALTER TABLE `sol_entidad_subtipo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sol_entidad_subtipo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sol_entidad_supertipo`
+--
+
+DROP TABLE IF EXISTS `sol_entidad_supertipo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_entidad_supertipo` (
+  `id_entidad_supertipo` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `colEntidadesSubtipos` longtext COLLATE utf8_spanish_ci NOT NULL,
+  `tipo` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`nombre`),
+  UNIQUE KEY `id_entidad_supertipo` (`id_entidad_supertipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_entidad_supertipo`
+--
+
+LOCK TABLES `sol_entidad_supertipo` WRITE;
+/*!40000 ALTER TABLE `sol_entidad_supertipo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sol_entidad_supertipo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -273,18 +396,17 @@ DROP TABLE IF EXISTS `sol_mer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sol_mer` (
   `id_mer` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `colEntidades` longtext COLLATE utf8_spanish_ci NOT NULL,
+  `colRelaciones` longtext COLLATE utf8_spanish_ci NOT NULL,
+  `colAgregaciones` longtext COLLATE utf8_spanish_ci,
   `tipo` enum('sol_sistema','sol_alumno') COLLATE utf8_spanish_ci NOT NULL,
-  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_ejercicio` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`nombre`,`tipo`,`ci_usuario`,`nombre_ejercicio`),
-  UNIQUE KEY `id_mer_UNIQUE` (`id_mer`),
-  KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  KEY `idx_sol_mer_nombre` (`nombre`),
-  KEY `FK_nombre_ejercicio_idx` (`nombre_ejercicio`),
-  CONSTRAINT `FK_ci_usuario2` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombre_ejercicio2` FOREIGN KEY (`nombre_ejercicio`) REFERENCES `dim_ejercicio` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `nombreEjercicio` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`nombre`,`tipo`),
+  UNIQUE KEY `id_mer` (`id_mer`),
+  KEY `FK_nombreEjercicio_idx` (`nombreEjercicio`),
+  CONSTRAINT `FK_nombreEjercicio` FOREIGN KEY (`nombreEjercicio`) REFERENCES `dim_ejercicio` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +415,7 @@ CREATE TABLE `sol_mer` (
 
 LOCK TABLES `sol_mer` WRITE;
 /*!40000 ALTER TABLE `sol_mer` DISABLE KEYS */;
-INSERT INTO `sol_mer` VALUES (3,'PerroCucha','sol_sistema','00000000','PerroCucha');
+INSERT INTO `sol_mer` VALUES (1,'PerroCucha','\"Perro\" => \"Perro\", \"Cucha\" => \"Cucha\"','\"PerroCucha\" => \"PerroCucha\"',NULL,'sol_sistema','PerroCucha');
 /*!40000 ALTER TABLE `sol_mer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,25 +428,19 @@ DROP TABLE IF EXISTS `sol_relacion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sol_relacion` (
   `id_relacion` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_entidadA` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_entidadB` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `entidadA` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `entidadB` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `cardinalidadA` int(2) NOT NULL,
   `cardinalidadB` int(2) NOT NULL,
-  `nombre_atributo_simple` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`nombre`,`nombre_entidadA`,`nombre_entidadB`,`cardinalidadA`,`cardinalidadB`,`nombre_mer`,`ci_usuario`),
+  `colAtributosSimples` longtext COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`nombre`,`entidadA`,`entidadB`,`cardinalidadA`,`cardinalidadB`),
   UNIQUE KEY `id_relacion` (`id_relacion`),
-  KEY `FK_entidadA_idx` (`nombre_entidadA`),
-  KEY `FK_entidadB_idx` (`nombre_entidadB`),
-  KEY `FK_nombre_mer_idx` (`nombre_mer`),
-  KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  CONSTRAINT `FK_ci_usuario_3` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_entidadA` FOREIGN KEY (`nombre_entidadA`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_entidadB` FOREIGN KEY (`nombre_entidadB`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_nombre_mer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `FK_entidadA_idx` (`entidadA`),
+  KEY `FK_entidadB_idx` (`entidadB`),
+  CONSTRAINT `FK_entidadA` FOREIGN KEY (`entidadA`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_entidadB` FOREIGN KEY (`entidadB`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,7 +449,7 @@ CREATE TABLE `sol_relacion` (
 
 LOCK TABLES `sol_relacion` WRITE;
 /*!40000 ALTER TABLE `sol_relacion` DISABLE KEYS */;
-INSERT INTO `sol_relacion` VALUES (3,'Vive','Perro','Cucha',1,1,NULL,'PerroCucha','00000000');
+INSERT INTO `sol_relacion` VALUES (2,'PerroCucha','Perro','Cucha',1,1,NULL);
 /*!40000 ALTER TABLE `sol_relacion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -346,4 +462,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-12 19:14:22
+-- Dump completed on 2017-09-02 14:29:38

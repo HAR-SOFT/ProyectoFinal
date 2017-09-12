@@ -11,17 +11,11 @@ class mer extends conexionDB {
     private $nombre;
     private $colEntidades;
     private $colRelaciones;
-    private $colAgregaciones;
-    private $tipo;
-    private $nombreEjercicio;
 
-    public function __construct($nombre, $colEntidades, $colRelaciones, $colAgregaciones, $tipo, $nombreEjercicio) {
+    public function __construct($nombre, $colEntidades, $colRelaciones) {
         $this->nombre = $nombre;
         $this->colEntidades = $colEntidades;
         $this->colRelaciones = $colRelaciones;
-        $this->colAgregaciones = $colAgregaciones;
-        $this->tipo = $tipo;
-        $this->nombreEjercicio = $nombreEjercicio;
     }
     
     public function getMensaje() {
@@ -40,18 +34,6 @@ class mer extends conexionDB {
         return $this->colRelaciones;
     }
 
-    public function getColAgregaciones() {
-        return $this->colAgregaciones;
-    }
-
-    public function getTipo() {
-        return $this->tipo;
-    }
-
-    public function getNombreEjercicio() {
-        return $this->nombreEjercicio;
-    }
-
     public function setMensaje($mensaje) {
         $this->mensaje = $mensaje;
     }
@@ -67,21 +49,6 @@ class mer extends conexionDB {
     public function setColRelaciones($colRelaciones) {
         $this->colRelaciones = $colRelaciones;
     }
-
-    public function setColAgregaciones($colAgregaciones) {
-        $this->colAgregaciones = $colAgregaciones;
-    }
-
-    public function setTipo($tipo) {
-        $this->enum = $tipo;
-    }
-
-    public function setNombreEjercicio($nombreEjercicio) {
-        $this->nombreEjercicio = $nombreEjercicio;
-    }
-
-
-
 }
 
 ?>
