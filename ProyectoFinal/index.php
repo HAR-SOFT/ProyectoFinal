@@ -24,6 +24,12 @@ else {
         case "cambioclave":
             $mvc->cambioClave();
             break;
+        case "ejercicio":
+            $mvc->ejercicio();
+            break;
+        case "redireccionar":
+            $mvc->redireccionar();
+            break;
         case "tema":
             $mvc->verTema();
             break;
