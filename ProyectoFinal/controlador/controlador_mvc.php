@@ -41,7 +41,6 @@ class controlador_mvc extends manejador {
         $this->apellidoUsuario = $apellidoUsuario;
     }
 
-                
     
     public function load_template($title = "Sin Titulo") {
         $pagina = $this->load_page("vistas/plantilla.php");
@@ -115,24 +114,28 @@ class controlador_mvc extends manejador {
                 $_SESSION["cursoUsuario"] = $this->getCursoUsuarioManejador();
                 switch (get_class($this->getUsuarioManejador())) {
                     case("alumno");
+                                              
                         $pagina = $this->load_template("inicio");
-                        $header = $this->load_page("vistas/html/headerLogueado.html");
-                        $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
-                        $pagina = $this->replace_content('/Header/', $header, $pagina);
-                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $header = $this->load_page("vistas/html/headerLogueado.html"); 
+                        //$contenido = $this->load_page("vistas/html/AlumnoTeorico.html");                    
+                        //$pagina = $this->replace_content('/Header/',$header , $pagina);                            
+                        $contenido = $this->menuAlumno();                        
+                        $pagina = $this->replace_content('/Contenido/',$contenido ,$pagina);
                         $pagina = $this->replace_content('/Titulo/', "Teórico curso", $pagina);
                         $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
                         break;
+                    
                     case("profesor");
                         $pagina = $this->load_template("inicio");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Profesor.html");
                         $pagina = $this->replace_content('/Header/', $header, $pagina);
-                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $this->cursosProfesor(), $pagina);
                         $pagina = $this->replace_content('/Titulo/', "Cursos Asignados", $pagina);
                         $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("administrativo");
+                        
                         $pagina = $this->load_template("inicio");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Administrativo.html");
@@ -207,32 +210,34 @@ class controlador_mvc extends manejador {
         $this->view_page($pagina);
     }
 
-    
-    public function menuAlumno() {
-        session_start();
+   function menuAlumno() {
+
+// <!-- Columnas -->
+        echo "<div class='col-lg-2'>"
+                . "<ul class='nav nav-pills nav-stacked'>"
+                . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
+
         
         $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
-        
-        
         $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
         
         //itera sobre el Tema
          foreach ($tema as $menu => $menu_tema) {
             echo'<li class="active">'
             . '<a class="dropdown-toggle" data-toggle="dropdown"'
-            . ' href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema" aria-expanded="false"> '
+            . ' href="" aria-expanded="false"> '
             . '' . $menu_tema['nombre_tema'] . ''
             . '<span class="caret"></span></a>';
         
             //si es distinto de NULL
+           
             if (!$subTemas == NULL) {
 
-                echo'<ul class="dropdown-menu">';
+              echo'<ul class="dropdown-menu">';
                 
-                //var_dump($resultado2);
-               
-                while ($sub_tema = mysqli_fetch_array($subTemas)){
-                                     
+              foreach ($subTemas as $sub => $sub_tema){
+              
+                    
                     echo ' <li><a href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema" >' . $sub_tema['nombre_subtema'] . '</a></li>';
                 }
 
@@ -243,41 +248,375 @@ class controlador_mvc extends manejador {
                 echo '</li>';
             }
         }
-
-
         echo '</ul>';
-           
-              
         
-        $pagina = $this->load_template("Inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/alumnoTeorico.html");
-        $pagina = $this->replace_content('/Header/', $header, $pagina);
-        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
-        $pagina = $this->replace_content('/Titulo/', "Alumno", $pagina);
-        $this->view_page($pagina);
-        
-        
-    }
-        
+        echo "</div>"
+                
+                . "<div>"
+                . "<div class='container'>"
+                . "<div class='item'>"
+                . "<div class='jumbotron'>"
+                . "<h1>Introduccion</h1>"
+                . "<p>Modelo conceptual gráfico, usado para representar "
+                . "estructuras que almacenan información.No contiene lenguaje "
+                . "para representar operaciones de manipulación información. "
+                . "Se utilizan Entidades, Conjuntos de Entidades y Relaciones</p>"
+                . "<p align='right'>"
+                . "<input type='button' class='btn btn-primary btn-lg' value='Practica tu mismo' onClick='' />"
+                . "</p>"
+                . "</div>"
+                . "</div>"
+                . "</div>"
+                . "</div>"; 
+                   
+      
+            }
+
+    
     
     public function verTema() {
-        session_start();
+      session_start();
         
-        $this->temaManejador();
+      // <!-- Columnas -->
+        echo "<div class='col-lg-2'>"
+                . "<ul class='nav nav-pills nav-stacked'>"
+                . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
+
         
-        $pagina = $this->load_template("Inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/alumnoTeorico.php");
-        $pagina = $this->replace_content('/Header/', $header, $pagina);
-        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
-        $pagina = $this->replace_content('/Titulo/', "$tema", $pagina);
-        $this->view_page($pagina);
+        $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
+        $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
+        
+        //itera sobre el Tema
+         foreach ($tema as $menu => $menu_tema) {
+            echo'<li class="active">'
+            . '<a class="dropdown-toggle" data-toggle="dropdown"'
+            . ' href="" aria-expanded="false"> '
+            . '' . $menu_tema['nombre_tema'] . ''
+            . '<span class="caret"></span></a>';
+        
+            //si es distinto de NULL
+           
+            if (!$subTemas == NULL) {
+
+              echo'<ul class="dropdown-menu">';
+                
+              foreach ($subTemas as $sub => $sub_tema){
+              
+                    
+                    echo ' <li><a href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema" >' . $sub_tema['nombre_subtema'] . '</a></li>';
+                }
+
+                echo '</ul></li>';
+            } else {
+
+
+                echo '</li>';
+            }
+        }
+        echo '</ul>';
+        
+        echo "</div>"
+                
+                . "<div>"
+                . "<div class='container'>"
+                . "<div class='item'>"
+                . "<div class='jumbotron'>"
+                . "<h2>";echo $sub_tema['nombre_subtema'] ."</h2>"
+                . "<p>";
+                    
+                $this->temaManejador($sub_tema['nombre_subtema']);
+                
+                
+        
+           echo "</p>"
+                . "<p align='right'>"
+                . "<input type='button' class='btn btn-primary btn-lg' value='Practica tu mismo' onClick='' />"
+                . "</p>"
+                . "</div>"
+                . "</div>"
+                . "</div>"
+                . "</div>"; 
+
+                        
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html"); 
+                        //$contenido = $this->load_page("vistas/html/AlumnoTeorico.html");                    
+                        $pagina = $this->replace_content('/Header/',$header , $pagina);                            
+                        //$contenido = $this->menuAlumno();                        
+                        //$pagina = $this->replace_content('/Contenido/',$contenido ,$pagina);
+                        $pagina = $this->replace_content('/Titulo/', $sub_tema['nombre_subtema'], $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        $this->view_page($pagina);
+       
         
     }
     
     
+    public function cursosProfesor(){
+    
+    
+        echo'<div class="item">
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr class="danger">
+                    <th>
+                        <div class="form">
+                            <label class="control-label">Curso</label>
+                        </div>    
+                    </th>
+                    <th>
+                        <div class="form">
+                            <label class="control-label">Horario</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form">
+                            <label class="control-label">Tema</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form">
+                            <label class="control-label">Estado</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form">
+                            <label class="control-label">Editar Curso</label>
+                        </div>
+                    </th>
+                </tr>
+            </thead>';
+        
+        
+    $ciUsuario =  $_SESSION["ciUsuario"];  
+    $resultado = $this->cursoAsingadosProfesor($ciUsuario);
+             
+    
+    foreach ($resultado as $fila)
+        
+              echo
+             '<tbody>
+                <tr class="info">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                                  
+
+                <tr class="active">                
+                    <td>'.$fila['nombre_curso'].'</td>
+                    <td>'.$fila['horario'].'</td>
+                    <td>'.$fila['tema'].'</td>
+                    <td>'.$fila['estado'].'</td>
+                    <td><a href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso">editar</a></td>
+                </tr>
+              </tbody>';
+              
+       
+        
+    }
+    
  
+    
+      public function editarCurso(){
+       //session_start();
+         
+    //$curso =  'ATI2017';
+   
+    $resultado=$this->editarCurso('ATI2017');
+    
+    foreach ($resultado as $fila){
+        
+        
+         echo
+             '<tbody>
+                <tr class="info">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                                  
+
+                <tr class="active">                
+                    <td>'.$fila['nombre_curso'].'</td>
+                    <td>'.$fila['horario'].'</td>
+                    <td>'.$fila['tema'].'</td>
+                    <td>'.$fila['estado'].'</td>
+                    <td><a href="http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso">editar</a></td>
+                </tr>
+              </tbody>';
+               
+    }
+   
+             
 }
+
+
+
+  
+public function alumnosBedelia(){
+    
+    session_start();
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $contenido = $this->load_page("vistas/html/menuAlumnoTeorico.html");
+                        $pagina = $this->replace_content('/Header/', $header, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Titulo/', "Alumnos", $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        
+                        $this->view_page($pagina);
+    
+   echo' 
+    <div>
+        <div class="page-header" id="tables">
+            <h1 style="color:#d3d3d3;" align="center">Alumnos</h1>
+        </div>
+        <div>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr class="danger">
+                        <th><div class="form">
+                                <label class="control-label">Nombre</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por nombre">
+                                </div>
+                        </th>
+                        <th><div class="form">
+                                <label class="control-label">Cedula</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por cedula">
+                                </div>
+                        </th>
+                        <th><div class="form">
+                                <label class="control-label">Curso</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por carrera">
+                                </div>
+                        </th>
+                        <th>
+                            <div class="form">
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                            </div>
+                        </th>
+                </thead>';
+    
+    $resultado = $this->listarUsuariosYCurso();
+             
+    foreach ($resultado as $fila) {
+        
+              echo
+             '<tbody>
+                <tr class="info">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                     <tr class="active">                
+                     <td>'.$fila['alumno'].'</td>
+                     <td>'.$fila['ci'].'</td>
+                     <td>'.$fila['curso'].'</td>
+                     <td></td>
+                   
+                </tr>
+              </tbody>';
+             
+      
+    }
+     
+echo '</table>';
+     
+ }
+
+  
+   function profesoreBedelia(){
+       
+       
+       session_start();
+                        $pagina = $this->load_template("inicio");
+                        $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $contenido = $this->load_page("vistas/html/menuProfesorTeorico.html");
+                        $pagina = $this->replace_content('/Header/', $header, $pagina);
+                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Titulo/', "Profesores", $pagina);
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
+                        
+                        $this->view_page($pagina);
+       
+       
+     
+     echo'<div>
+        <div class="page-header" id="tables">
+            <h1 style="color:#d3d3d3;" align="center">Profesores</h1>
+        </div>
+        <div class="item">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr class="danger">
+                        <th><div class="form">
+                                <label class="control-label">Nombre</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por nombre">
+                                </div>
+                        </th>
+                        <th><div class="form">
+                                <label class="control-label">Cedula</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por cedula">
+                                </div>
+                        </th>
+                        <th><div class="form">
+                                <label class="control-label">Carrera</label>
+                                <div class="input">
+                                    <input type="text" class="form-control" placeholder="Filtrar por carrera">
+                                </div>
+                        </th>
+                        <th>
+                            <div class="form">
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                            </div>
+                        </th>
+                </thead>';
+               $resultado = $this->listarProfesosYCurso();
+             
+    
+    foreach ($resultado as $fila)
+        
+              echo
+             '<tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                                  
+
+                <tr class="active">                
+                    <td>'.$fila['profesor'].'</td>
+                    <td>'.$fila['ci'].'</td>
+                    <td>'.$fila['curso'].'</td>
+                    <td></td>
+                   
+                </tr>
+              </tbody>
+             </table>
+             </div>';
+      
+         
+     
+ }
+
+
+
+}
+  
 
 ?>
