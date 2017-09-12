@@ -21,6 +21,32 @@ else {
         case "cambiarclave":
             $mvc->cambiarClave();
             break;
+        case "cambioclave":
+            $mvc->cambioClave();
+            break;
+        case "ejercicio":
+            $mvc->ejercicio();
+            break;
+        case "redireccionar":
+            $mvc->redireccionar();
+            break;
+        case "tema":
+            $mvc->verTema();
+            break;
+        case "editarCurso":
+            $mvc->editarCurso();
+            break;
+        case "alumnos":
+            $mvc->alumnosBedelia();
+            break;
+        case "profesores":
+            $mvc->profesoreBedelia();
+            break;
+        case "cursos":
+            $mvc->cursosBedelia();
+            break;
+            
+            
     }
 }
 
