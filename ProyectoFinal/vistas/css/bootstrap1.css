@@ -41,6 +41,9 @@ canvas {
   margin: auto;
   display: block;
 }
+.img {
+  .center-block();
+}
 
 #lienzo
 {

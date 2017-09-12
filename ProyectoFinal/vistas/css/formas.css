@@ -1,0 +1,103 @@
+#entidades {
+	margin:10px 0px 0px 0px;
+	list-style:none;
+	position:absolute;
+}
+
+#entidad {
+	width: 130px;
+    height: 100px;
+	padding:5px;
+	color:#053E15;
+	background:#e95420;
+	border:1px solid #9BB2A1;
+	-webkit-border-radius: 5px 5px 5px 5px; /* Safari and Chrome */
+	border-radius: 5px 5px 5px 5px;
+	-o-box-shadow: 5px 5px 10px #9BB2A1;
+	-webkit-box-shadow: 5px 5px 10px #9BB2A1;
+	-moz-box-shadow: 5px 5px 10px #9BB2A1;
+	-ms-box-shadow: 5px 5px 10px #9BB2A1;
+	box-shadow: 5px 5px 10px #9BB2A1;
+	text-align:center;
+	float:left;
+	margin:5px 0px 20px 20px;
+	list-style:none;
+	position:float;
+	transition: 0.5s ease;
+ 	-webkit-transition: 0.5s ease; /* Chrome - Safari */
+
+}
+#entidad:hover, entidad.over {
+	-o-box-shadow: 5px 5px 10px #053E15;
+	-webkit-box-shadow: 5px 5px 10px #053E15;
+	-moz-box-shadow: 5px 5px 10px #053E15;
+	-ms-box-shadow: 5px 5px 10px #053E15;
+	box-shadow: 5px 5px 10px #053E15;
+	border:1px solid #053E15;
+	transform : rotate(5deg);
+	-webkit-transform : rotate(5deg); /* Chrome - Safari */
+}
+
+#inputEnt{
+	margin-button:5px;
+	border:1px solid #053E15;
+}
+#btnEnt{
+	margin: 5px 0px 0px 0px;
+	border:1px solid #053E15;
+
+}
+
+#relacion {
+	-webkit-transform: función de transformación(valor(es)); /* WebKit */
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+	width: 100px;
+    height: 100px;
+	padding:5px;
+	color:#053E15;
+	background:#ddd;
+	border:1px solid #9BB2A1;
+	-webkit-border-radius: 5px 5px 5px 5px; /* Safari and Chrome */
+	border-radius: 5px 5px 5px 5px;
+	-o-box-shadow: 5px 5px 10px #9BB2A1;
+	-webkit-box-shadow: 5px 5px 10px #9BB2A1;
+	-moz-box-shadow: 5px 5px 10px #9BB2A1;
+	-ms-box-shadow: 5px 5px 10px #9BB2A1;
+	box-shadow: 5px 5px 10px #9BB2A1;
+	text-align:center;
+	float:left;
+	margin:15px 0px 20px 40px;
+	list-style:none;
+	position:float;
+	transition: 0.5s ease;
+ 	-webkit-transition: 0.5s ease; /* Chrome - Safari */
+}
+
+#relacion:hover, relacion.over {
+
+	-o-box-shadow: 5px 5px 10px #053E15;
+	-webkit-box-shadow: 5px 5px 10px #053E15;
+	-moz-box-shadow: 5px 5px 10px #053E15;
+	-ms-box-shadow: 5px 5px 10px #053E15;
+	box-shadow: 5px 5px 10px #053E15;
+	border:1px solid #053E15;
+	transform : rotate(52deg);
+	-webkit-transform : rotate(52deg); /* Chrome - Safari */
+}
+
+#inputRel{
+	margin-left:-10px;
+	border:1px solid #053E15;
+	transform : rotate(-45deg);
+	-webkit-transform : rotate(-45deg); /* Chrome - Safari */
+}
+#btnRel{
+	margin: 0px -15px 0px 20px;
+	border:1px solid #053E15;
+	transform : rotate(-45deg);
+	-webkit-transform : rotate(-45deg); /* Chrome - Safari */
+}
