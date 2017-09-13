@@ -145,23 +145,23 @@ class manejador extends conexionDB {
     }
 
     public function cursoAsingadosProfesor($ciUsuario) {
-        $this->query = "SELECT DISTINCT"
-                . "curso.id_curso as id_curso, "
-                . "c.nombre_curso as nombre_curso,"
-                . "curso.horario as horario,"
-                . "GROUP_CONCAT(DISTINCT dt.nombre SEPARATOR ' - ') as tema,"
-                . "asctse.nombre_ejercicio as ejercicio,"
-                . "if(curso.estado = 1 , 'activo' , 'finalizado') as estado"
-                . "FROM"
-                . "asc_curso_usuario AS c,"
-                . "dim_curso AS curso,"
-                . "asc_curso_tema_subtema_ejercicio AS asctse,"
-                . "dim_tema AS dt "
-                . "WHERE c.ci_usuario = $ciUsuario"
-                . "AND c.nombre_curso = asctse.nombre_curso"
-                . "AND dt.nombre = asctse.nombre_tema"
-                . "AND curso.nombre = c.nombre_curso "
-                . "GROUP BY nombre_curso , horario ,ejercicio,estado";
+        $this->query = "SELECT DISTINCT "
+                . " curso.id_curso as id_curso,"
+                . " c.nombre_curso as nombre_curso,"
+                . " curso.horario as horario,"
+                . " GROUP_CONCAT(DISTINCT dt.nombre SEPARATOR ' - ') as tema,"
+                . " asctse.nombre_ejercicio as ejercicio,"
+                . " if(curso.estado = 1 , 'activo' , 'finalizado') as estado"
+                . " FROM"
+                . " asc_curso_usuario AS c,"
+                . " dim_curso AS curso,"
+                . " asc_curso_tema_subtema_ejercicio AS asctse,"
+                . " dim_tema AS dt"
+                . " WHERE c.ci_usuario = '$ciUsuario'"
+                . " AND c.nombre_curso = asctse.nombre_curso"
+                . " AND dt.nombre = asctse.nombre_tema"
+                . " AND curso.nombre = c.nombre_curso"
+                . " GROUP BY nombre_curso , horario ,ejercicio,estado;";
         $cursoAsingadosProfesor = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
@@ -169,22 +169,22 @@ class manejador extends conexionDB {
     }
 
     public function editarCursoManejador($nombreCurso) {
-        $this->query = "SELECT"
-                . "curso.id_curso as id_curso, "
-                . "c.nombre_curso as nombre_curso,"
-                . "dt.nombre as tema,"
-                . "asctse.nombre_subtema as nombre_subtema,"
-                . "asctse.nombre_ejercicio as ejercicio"
-                . "FROM"
-                . "asc_curso_usuario AS c,"
-                . "dim_curso AS curso,"
-                . "asc_curso_tema_subtema_ejercicio AS asctse,"
-                . "dim_tema AS dt "
-                . "WHERE curso.nombre = '$nombreCurso'"
-                . "AND c.nombre_curso = asctse.nombre_curso"
-                . "AND dt.nombre = asctse.nombre_tema"
-                . "AND curso.nombre = c.nombre_curso "
-                . "group by nombre_curso , tema ,nombre_subtema, ejercicio";
+        $this->query = "SELECT "
+                . " curso.id_curso as id_curso,"
+                . " c.nombre_curso as nombre_curso,"
+                . " dt.nombre as tema,"
+                . " asctse.nombre_subtema as nombre_subtema,"
+                . " asctse.nombre_ejercicio as ejercicio"
+                . " FROM"
+                . " asc_curso_usuario AS c,"
+                . " dim_curso AS curso,"
+                . " asc_curso_tema_subtema_ejercicio AS asctse,"
+                . " dim_tema AS dt"
+                . " WHERE curso.nombre = '$nombreCurso'"
+                . " AND c.nombre_curso = asctse.nombre_curso"
+                . " AND dt.nombre = asctse.nombre_tema"
+                . " AND curso.nombre = c.nombre_curso"
+                . " group by nombre_curso , tema ,nombre_subtema, ejercicio";
         $editarCurso = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
@@ -218,27 +218,27 @@ class manejador extends conexionDB {
 
     public function listarUsuariosYCurso() {
         $this->query = "SELECT du.ci as ci ,"
-                . "concat(du.nombre,' ',du.apellido) as alumno ,"
-                . "acu.nombre_curso as curso"
-                . "FROM dim_usuario du , asc_curso_usuario acu , dim_curso dc"
-                . "where du.categoria_usuario = 'Alumno'"
-                . "and du.ci = acu.ci_usuario"
-                . "and acu.nombre_curso = dc.nombre"
-                . "and dc.estado = 1;";
+                . " concat(du.nombre,' ',du.apellido) as alumno ,"
+                . " acu.nombre_curso as curso"
+                . " FROM dim_usuario du , asc_curso_usuario acu , dim_curso dc"
+                . " where du.categoria_usuario = 'Alumno'"
+                . " and du.ci = acu.ci_usuario"
+                . " and acu.nombre_curso = dc.nombre"
+                . " and dc.estado = 1;";
         $listarUsuariosYCurso = "No hay usuarios para mostrar.";
 
         return $this->ejecutarQuery($this->query, $listarUsuariosYCurso);
     }
 
     public function listarProfesosYCurso() {
-        $this->query = "SELECT du.ci as ci ,"
-                . "concat(du.nombre,' ',du.apellido) as profesor ,"
-                . "acu.nombre_curso as curso"
-                . "FROM dim_usuario du , asc_curso_usuario acu , dim_curso dc"
-                . "where du.categoria_usuario = 'Profesor'"
-                . "and du.ci = acu.ci_usuario"
-                . "and acu.nombre_curso = dc.nombre"
-                . "and dc.estado = 1;";
+        $this->query = "SELECT du.ci as ci , "
+                . " concat(du.nombre,' ',du.apellido) as profesor ,"
+                . " acu.nombre_curso as curso"
+                . " FROM dim_usuario du , asc_curso_usuario acu , dim_curso dc"
+                . " where du.categoria_usuario = 'Profesor'"
+                . " and du.ci = acu.ci_usuario"
+                . " and acu.nombre_curso = dc.nombre"
+                . " and dc.estado = 1;";
         $listarProfesosYCurso = "No hay usuarios para mostrar.";
 
         return $this->ejecutarQuery($this->query, $listarProfesosYCurso);
@@ -341,9 +341,9 @@ class manejador extends conexionDB {
         $tema = $tema[0]['nombre_tema'];
 
         $this->query = " SELECT ASCCTSE.nombre_subtema  "
-                . "FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
-                . "WHERE ASCCTSE.nombre_curso = '$nombreCurso'"
-                . "and ASCCTSE.nombre_tema = '$tema'";
+                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
+                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso'"
+                . " and ASCCTSE.nombre_tema = '$tema'";
         $msjlistarSubTemasPorCursoYTema = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarSubTemasPorCursoYTema);
@@ -445,12 +445,12 @@ class manejador extends conexionDB {
         $telefonoUsuario = $_POST("inputTelefono");
         $celularUsuario = $_POST("inputCelular");
 
-        $this->query = "INSERT INTO dim_usuario "
-                . "(id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,"
-                . "celular,categoria_usuario) "
-                . "VALUE ('null','$ciUsuario','$nombreUsuario', "
-                . "'$apellidoUsuario', '$sexoUsuario', '$emailUsuario', "
-                . "'$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor')";
+        $this->query = "INSERT INTO dim_usuario"
+                . " (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,"
+                . " celular,categoria_usuario)"
+                . " VALUE ('null','$ciUsuario','$nombreUsuario', "
+                . " '$apellidoUsuario', '$sexoUsuario', '$emailUsuario',"
+                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor')";
         $this->mensaje = "Profesor no insertado";
         
         $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
@@ -469,12 +469,12 @@ class manejador extends conexionDB {
         $telefonoUsuario = $_POST("inputTelefono");
         $celularUsuario = $_POST("inputCelular");
 
-        $this->query = "INSERT INTO dim_usuario "
-                . "(id_usuario,ci,nombre,apellido,sexo,email,clave,"
-                . "telefono,celular,categoria_usuario) "
-                . "VALUE ('null','$ciUsuario','$nombreUsuario', "
-                . "'$apellidoUsuario', '$sexoUsuario', '$emailUsuario', "
-                . "'$claveUsuario', '$telefonoUsuario','$celularUsuario','Alumno')";
+        $this->query = "INSERT INTO dim_usuario"
+                . " (id_usuario,ci,nombre,apellido,sexo,email,clave,"
+                . " telefono,celular,categoria_usuario)"
+                . " VALUE ('null','$ciUsuario','$nombreUsuario',"
+                . " '$apellidoUsuario', '$sexoUsuario', '$emailUsuario',"
+                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Alumno')";
         $this->mensaje = "Alumno no insertado";
         
         $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
@@ -483,11 +483,11 @@ class manejador extends conexionDB {
 
     public function temaManejador($tema) {
         $this->query = "SELECT"
-                . "dt.letra"
-                . "FROM"
-                . "dim_subtema dt"
-                . "WHERE"
-                . "dt.nombre = '$tema'";
+                . " dt.letra"
+                . " FROM"
+                . " dim_subtema dt"
+                . " WHERE"
+                . " dt.nombre = '$tema'";
         $this->mensaje = "No hay letra para ese tema";
         
         $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
