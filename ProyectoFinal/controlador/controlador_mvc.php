@@ -398,7 +398,7 @@ class controlador_mvc extends manejador {
     
     
     public function verTema() {
-      session_start();
+        session_start();
         
       // <!-- Columnas -->
         echo "<div class='col-lg-2'>"
@@ -410,7 +410,7 @@ class controlador_mvc extends manejador {
         $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
         
         //itera sobre el Tema
-         foreach ($tema as $menu => $menu_tema) {
+        foreach ($tema as $menu => $menu_tema) {
             echo'<li class="active">'
             . '<a class="dropdown-toggle" data-toggle="dropdown"'
             . ' href="" aria-expanded="false"> '
@@ -573,29 +573,25 @@ class controlador_mvc extends manejador {
               </tbody>';
                
     }
-   
-             
+                
 }
-
-
-
   
 public function alumnosBedelia(){
     
-    session_start();
+                        session_start();
                         $pagina = $this->load_template("inicio");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
-                        $contenido = $this->load_page("vistas/html/menuAlumnoTeorico.html");
+                        //$contenido = $this->load_page("vistas/html/menuAlumnoTeorico.html");
                         $pagina = $this->replace_content('/Header/', $header, $pagina);
-                        $pagina = $this->replace_content('/Contenido/', $contenido, $pagina);
+                        $pagina = $this->replace_content('/Contenido/',$contenido, $pagina);
                         $pagina = $this->replace_content('/Titulo/', "Alumnos", $pagina);
-                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
-                        
+                        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);                        
                         $this->view_page($pagina);
-    
+ 
+                        
    echo' 
     <div>
-        <div class="page-header" id="tables">
+        <div class="page-sheader" id="tables">
             <h1 style="color:#d3d3d3;" align="center">Alumnos</h1>
         </div>
         <div>
@@ -647,9 +643,7 @@ public function alumnosBedelia(){
                      <td></td>
                    
                 </tr>
-              </tbody>';
-             
-      
+              </tbody>';                  
     }
      
 echo '</table>';
