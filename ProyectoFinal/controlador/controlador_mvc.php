@@ -479,7 +479,7 @@ class controlador_mvc extends manejador {
 
         $ciUsuario = $_SESSION["ciUsuario"];
         $resultado = $this->cursoAsingadosProfesor($ciUsuario);
-           
+
         foreach ($resultado as $fila) {
             echo "<tbody>"
             . "<tr class='info'>"
