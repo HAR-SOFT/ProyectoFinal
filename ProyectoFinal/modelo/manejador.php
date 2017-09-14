@@ -244,6 +244,23 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $listarProfesosYCurso);
     }
 
+    public function listarCursosBedelia() {
+        $this->query = "SELECT dc.nombre as curso, "                      
+                . " dc.anio as anio,"
+                . " dc.horario as horario,"
+                . " CONCAT(du.nombre,' ',du.apellido) as profesor" 
+                . " from dim_curso dc,"  
+                . " asc_curso_usuario ascu,"
+                . " dim_usuario du"
+                . " where dc.nombre = ascu.nombre_curso" 
+                . " and du.ci = ascu.ci_usuario"
+                . " and du.categoria_usuario = 'Profesor'"
+                . " and dc.estado = 1;";
+        $listarCursosBedelia = "No hay usuarios para mostrar.";
+
+        return $this->ejecutarQuery($this->query, $listarCursosBedelia);
+    }
+    
     public function buscarUsuario($ciUsuario, $claveUsuario) {
         $this->query = "SELECT U.ci,"
                 . " U.nombre,"

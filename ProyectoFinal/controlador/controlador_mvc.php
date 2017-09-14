@@ -452,11 +452,7 @@ class controlador_mvc extends manejador {
                 . "<ul class='nav nav-pills nav-stacked'>"
                 . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
 
-        // <!-- Columnas -->
-        echo "<div class='col-lg-2'>"
-        . "<ul class='nav nav-pills nav-stacked'>"
-        . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
-
+        
         $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
         $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
         
@@ -514,7 +510,8 @@ class controlador_mvc extends manejador {
         $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
         $this->view_page($pagina);        
     }
-
+    
+    
     public function cursosProfesor() {
         echo "<div class='item'>"
         . "<table class='table table-striped table-hover'>"
@@ -732,6 +729,85 @@ class controlador_mvc extends manejador {
             . "</div>";
         }
     }
+    
+    
+    public function cursosBedelia() {
+        session_start();
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $contenido = $this->load_page("vistas/html/menuProfesorTeorico.html");
+        $pagina = $this->replace_content("/Header/", $header, $pagina);
+        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+        $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
+        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+        $this->view_page($pagina);
+
+        echo "<div>"
+        . "<div class='page-header' id='tables'>"
+        . "<h1 style='color:#d3d3d3;' align='center'>Curso</h1>"
+        . "</div>"
+        . "<div class='item'>"
+        . "<table class='table table-striped table-hover'>"
+        . "<thead>"
+        . "<tr class='danger'>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Curso</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por Curso'>"
+        . "</div>"
+        . "</th>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Año</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por Año'>"
+        . "</div>"
+        . "</th>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Horario</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por Horario'>"
+        . "</div>"
+        . "</th>"
+        . "<th>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Profesor</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por Profesor'>"
+        . "</div>"
+        . "</th>"
+        . "<th>"
+        . "<div class='form'>"
+        . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+        . "</div>"
+        . "</th>"
+        . "</thead>";
+        
+        $resultado = $this->listarCursosBedelia();
+
+        foreach ($resultado as $fila) {
+            echo "<tbody>"
+            . "<tr>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "</tr>"
+            . "<tr class='active'>"
+            . "<td>" . $fila['curso'] . "</td>"
+            . "<td>" . $fila['anio'] . "</td>"
+            . "<td>" . $fila['curso'] . "</td>"
+            . "<td>" . $fila['profesor'] . "</td>"
+            . "<td></td>"
+            . "</tr>"
+            . "</tbody>"
+            . "</table>"
+            . "</div>";
+        }
+    }
+    
+    
 
 }
 
