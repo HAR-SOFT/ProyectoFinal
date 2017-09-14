@@ -62,8 +62,9 @@ class controlador_mvc extends manejador {
         try {
             $pagina = $this->load_template("inicio");
             $header = $this->load_page("vistas/html/headerInicio.html");
+            $contenido = $this->load_page("vistas/html/index.html");
             $pagina = $this->replace_content("/Header/", $header, $pagina);
-            $pagina = $this->replace_content("/Contenido/", "Logo", $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
             $this->view_page($pagina);
         } catch (Exception $ex) {
@@ -336,9 +337,9 @@ class controlador_mvc extends manejador {
 
             //itera sobre el Tema
             foreach ($tema as $menu => $menu_tema) {
-                echo"<li class='active'>"
+                echo "<li class='active'>"
                 . "<a class='dropdown-toggle' data-toggle='dropdown'"
-                . "href='' aria-expanded='false'>"
+                . " href='' aria-expanded='false'>"
                 . $menu_tema['nombre_tema']
                 . "<span class='caret'></span></a>";
 
@@ -595,17 +596,8 @@ class controlador_mvc extends manejador {
 
     public function alumnosBedelia() {
         session_start();
-        $pagina = $this->load_template("inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/menuAlumnoTeorico.html");
-        $pagina = $this->replace_content("/Header/", $header, $pagina);
-        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-        $pagina = $this->replace_content("/Titulo/", "Alumnos", $pagina);
-        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-
-        $this->view_page($pagina);
-
-        echo "<div>"
+        
+        $contenido = "<div>"
         . "<div class='page-header' id='tables'>"
         . "<h1 style='color:#d3d3d3;' align='center'>Alumnos</h1>"
         . "</div>"
@@ -637,18 +629,20 @@ class controlador_mvc extends manejador {
         . "</div>"
         . "</th>"
         . "</thead>";
+        
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/Header/", $header, $pagina);
+        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+        $pagina = $this->replace_content("/Titulo/", "Alumnos", $pagina);
+        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+        $this->view_page($pagina);
 
         $resultado = $this->listarUsuariosYCurso();
 
         foreach ($resultado as $fila) {
             echo "<tbody>"
-            . "<tr class='info'"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "</tr>"
             . "<tr class='active'>"
             . "<td>" . $fila['alumno'] . "</td>"
             . "<td>" . $fila['ci'] . "</td>"
@@ -663,17 +657,8 @@ class controlador_mvc extends manejador {
 
     public function profesoreBedelia() {
         session_start();
-        $pagina = $this->load_template("inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/menuProfesorTeorico.html");
-        $pagina = $this->replace_content("/Header/", $header, $pagina);
-        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-        $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
-        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-
-        $this->view_page($pagina);
-
-        echo "<div>"
+        
+        $contenido = "<div>"
         . "<div class='page-header' id='tables'>"
         . "<h1 style='color:#d3d3d3;' align='center'>Profesores</h1>"
         . "</div>"
@@ -694,9 +679,9 @@ class controlador_mvc extends manejador {
         . "</div>"
         . "</th>"
         . "<th><div class='form'>"
-        . "<label class='control-label'>Carrera</label>"
+        . "<label class='control-label'>Curso</label>"
         . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por carrera'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
         . "</div>"
         . "</th>"
         . "<th>"
@@ -706,27 +691,29 @@ class controlador_mvc extends manejador {
         . "</th>"
         . "</thead>";
         
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/Header/", $header, $pagina);
+        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+        $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
+        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+        $this->view_page($pagina);
+
         $resultado = $this->listarProfesosYCurso();
 
         foreach ($resultado as $fila) {
             echo "<tbody>"
-            . "<tr>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "</tr>"
             . "<tr class='active'>"
             . "<td>" . $fila['profesor'] . "</td>"
             . "<td>" . $fila['ci'] . "</td>"
             . "<td>" . $fila['curso'] . "</td>"
             . "<td></td>"
             . "</tr>"
-            . "</tbody>"
-            . "</table>"
-            . "</div>";
+            . "</tbody>";
         }
+        
+        echo "</table>";
     }
 
 }
