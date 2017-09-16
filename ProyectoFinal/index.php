@@ -40,7 +40,7 @@ else {
             $mvc->alumnosBedelia();
             break;
         case "profesores":
-            $mvc->profesoreBedelia();
+            $mvc->profesoresBedelia();
             break;
         case "cursos":
             $mvc->cursosBedelia();

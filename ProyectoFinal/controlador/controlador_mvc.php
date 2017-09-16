@@ -656,7 +656,7 @@ class controlador_mvc extends manejador {
         echo "</table>";
     }
 
-    public function profesoreBedelia() {
+    public function profesoresBedelia() {
         session_start();
         
         $contenido = "<div>"
@@ -721,7 +721,6 @@ class controlador_mvc extends manejador {
     public function cursosBedelia() {
         session_start();
        
-
          $contenido = "<div>"
         . "<div class='page-header' id='tables'>"
         . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
@@ -784,7 +783,35 @@ class controlador_mvc extends manejador {
         }
          echo "</table>";
        
+         echo "<br>"
+           ."<p align='left'>"
+           ."<form action="../importarAlumnos.php' method='post' enctype='multipart/form-data'>'
+
+            <input type="file" name='archivos-excel' id="selectedFile" style="display:none;" class="btn btn-primary btn-lg"  />
+
+            <input type="button"  value="Importar grupo alumnos" onclick="document.getElementById('selectedFile').click();" class="btn btn-primary btn-lg" />
+
+            <button type="submit" name = "submit" class="btn btn-primary btn-lg">Aceptar</button>
+			<button type="submit" name = "submit" class="btn btn-default btn-lg">Volver</button>
+        </form>
+        <br>
+                </p>
+ 
+        <form action='CargarAlumnoForm.php' method='post' enctype="multipart/form-data">
+            
+            
+            <button type="submit" name = "submit" class="btn btn-primary btn-lg">Crear alumno</button>
+            
+            
+        </form >";
+         
+         
         }
+        
+        
+        
+        
+        
     }
     
     
