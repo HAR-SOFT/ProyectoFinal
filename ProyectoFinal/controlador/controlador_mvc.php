@@ -720,19 +720,11 @@ class controlador_mvc extends manejador {
     
     public function cursosBedelia() {
         session_start();
-        $pagina = $this->load_template("inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html");
-        $contenido = $this->load_page("vistas/html/menuProfesorTeorico.html");
-        $pagina = $this->replace_content("/Header/", $header, $pagina);
-        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-        $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
-        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+       
 
-        $this->view_page($pagina);
-
-        echo "<div>"
+         $contenido = "<div>"
         . "<div class='page-header' id='tables'>"
-        . "<h1 style='color:#d3d3d3;' align='center'>Curso</h1>"
+        . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
         . "</div>"
         . "<div class='item'>"
         . "<table class='table table-striped table-hover'>"
@@ -741,26 +733,24 @@ class controlador_mvc extends manejador {
         . "<th><div class='form'>"
         . "<label class='control-label'>Curso</label>"
         . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por Curso'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
         . "</div>"
         . "</th>"
         . "<th><div class='form'>"
         . "<label class='control-label'>Año</label>"
         . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por Año'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
         . "</div>"
         . "</th>"
         . "<th><div class='form'>"
         . "<label class='control-label'>Horario</label>"
         . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por Horario'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
         . "</div>"
-        . "</th>"
-        . "<th>"
-        . "<th><div class='form'>"
+        . "</th>". "<th><div class='form'>"
         . "<label class='control-label'>Profesor</label>"
         . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por Profesor'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
         . "</div>"
         . "</th>"
         . "<th>"
@@ -770,32 +760,35 @@ class controlador_mvc extends manejador {
         . "</th>"
         . "</thead>";
         
+        $pagina = $this->load_template("inicio");
+        $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/Header/", $header, $pagina);
+        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+        $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
+        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+        $this->view_page($pagina);
+        
         $resultado = $this->listarCursosBedelia();
 
-        foreach ($resultado as $fila) {
+         foreach ($resultado as $fila) {
             echo "<tbody>"
-            . "<tr>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "</tr>"
             . "<tr class='active'>"
             . "<td>" . $fila['curso'] . "</td>"
             . "<td>" . $fila['anio'] . "</td>"
-            . "<td>" . $fila['curso'] . "</td>"
+            . "<td>" . $fila['horario'] . "</td>"
             . "<td>" . $fila['profesor'] . "</td>"
             . "<td></td>"
             . "</tr>"
-            . "</tbody>"
-            . "</table>"
-            . "</div>";
+            . "</tbody>";
+        }
+         echo "</table>";
+       
         }
     }
     
     
 
-}
+
 
 ?>
