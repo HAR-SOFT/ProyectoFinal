@@ -7,30 +7,21 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/formas.css">
-	<script src="../js/jquery-1.12.4.js"></script>
-  <script src="../js/jquery-ui.js"></script>
-	 <style>
-  .draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 0 10px 10px 0; font-size: .9em; }
-  .ui-widget-header p, .ui-widget-content p { margin: 0; }
-  #snaptarget { height: 140px; }
-  </style>
+    <script src="../js/jquery-1.12.4.js"></script>
+    <script src="../js/jquery-ui.js"></script>
 
-    <link rel="stylesheet" href="../css/formas.css">
-  <title>A practicar</title>
-  <style>
-  .draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
-  .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
-  #snaptarget { height: 140px; }
-  </style>
-  <script src="../js/jquery-1.12.4.js"></script>
-  <script src="../js/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    $( "#entidad1" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
-	$( "#entidad2" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
-	$( "#relacion1" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
-  } );
-  </script>
+    <style>
+    .draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
+    .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
+    #snaptarget { height: 600px; width: 800px;}
+    </style>
+    <script>
+    $( function() {
+        $( "#entidad1" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
+        $( "#entidad2" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
+        $( "#relacion1" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
+    } );
+    </script>
     <title>A practicar</title>
 </head>
 <body>
@@ -83,68 +74,31 @@
                 ashdkjashdlkjashdlkjashdkljahsldj.
                 aksjdhkasjhdlkasjhdlkasjshdlkasd.
                 asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-                asdjhlkjahsdkjahsldkjhasjkdhaslkjjd
-                ashdkjashdlkjashdlkjashdkljahsldj.
-                aksjdhkasjhdlkasjhdlkasjshdlkasd.
-                asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-
-                aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-                asdjhlkjahsdkjahsldkjhasjkdhaslkjjd
-                ashdkjashdlkjashdlkjashdkljahsldj.
-                aksjdhkasjhdlkasjhdlkasjshdlkasd.
-                asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                aksjhdkajshdlkjashdlkjahsdkjhaslkjdh." data-original-title="" title="">Letra ejercicio</button>
+                " data-original-title="" title="">Letra ejercicio</button>
             </li>
         </ul>
     </div>
-    <br>
 
+	<div class="col-lg-2">
+        <ul class="nav nav-pills nav-stacked">
+                     <div id="snaptarget" class="ui-widget-header">
+                        <div class="form" align="left">
+                            <div id="entidad1" class="draggable ui-widget-content">
+                                <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10" maxlength="15"></li>
+                            </div>
 
+                            <div id="entidad2" class="draggable ui-widget-content">
+                                <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10" maxlength="15"></li>
+                            </div>
 
-<div id="entidad1" class="draggable ui-widget-content">
-  <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10"><button id="btnEnt" type="button" name="ok">OK</button></li>
-</div>
+                            <div id="relacion1" class="draggable ui-widget-content">
+                                <li id="relacion" title=""><br><input id="inputRel" type="text" name="" size="7" maxlength="15"></li>
+                            </div>
+                        </div>
+                    </div>
+					 </ul>
+    </div>
 
-<div id="entidad2" class="draggable ui-widget-content">
-  <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10"><button id="btnEnt" type="button" name="ok">OK</button></li>
-</div>
-
-<div id="relacion1" class="draggable ui-widget-content">
-  <li id="relacion" title=""><br><input id="inputRel" type="text" name="" size="7"><button id="btnRel" type="button" name="ok">OK</button></li>
-</div>
-
-<div class="col-lg-3">
-<table class="table table-striped table-hover">
-    <thead>
-        <tr class="danger">
-            <th>
-                <label class="control-label">Curso</label>
-            </th>
-            <th>
-                <label class="control-label">Temas</label>
-            </th>
-            <th>
-                <label class="control-label">Teorico</label>
-            </th>
-            <th>
-                <label class="control-label">Practico</label>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr class="danger">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-</div>
-
-	<script src="../js/jquery-1.12.4.js"></script>
-	<script src="../js/jquery-ui.js"></script>
     <script src="../js/bootstrap.js"></script>
     <script src="../js/app.js"></script>
 </body>
