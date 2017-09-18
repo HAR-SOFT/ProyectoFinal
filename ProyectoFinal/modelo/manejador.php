@@ -100,7 +100,7 @@ class manejador extends conexionDB {
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
 //        var_dump(strpos($queryParametro, "UPDATE"));
-        if (strpos($queryParametro, "UPDATE") !== false) {
+        if (strpos($queryParametro, "INSERT" ) !== false) {
             $this->mensaje = $msjParametro;
         } else {
             if (!$this->cantidadRegistros($query) == 0) {
@@ -448,56 +448,60 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
     }
-
-    public function altaProfesor() {
-        $valor = $_POST("sexo");
-
-        //Faltan los nombre de los inputs
-        $ciUsuario = $_POST("inputCI");
-        $nombreUsuario = $_POST("inputNombre");
-        $apellidoUsuario = $_POST("inputApellido");
-        $sexoUsuario = $_POST("$valor");
-        $emailUsuario = $_POST("inputMail");
-        $claveUsuario = md5($ciUsuario);
-        $telefonoUsuario = $_POST("inputTelefono");
-        $celularUsuario = $_POST("inputCelular");
-
-        $this->query = "INSERT INTO dim_usuario"
-                . " (id_usuario,ci,nombre,apellido,sexo,email,clave,telefono,"
-                . " celular,categoria_usuario)"
-                . " VALUE ('null','$ciUsuario','$nombreUsuario', "
-                . " '$apellidoUsuario', '$sexoUsuario', '$emailUsuario',"
-                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor')";
-        $this->mensaje = "Profesor no insertado";
+    
+    public function altaCursoManejador($nombreCurso,$anioCurso,$horarioCurso,
+                                      $inicioCurso,$finCurso) {        
+        $this->query = "INSERT INTO dim_Curso"
+                . " (id_curso,nombre,anio,horario,fecha_inicio,fecha_fin,"
+                . " estado)"
+                . " VALUE (null,'$nombreCurso','$anioCurso',"               
+                . " '$horarioCurso', '$inicioCurso','$finCurso','1');";
+        $msjaltaCursoManejador = "No se pudo agregar el Curso";
         
-        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
-        return $resultado;
+        return $this->ejecutarQuery($this->query, $msjaltaCursoManejador);
+        
     }
 
-    public function altaAlumno() {
-        $valor = $_POST("sexo");
-        //Faltan los nombre de los inputs
-        $ciUsuario = $_POST("inputCI");
-        $nombreUsuario = $_POST("inputNombre");
-        $apellidoUsuario = $_POST("inputApellido");
-        $sexoUsuario = $_POST("$valor");
-        $emailUsuario = $_POST("inputMail");
-        $claveUsuario = md5($ciUsuario);
-        $telefonoUsuario = $_POST("inputTelefono");
-        $celularUsuario = $_POST("inputCelular");
-
+    public function altaProfesorManejador($ciUsuario,$nombreUsuario,$apellidoUsuario,
+                                        $sexoUsuario,$emailUsuario,$claveUsuario,
+                                        $telefonoUsuario,$celularUsuario) {      
         $this->query = "INSERT INTO dim_usuario"
                 . " (id_usuario,ci,nombre,apellido,sexo,email,clave,"
                 . " telefono,celular,categoria_usuario)"
-                . " VALUE ('null','$ciUsuario','$nombreUsuario',"
-                . " '$apellidoUsuario', '$sexoUsuario', '$emailUsuario',"
-                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Alumno')";
-        $this->mensaje = "Alumno no insertado";
+                . " VALUE (null,'$ciUsuario','$nombreUsuario',"
+                . " '$apellidoUsuario','$sexoUsuario','$emailUsuario',"
+                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor');";
+        $msjaltaProfesorManejador = "No se pudo agregar el Profesor";
         
-        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
-        return $resultado;
+        return $this->ejecutarQuery($this->query, $msjaltaProfesorManejador);
+        
     }
 
+    public function altaAlumnoManejador($ciUsuario,$nombreUsuario,$apellidoUsuario,
+                                        $sexoUsuario,$emailUsuario,$claveUsuario,
+                                        $telefonoUsuario,$celularUsuario) {
+        $this->query = "INSERT INTO dim_usuario"
+                . " (id_usuario,ci,nombre,apellido,sexo,email,clave,"
+                . " telefono,celular,categoria_usuario)"
+                . " VALUE (null,'$ciUsuario','$nombreUsuario',"
+                . " '$apellidoUsuario','$sexoUsuario','$emailUsuario',"
+                . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Alumno');";
+        
+       $msjaltaAlumnoManejador = "No se pudo agregar el Alumno.";
+
+       return $this->ejecutarQuery($this->query, $msjaltaAlumnoManejador);
+        
+    }
+
+     public function asignarCursoUsuario($curso,$ci) {
+        $this->query = "INSERT INTO asc_curso_usuario "
+                . "(nombre_curso , ci_usuario) VALUE "
+                . "('$curso',$ci);";
+        $msjasignarCursoUsuario = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjasignarCursoUsuario);
+    }
+    
     public function temaManejador($tema) {
         $this->query = "SELECT"
                 . " dt.letra"
