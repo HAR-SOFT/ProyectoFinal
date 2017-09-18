@@ -9,31 +9,130 @@
         <link rel="stylesheet" href="../css/formas.css">
         <script src="../js/jquery-1.12.4.js"></script>
         <script src="../js/jquery-ui.js"></script>
-        <style>
-            .draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 0 10px 10px 0; font-size: .9em; }
-            .ui-widget-header p, .ui-widget-content p { margin: 0; }
-            #snaptarget { height: 140px; }
-        </style>
 
-        <link rel="stylesheet" href="../css/formas.css">
-        <title>A practicar</title>
         <style>
             .draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
+            .draggableAgregacion { width: 500px; height: 250px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
             .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
-            #snaptarget { height: 140px; }
+            #snaptarget { height: 600px; width: 800px;}
         </style>
-        <script src="../js/jquery-1.12.4.js"></script>
-        <script src="../js/jquery-ui.js"></script>
         <script>
             $(function () {
                 $("#entidad1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#entidad2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#relacion1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
             });
+            
+            function posicionObjeto(idObjeto) {
+                /*// capturar la posicion del elemento por atributo de css
+                var x = document.getElementById("relacion1").getAttribute("style");
+                var largoEstilo = x.length;*/
+                
+                // capturar la posicion del elemento por atributo de css
+                var objeto = document.getElementById(idObjeto);
+                var x = objeto.offsetLeft;
+                var y = objeto.offsetTop;
+                //alert(x + " - " + y);
+                return [x, y];
+                
+                /*// capturar la posicion del elemento por las coordenadas x y
+                var offsets = document.getElementById("relacion1").getBoundingClientRect();
+                var top = offsets.top;
+                var left = offsets.left;
+                alert(top + " - " + left);*/
+            }
+            
+            function validarPosicionRelacion(idRelacion, Entidades) {
+                var largoEntidades = Entidades.length;
+                
+                for(i = 0; i < largoEntidades; i++) {
+                    var entidad = posicionObjeto(Entidades[i]);
+                    var xEntidad = entidad[0];
+                    var yEntidad = entidad[1];
+
+                    var relacion = posicionObjeto(idRelacion);
+                    var xRelacion = relacion[0];
+                    var yRelacion = relacion[1];
+
+                    var minXIzquierda = xRelacion-110-130;
+                    var maxXIzquierda = xRelacion-80-130;
+                    var minXDerecha = xRelacion+110+130;
+                    var maxXDerecha = xRelacion+80+130;
+                    var minAlto = yRelacion-20;
+                    var maxAlto = yRelacion+20;
+                    
+                    var divHijo = document.getElementById(Entidades[i]).childNodes[1];
+                    
+                    if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                            (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                        if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                            divHijo.style.backgroundColor = "green";
+                            //var mensaje = "Ok";
+                        }
+                        else {
+                            divHijo.style.backgroundColor = "#e95420";
+                            //var mensaje = "Negativo central";
+                        }
+                    }
+                    else {
+                        divHijo.style.backgroundColor = "#e95420";
+                        //var mensaje = "Negativo central";
+                    }
+                }
+            }
+            
+            function guardarPosicionEntidad(ladoIzquierdo, ladoDerecho) {
+                if(ladoIzquierdo === undefined) {
+                    ladoIzquierdo = "false";
+                }
+                if(ladoDerecho === undefined) {
+                    ladoDerecho = "false";
+                }
+                sessionStorage.setItem("ladoIzquierdo", ladoIzquierdo);
+                sessionStorage.setItem("ladoDerecho", ladoDerecho);
+            }
+            
+            function validarPosicionEntidad(idRelacion, idEntidad) {
+                var entidad = posicionObjeto(idEntidad);
+                var xEntidad = entidad[0];
+                var yEntidad = entidad[1];
+                
+                var relacion = posicionObjeto(idRelacion);
+                var xRelacion = relacion[0];
+                var yRelacion = relacion[1];
+                
+                var minXIzquierda = xRelacion-110-130;
+                var maxXIzquierda = xRelacion-80-130;
+                var minXDerecha = xRelacion+110+130;
+                var maxXDerecha = xRelacion+80+130;
+                var minAlto = yRelacion-20;
+                var maxAlto = yRelacion+20;
+                
+                var divHijo = document.getElementById(idEntidad).childNodes[1];
+                
+                if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                    if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                        divHijo.style.backgroundColor = "green";
+                        //var mensaje = "Ok";
+                    }
+                    else {
+                        divHijo.style.backgroundColor = "#e95420";
+                        //var mensaje = "Negativo central";
+                    }
+                }
+                else {
+                    divHijo.style.backgroundColor = "#e95420";
+                    //var mensaje = "Negativo central";
+                }
+                
+                //alert(mensaje);
+            }
         </script>
         <title>A practicar</title>
     </head>
     <body>
+        <!-- <button onclick="validarPosicionObjeto('relacion1', 'entidad2')">Posicion</button>-->
         <!-- header -->
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -48,25 +147,8 @@
                         <a class="navbar-brand" href="file:///C:/wamp64/www/ProyectoFinal/ProyectoFinal/2.html">e-MER</a>
                     </div>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="http://ude.edu.uy/">UDE</a></li>
-                        <li><a href="http://200.58.144.114">Moodle UDE Ingenieria</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Nombre Usuario</b> <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Cambiar password</a></li>
-                                <li class="divider"></li>
-                                <li><a href="file:///C:/wamp64/www/ProyectoFinal/ProyectoFinal/index.html">Cerrar sesion</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
-        <!--  -->
         <!-- Columnas -->
         <div class="col-lg-2">
             <ul class="nav nav-pills nav-stacked">
@@ -83,38 +165,29 @@
                             ashdkjashdlkjashdlkjashdkljahsldj.
                             aksjdhkasjhdlkasjhdlkasjshdlkasd.
                             asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                            aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-                            asdjhlkjahsdkjahsldkjhasjkdhaslkjjd
-                            ashdkjashdlkjashdlkjashdkljahsldj.
-                            aksjdhkasjhdlkasjhdlkasjshdlkasd.
-                            asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                            aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-
-                            aksjhdkajshdlkjashdlkjahsdkjhaslkjdh.
-                            asdjhlkjahsdkjahsldkjhasjkdhaslkjjd
-                            ashdkjashdlkjashdlkjashdkljahsldj.
-                            aksjdhkasjhdlkasjhdlkasjshdlkasd.
-                            asdlkasdlkhaslkdjhaskjdhlaskjdhjklas.
-                            aksjhdkajshdlkjashdlkjahsdkjhaslkjdh." data-original-title="" title="">Letra ejercicio</button>
+                            " data-original-title="" title="">Letra ejercicio</button>
                 </li>
             </ul>
         </div>
-        <br>
 
-        <div id="entidad1" class="draggable ui-widget-content">
-            <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10"></li>
+        <div class="col-lg-2">
+            <div id="snaptarget" class="ui-widget-header">
+                <div class="form" align="left">
+                    <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
+                        <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15"></div>
+                    </div>
+
+                    <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
+                        <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15"></div>
+                    </div>
+
+                    <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacion(this.id, ['entidad1','entidad2'])">
+                        <div id="relacion" title=""><br><input id="inputRel" type="text" name="nombre" size="7" maxlength="15"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="entidad2" class="draggable ui-widget-content">
-            <li id="entidad" title=""><br><input id="inputEnt" type="text" name="" size="10"></li>
-        </div>
-
-        <div id="relacion1" class="draggable ui-widget-content">
-            <li id="relacion" title=""><br><input id="inputRel" type="text" name="" size="7"></li>
-        </div>
-
-        <script src="../js/jquery-1.12.4.js"></script>
-        <script src="../js/jquery-ui.js"></script>
         <script src="../js/bootstrap.js"></script>
         <script src="../js/app.js"></script>
     </body>
