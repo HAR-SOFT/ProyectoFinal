@@ -656,6 +656,20 @@ class controlador_mvc extends manejador {
         }
 
         echo "</table>";
+        
+        echo "<br>"
+        ."<p align='left'>"
+        ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+        ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+        ."<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+        ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'>Volver</button>"
+        ."</form>"
+        ."<br>"
+        ."</p>"       
+        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>"
+        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'>Agregar alumno</a></button>";     
+        
     }
 
     public function profesoresBedelia() {
@@ -717,6 +731,21 @@ class controlador_mvc extends manejador {
         }
         
         echo "</table>";
+        
+        echo "<br>"
+        ."<p align='left'>"
+        ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+        ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+        ."<input type='button'  value='Importar grupo Profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+        ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'>Volver</button>"
+        ."</form>"
+        ."<br>"
+        ."</p>"        
+        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>"
+        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'>Agregar Profesor</a></button>";     
+        
+        
     }
     
     
@@ -784,12 +813,393 @@ class controlador_mvc extends manejador {
             . "</tbody>";
         }
          echo "</table>";
-       
+         
+         echo "<br>"                
+        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg' type='reset'>"
+        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>Agregar Curso</a></button>"; 
+            
         }
+        
+        
+        public function agregarAlumno(){            
+            session_start();
+            
+            $contenido = "<div class='page-header' id='tables'>"
+            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Alumno</h1>"
+            ."</div>"
+            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoAlumno'>"
+            ."<fieldset>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label class='col-lg-2 control-label'>Sexo</label>"
+            ."<div class='col-lg-10'>"
+            ."<div class='radio'>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
+            ."Masculino"
+            ."</label>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='F'>"
+            ."Femenino"
+            ."</label>"
+            ."</div>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            ."<div class='col-lg-8'>"
+            ."<select class='form-control' id='select' name='asignarCurso'>";
+            
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Agregar Alumnos", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
+            
+            $resultado = $this->listarCursosActivos();
+            
+             foreach ($resultado as $fila ) {
+               echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+            }
+        
+            echo"</select>"
+            ."<br>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<div class='col-lg-10 col-lg-offset-2'>"
+            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"                    
+            ."<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"            
+            ."</div>"
+            ."</div>"
+            ."</fieldset>"
+            ."</form>";
+            
+            echo "</table>";
+            
+            
+        
     }
     
     
+    public function agregoAlumno(){
+                                                    
+            if (isset($_REQUEST['aceptar'])){             
+                             
+            $ciUsuario = $_REQUEST["inputCI"];
+            $nombreUsuario = $_REQUEST["inputNombre"];
+            $apellidoUsuario = $_REQUEST["inputApellido"];
+            $sexoUsuario = $_REQUEST["sexo"];
+            $emailUsuario = $_REQUEST["inputMail"];
+            $claveUsuario = md5($ciUsuario);
+            $telefonoUsuario = $_REQUEST["inputTelefono"];
+            $celularUsuario = $_REQUEST["inputCelular"];
+            $curso = $_REQUEST["asignarCurso"];
+                  
+            $resultado = $this->altaAlumnoManejador($ciUsuario,
+                                                   $nombreUsuario,
+                                                   $apellidoUsuario,
+                                                   $sexoUsuario,
+                                                   $emailUsuario,
+                                                   $claveUsuario,
+                                                   $telefonoUsuario,
+                                                   $celularUsuario);
+            
+            if(!$resultado){
+                $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
+                    if(!$asignar) {                
+                       $this->modal("Se agrego el Alumno $nombreUsuario "
+                                  . "$apellidoUsuario y se asocio al Curso "
+                                  . "$curso.");
+                       $this->agregarAlumno();
+                    }else{
+                       $this->modal("No se ha podido asociar el Alumno "
+                                  . "$nombreUsuario $apellidoUsuario al $curso.");            
+                      $this->agregarAlumno();
+                    }        
+                
+            }else {
+                $this->modal("No se ha podido ingresar el Alumno "
+                                  . "$nombreUsuario $apellidoUsuario al sistema.");
+                 $this->agregarAlumno();
+            }
+                          
+            }
 
+}
+        public function agregarProfesor(){            
+            session_start();
+            
+            $contenido = "<div class='page-header' id='tables'>"
+            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
+            ."</div>"
+            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
+            ."<fieldset>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label class='col-lg-2 control-label'>Sexo</label>"
+            ."<div class='col-lg-10'>"
+            ."<div class='radio'>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
+            ."Masculino"
+            ."</label>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='F'>"
+            ."Femenino"
+            ."</label>"
+            ."</div>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            ."<div class='col-lg-8'>"
+            ."<select class='form-control' id='select' name='asignarCurso'>";
+            
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Agregar Profesor", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
+            $this->view_page($pagina);
+            
+            $resultado = $this->listarCursosActivos();
+            
+             foreach ($resultado as $fila ) {
+               echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+            }
+        
+            echo"</select>"
+            ."<br>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<div class='col-lg-10 col-lg-offset-2'>"
+            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"                    
+            ."<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"            
+            ."</div>"
+            ."</div>"
+            ."</fieldset>"
+            ."</form>";
+            
+            echo "</table>";          
+        
+        }
+       
+    public function agregoProfesor(){
+                                                    
+            if (isset($_REQUEST['aceptar'])){             
+                             
+            $ciUsuario = $_REQUEST["inputCI"];
+            $nombreUsuario = $_REQUEST["inputNombre"];
+            $apellidoUsuario = $_REQUEST["inputApellido"];
+            $sexoUsuario = $_REQUEST["sexo"];
+            $emailUsuario = $_REQUEST["inputMail"];
+            $claveUsuario = md5($ciUsuario);
+            $telefonoUsuario = $_REQUEST["inputTelefono"];
+            $celularUsuario = $_REQUEST["inputCelular"];
+            $curso = $_REQUEST["asignarCurso"];
+                  
+            $resultado = $this->altaProfesorManejador($ciUsuario,
+                                                   $nombreUsuario,
+                                                   $apellidoUsuario,
+                                                   $sexoUsuario,
+                                                   $emailUsuario,
+                                                   $claveUsuario,
+                                                   $telefonoUsuario,
+                                                   $celularUsuario);
+            
+            if(!$resultado){
+                $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
+                    if(!$asignar) {                
+                       $this->modal("Se agrego el Profesor $nombreUsuario "
+                                  . "$apellidoUsuario y se asocio al Curso "
+                                  . "$curso.");
+                       $this->agregarProfesor();
+                    }else{
+                       $this->modal("No se ha podido asociar el Profesor "
+                                  . "$nombreUsuario $apellidoUsuario al $curso.");            
+                      $this->agregarProfesor();
+                    }        
+                
+            }else {
+                $this->modal("No se ha podido ingresar el Profesor "
+                                  . "$nombreUsuario $apellidoUsuario al sistema.");
+                 $this->agregarProfesor();
+            }
+               
+            
+            }
+    }
+    
+    public function agregarCurso(){            
+            session_start();
+            
+            $contenido = "<div class='page-header' id='tables'>"
+            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Curso</h1>"
+            ."</div>"
+            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoCurso'>"
+            ."<fieldset>"            
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Año</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputAnio' name='inputAnio' placeholder='2017' required>"
+            ."</div>"
+            ."</div>"            
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Horario</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputHorario' name='inputHorario' placeholder='20-22' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Fecha de Inicio</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputFechaIni' name='inputFechaIni' placeholder='aaaa-mm-dd'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Fecha de Fin</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputFechaFin' name='inputFechaFin' placeholder='aaaa-mm-dd' required>"
+            ."</div>"
+            ."</div>"      ;  
+                                           
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Agregar Curso", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
+            $this->view_page($pagina);
+                               
+            echo""
+            ."<br>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<div class='col-lg-10 col-lg-offset-2'>"
+            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"                    
+            ."<button type='submit' name = 'aceptar' class='btn btn-primary' type=reset' >Aceptar</button>"            
+            ."</div>"
+            ."</div>"
+            ."</fieldset>"
+            ."</form>";
+            
+            echo "</table>";          
+        
+        }
+       
+    public function agregoCurso(){
+                                                    
+            if (isset($_REQUEST['aceptar'])){             
+                                        
+            $nombreCurso = $_REQUEST["inputNombre"];
+            $anioCurso = $_REQUEST["inputAnio"];
+            $horarioCurso = $_REQUEST["inputHorario"];
+            $inicioCurso = $_REQUEST["inputFechaIni"];
+            $finCurso = $_REQUEST["inputFechaFin"];
+                  
+            $resultado = $this->altaCursoManejador($nombreCurso,
+                                                   $anioCurso,
+                                                   $horarioCurso,
+                                                   $inicioCurso,
+                                                   $finCurso);
+            
+            if(!$resultado){                             
+                $this->modal("Se agrego el Curso $nombreCurso");
+                $this->agregarCurso();
+            }else{
+                $this->modal("No se ha podido agregar el Curso.");                                              
+                $this->agregarCurso();
+            }        
+                                          
+            
+            }
+    }
+    
+    
+}
 ?>
