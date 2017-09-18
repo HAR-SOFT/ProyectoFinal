@@ -110,7 +110,9 @@ class controlador_mvc extends manejador {
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
                     $header = $this->load_page("vistas/html/headerInicio.html");
+                    $contenido = $this->load_page("vistas/html/index.html");
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
+                    $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
                     $pagina = $this->replace_content("/none/", "block", $pagina);
                     $this->modal($this->getMensajeManejador());
@@ -173,7 +175,7 @@ class controlador_mvc extends manejador {
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
-                        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                        $pagina = $this->replace_content("/Contenido/", $this->menuAlumno(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
@@ -181,7 +183,7 @@ class controlador_mvc extends manejador {
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Profesor.html");
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
-                        $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                        $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;

@@ -13,6 +13,12 @@
                 $('.modal-backdrop').hide();
             }
         </script>
+        <script src="vistas/js/jquery-1.11.1.js"></script>
+        <script src="vistas/js/jquery-1.12.4.js"></script>
+        <script src="vistas/js/jquery-ui.js"></script>
+        <script src="vistas/js/bootstrap.js"></script>
+        <script src="vistas/js/app.js"></script>
+        <script src="vistas/js/custom.js"></script>
     </head>
     <body>
         <!-- Inicio header  -->
@@ -22,11 +28,6 @@
         <!-- Inicio contenido  -->
         Contenido
         <!-- Fin contenido  -->
-        
-        <script src="vistas/js/jquery-1.11.1.js"></script>
-        <script src="vistas/js/bootstrap.js"></script>
-        <script src="vistas/js/app.js"></script>
-        <script src="vistas/js/custom.js"></script>
         <div class="modal-backdrop fade in" style="display: none;"></div>
     </body>
 </html>
