@@ -45,8 +45,24 @@ else {
         case "cursos":
             $mvc->cursosBedelia();
             break;
-            
-            
+        case "agregarAlumno":
+            $mvc->agregarAlumno();
+            break;
+        case "agregoAlumno":
+            $mvc->agregoAlumno();
+            break;
+        case "agregarProfesor":
+            $mvc->agregarProfesor();
+            break;
+        case "agregoProfesor":
+            $mvc->agregoProfesor();
+            break; 
+         case "agregarCurso":
+            $mvc->agregarCurso();
+            break;
+        case "agregoCurso":
+            $mvc->agregoCurso();
+            break;   
     }
 }
 
