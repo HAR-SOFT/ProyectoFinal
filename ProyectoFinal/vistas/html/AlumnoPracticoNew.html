@@ -81,17 +81,6 @@
                 }
             }
             
-            function guardarPosicionEntidad(ladoIzquierdo, ladoDerecho) {
-                if(ladoIzquierdo === undefined) {
-                    ladoIzquierdo = "false";
-                }
-                if(ladoDerecho === undefined) {
-                    ladoDerecho = "false";
-                }
-                sessionStorage.setItem("ladoIzquierdo", ladoIzquierdo);
-                sessionStorage.setItem("ladoDerecho", ladoDerecho);
-            }
-            
             function validarPosicionEntidad(idRelacion, idEntidad) {
                 var entidad = posicionObjeto(idEntidad);
                 var xEntidad = entidad[0];
@@ -110,10 +99,19 @@
                 
                 var divHijo = document.getElementById(idEntidad).childNodes[1];
                 
-                if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
-                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
-                    if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                var izquierda = xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda;
+                var derecha = xEntidad <= minXDerecha && xEntidad >= maxXDerecha;
+                var alto = yEntidad >= minAlto && yEntidad <= maxAlto;
+                
+                if(izquierda || derecha) {
+                    if(alto) {
                         divHijo.style.backgroundColor = "green";
+                        if(izquierda) {
+                            izquierda = false;
+                        }
+                        if(derecha) {
+                            derecha = false;
+                        }
                         //var mensaje = "Ok";
                     }
                     else {
@@ -169,7 +167,7 @@
                 </li>
             </ul>
         </div>
-
+        <p id="texto"></p>
         <div class="col-lg-2">
             <div id="snaptarget" class="ui-widget-header">
                 <div class="form" align="left">
