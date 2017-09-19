@@ -82,6 +82,11 @@
                 }
             }
             
+            function guardarLadosRelaciones() {
+                sessionStorage.setItem("izquierda", "false");
+                sessionStorage.setItem("derecha", "false");
+            }
+            
             function validarPosicionEntidad(idRelacion, idEntidad) {
                 var entidad = posicionObjeto(idEntidad);
                 var xEntidad = entidad[0];
@@ -107,12 +112,6 @@
                 if(izquierda || derecha) {
                     if(alto) {
                         divHijo.style.backgroundColor = "green";
-                        if(izquierda) {
-                            izquierda = false;
-                        }
-                        if(derecha) {
-                            derecha = false;
-                        }
                         //var mensaje = "Ok";
                     }
                     else {
@@ -130,7 +129,7 @@
         </script>
         <title>A practicar</title>
     </head>
-    <body>
+    <body onload="guardarLadosRelaciones()">
         <!-- <button onclick="validarPosicionObjeto('relacion1', 'entidad2')">Posicion</button>-->
         <!-- header -->
         <nav class="navbar navbar-default">
