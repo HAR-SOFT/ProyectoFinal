@@ -18,7 +18,6 @@
     list-style:none;
     transition: 0.5s ease;
     -webkit-transition: 0.5s ease; /* Chrome - Safari */
-
 }
 #entidad:hover, entidad.over {
     -o-box-shadow: 5px 5px 10px #053E15;
@@ -110,26 +109,21 @@
     -webkit-transform : rotate(2deg); /* Chrome - Safari */
 }
 #hrEntidadDerecha {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 0px 0px 0px 0px;
-        transform : rotate(135deg);
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(135deg);
+    transform-origin: -8% 500%;
 }
 #hrEntidadIzquierda {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 100px 0px 0px 0px;
-	transform : rotate(135deg);
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
 }
-#hrEntidadArriba {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 0px 0px 0px 0px;
-	transform : rotate(270deg);
-}
+
