@@ -56,6 +56,15 @@
     transform: rotate(600deg);
     transform-origin: -5% -500%;
 }
+#lineaAtributo2Multi {
+    height: 1px;
+    width: 50px;
+    position: relative;
+    margin: -10px 0px 0px 0px;
+    border: 2px solid #4BCD3E;
+    transform: rotate(90deg);
+    transform-origin: 155% -300%;
+}
 #lineaAtributoRelacion {
     height: 1px;
     width: 50px;

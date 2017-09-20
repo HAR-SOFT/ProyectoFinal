@@ -29,6 +29,7 @@
                 $("#entidad1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#entidad2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#entidad3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
+                $("#entidad4").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#categorizacionDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#categorizacionDisDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#relacion1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
@@ -218,6 +219,14 @@
                             <div id="lineaAtributo1"></div>
                             <div id="lineaAtributo2"></div>
                             <div id="lineaAtributo3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Entidad con 2 atributos, uno de ellos multivaluado-->
+                    <div id="entidad4" class="draggable ui-widget-content">
+                        <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                        <div id="lineaAtributo1"></div>
+                        <div id="lineaAtributo2Multi"></div>
                         </div>
                     </div>
 
