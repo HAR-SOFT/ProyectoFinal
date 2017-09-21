@@ -18,7 +18,7 @@
         </style>
         <script>
         // Cada id que coloquemos en esta function se le va a asignar la propiedad draggable (movimiento)
-        // Esto se referencia como ID del "padre" o contenedor de lo que se cree
+        // Esto se define en el ID del "padre" o contenedor
         // Por ejemplo:
         // <div id="entidad1" class="draggable ui-widget-content">
         // <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
@@ -30,7 +30,9 @@
                 $("#entidad2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#entidad3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#entidad4").draggable({snap: ".ui-widget-header", snapMode: "outer"});
+                $("#entidad5").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#categorizacionDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
+                $("#categorizacionDragTotalidad").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#categorizacionDisDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#relacion1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
                 $("#relacion2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
@@ -55,6 +57,7 @@
                 alert(top + " - " + left);*/
             }
 
+            //valida posicion de relacion
             function validarPosicionRelacion(idRelacion, Entidades) {
                 var largoEntidades = Entidades.length;
 
@@ -94,6 +97,7 @@
                 }
             }
 
+            //guarda posicion de entidad
             function guardarPosicionEntidad(ladoIzquierdo, ladoDerecho) {
                 if(ladoIzquierdo === undefined) {
                     ladoIzquierdo = "false";
@@ -227,13 +231,36 @@
                         <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
                         <div id="lineaAtributo1"></div>
                         <div id="lineaAtributo2Multi"></div>
+                        <div id="lineaAtributoMulti1"></div>
+                        <div id="lineaAtributoMulti2"></div>
                         </div>
                     </div>
 
-                    <!-- categorizacion con dos "hijos" -->
+                    <!-- Entidad con 3 atributo, uno de ellos multivaluado -->
+                    <div id="entidad5" class="draggable ui-widget-content">
+                        <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                            <div id="lineaAtributo1"></div>
+                            <div id="lineaAtributo2Multi"></div>
+                            <div id="lineaAtributoMulti1"></div>
+                            <div id="lineaAtributoMulti2"></div>
+                            <div id="lineaAtributo3"></div>
+                        </div>
+                    </div>
+
+                    <!-- categorizacion con dos "hijos"-->
                     <div id="categorizacionDrag" class="draggable ui-widget-content">
                         <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
                             <div id="categorizacion"></div>
+                            <div id="lineaCategorizacionIzq"></div>
+                            <div id="lineaCategorizacionDer"></div>
+                        </div>
+                    </div>
+
+                    <!-- categorizacion con dos "hijos" totalidad  -->
+                    <div id="categorizacionDragTotalidad" class="draggable ui-widget-content">
+                        <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                            <div id="totalidad"></div>
+                            <div id="categorizacionTotalidad"></div>
                             <div id="lineaCategorizacionIzq"></div>
                             <div id="lineaCategorizacionDer"></div>
                         </div>
@@ -266,7 +293,6 @@
                             <div id="lineaAtributoRelacion"></div>
                         </div>
                     </div>
-
 
                 </div>
             </div>

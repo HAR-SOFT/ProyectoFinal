@@ -38,6 +38,15 @@
     transform: rotate(315deg);
     transform-origin: -20% -3400%;
 }
+#lineaAtributo1Determinante {
+    height: 1px;
+    width: 50px;
+    position: relative;
+    margin: -10px 0px 0px 0px;
+    border: 2px solid red;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
+}
 #lineaAtributo2 {
     height: 1px;
     width: 50px;
@@ -64,6 +73,24 @@
     border: 2px solid #4BCD3E;
     transform: rotate(90deg);
     transform-origin: 155% -300%;
+}
+#lineaAtributoMulti1 {
+    height: 1px;
+    width: 50px;
+    position: relative;
+    margin: -5px 0px 0px 0px;
+    border: 2px solid #ddd;
+    transform: rotate(315deg);
+    transform-origin: -217% -3400%;
+}
+#lineaAtributoMulti2 {
+    height: 1px;
+    width: 50px;
+    position: relative;
+    margin: -5px 0px 0px 0px;
+    border: 2px solid #ddd;
+    transform: rotate(210deg);
+    transform-origin: 37% -1650%;
 }
 #lineaAtributoRelacion {
     height: 1px;
@@ -171,14 +198,23 @@
     transform: rotate(315deg);
     transform-origin: -20% -3400%;
 }
-#categorizacion {
-     margin-top: 10px;
+#categorizacionTotalidad {
+     margin: -35px 0px 0px -2px;
      width: 10;
      height: 10;
      border-left: 50px solid #ddd;
      border-top: 25px solid transparent;
      border-bottom: 25px solid transparent;
      transform: rotate(270deg);
+}
+#categorizacion{
+margin: 10px 0px 0px -2px;
+width: 10;
+height: 10;
+border-left: 50px solid #ddd;
+border-top: 25px solid transparent;
+border-bottom: 25px solid transparent;
+transform: rotate(270deg);
 }
 #lineaCategorizacionIzq {
     height: 1px;
@@ -207,4 +243,13 @@
     box-shadow:10px 5px 0 #ddd;
     transform: rotate(65deg);
     margin: -10px 0px -65px 20px;
+}
+#totalidad{
+     width: 20px;
+     height: 20px;
+     margin: 45px 0px 0px 47px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+     background: green;
 }
