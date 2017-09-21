@@ -286,3 +286,17 @@
      border-radius: 50%;
      background: green;
 }
+
+
+#progressbar {
+    margin-top: 100px;
+  }
+
+  .progress-label {
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+  }
+
+  .ui-dialog-titlebar-close {
+    display: none;
+  }
