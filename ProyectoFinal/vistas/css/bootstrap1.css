@@ -2610,6 +2610,7 @@ fieldset[disabled] .form-control {
 }
 textarea.form-control {
   height: auto;
+  resize: none;
 }
 input[type="search"] {
   -webkit-appearance: none;
