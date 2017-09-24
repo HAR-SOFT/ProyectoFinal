@@ -62,7 +62,10 @@ else {
             break;
         case "agregoCurso":
             $mvc->agregoCurso();
-            break;   
+            break;
+        case "temarioCurso":
+            $mvc->teoricoCurso();
+            break;
     }
 }
 

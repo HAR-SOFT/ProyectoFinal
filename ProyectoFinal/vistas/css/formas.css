@@ -18,7 +18,6 @@
     list-style:none;
     transition: 0.5s ease;
     -webkit-transition: 0.5s ease; /* Chrome - Safari */
-
 }
 #entidad:hover, entidad.over {
     -o-box-shadow: 5px 5px 10px #053E15;
@@ -29,6 +28,33 @@
     border:1px solid #053E15;
     transform : rotate(5deg);
     -webkit-transform : rotate(5deg); /* Chrome - Safari */
+}
+#lineaAtributo1 {
+    height: 1px;
+    width: 50px;
+    position: absolute;
+    margin: 35px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
+}
+#lineaAtributo2 {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
+}
+#lineaAtributo3 {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
 }
 #inputEnt{
     margin-button:5px;
@@ -109,27 +135,58 @@
     transform : rotate(2deg);
     -webkit-transform : rotate(2deg); /* Chrome - Safari */
 }
-#hrEntidadDerecha {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 0px 0px 0px 0px;
-        transform : rotate(135deg);
+#lineaEntidadDerecha {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(135deg);
+    transform-origin: -8% 500%;
 }
-#hrEntidadIzquierda {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 100px 0px 0px 0px;
-	transform : rotate(135deg);
+#lineaEntidadIzquierda {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #ffffff;
+    transform: rotate(315deg);
+    transform-origin: -20% -3400%;
 }
-#hrEntidadArriba {
-	background:#ddd;
-	border: 2px solid #ffffff;
-	width: 100px;
-	height: 1px;
-	margin: 0px 0px 0px 0px;
-	transform : rotate(270deg);
+#categorizacion {
+     margin-top: 10px;
+     width: 10;
+     height: 10;
+     border-left: 50px solid #ffffff;
+     border-top: 25px solid transparent;
+     border-bottom: 25px solid transparent;
+     transform: rotate(270deg);
+}
+#lineaCategorizacionIzq {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 65px -20px 0px 50px;
+    border: 2px solid #ffffff;
+    transform: rotate(45deg);
+}
+#lineaCategorizacionDer {
+    height: 1px;
+    width: 100px;
+    position: absolute;
+    margin: 65px -20px 0px -30px;
+    border: 2px solid #ffffff;
+    transform: rotate(-45deg);
+}
+#disjunta{
+    width: 75px;
+    height: 75px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    -moz-box-shadow: 10px 5px 0 #ffffff;
+    -webkit-box-shadow: 10px 5px 0 #ffffff;
+    box-shadow:10px 5px 0 #ffffff;
+    transform: rotate(65deg);
+    margin: -10px 0px -65px 20px;
 }

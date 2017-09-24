@@ -354,8 +354,16 @@ class manejador extends conexionDB {
     }
 
     public function listarSubTemasPorCursoYTema($nombreCurso, $tema) {
+        switch(gettype($tema)) {
+            case "array":
+                $tema = $tema[0]['nombre_tema'];
+                break;
+            case "string":
+                $tema = $tema;
+                break;
+        }
         $nombreCurso = $nombreCurso[0]["nombre_curso"];
-        $tema = $tema[0]['nombre_tema'];
+        
 
         $this->query = " SELECT ASCCTSE.nombre_subtema  "
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
@@ -420,8 +428,8 @@ class manejador extends conexionDB {
         
         if (!$this->mensaje) {
             $nombreMer = $nombreMer;
-            $colEntidadesMer = $colEntidades[0];
-            $colRelacionesMer = $colRelaciones[0];
+            $colEntidadesMer = $colEntidades;
+            $colRelacionesMer = $colRelaciones;
 
             $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer);
 
@@ -502,23 +510,25 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuario);
     }
     
-    public function temaManejador($tema) {
-        $this->query = "SELECT"
-                . " dt.letra"
-                . " FROM"
-                . " dim_subtema dt"
-                . " WHERE"
-                . " dt.nombre = '$tema'";
-        $this->mensaje = "No hay letra para ese tema";
-        
-        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
-
-        if ($resultado) {
-            foreach ($resultado as $letra)
-                echo $letra["letra"];
+    public function temaManejador($tema, $subtema) {
+        if($subtema == true) {
+            $this->query = "SELECT"
+                    . " dt.letra"
+                    . " FROM"
+                    . " dim_subtema dt"
+                    . " WHERE"
+                    . " dt.nombre = '$tema'";
         } else {
-            return $resultado;
+            $this->query = "SELECT"
+                    . " dt.letra"
+                    . " FROM"
+                    . " dim_tema dt"
+                    . " WHERE"
+                    . " dt.nombre = '$tema'";
         }
+        $msjtemaManejador = "No hay letra para ese tema";
+        
+        return $this->ejecutarQuery($this->query, $msjtemaManejador);
     }
 
 }
