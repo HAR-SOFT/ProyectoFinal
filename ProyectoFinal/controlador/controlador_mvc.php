@@ -98,8 +98,10 @@ class controlador_mvc extends manejador {
     public function inicio() {
         try {
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerInicio.html");
             $contenido = $this->load_page("vistas/html/index.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
@@ -145,8 +147,10 @@ class controlador_mvc extends manejador {
 
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerInicio.html");
                     $contenido = $this->load_page("vistas/html/index.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
@@ -166,7 +170,9 @@ class controlador_mvc extends manejador {
                     switch (get_class($_SESSION["usuario"])) {
                         case("alumno");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
@@ -174,7 +180,9 @@ class controlador_mvc extends manejador {
                             break;
                         case("profesor");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
@@ -182,8 +190,10 @@ class controlador_mvc extends manejador {
                             break;
                         case("administrativo");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
                             $contenido = $this->load_page("vistas/html/Administrativo.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
@@ -209,22 +219,28 @@ class controlador_mvc extends manejador {
                 $pagina = $this->load_template("inicio");
                 switch (get_class($_SESSION["usuario"])) {
                     case("alumno");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("profesor");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("administrativo");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Administrativo.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
@@ -267,8 +283,10 @@ class controlador_mvc extends manejador {
                 $this->inicio();
             } else {
                 $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
                 $header = $this->load_page("vistas/html/headerLogueado.html");
                 $contenido = $this->load_page("vistas/html/menuUsuario.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                 $pagina = $this->replace_content("/Header/", $header, $pagina);
                 $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                 $pagina = $this->replace_content("/Titulo/", "Cambio de clave", $pagina);
@@ -303,8 +321,10 @@ class controlador_mvc extends manejador {
                     }
 
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
                     $contenido = $this->load_page("vistas/html/menuUsuario.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Cambio de clave", $pagina);
@@ -333,8 +353,10 @@ class controlador_mvc extends manejador {
             } else {
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
                     $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
@@ -343,8 +365,10 @@ class controlador_mvc extends manejador {
                     $this->modal($this->getMensajeManejador());
                 } else {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
                     $contenido = $this->load_page("vistas/html/AlumnoPractico.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "A practicar", $pagina);
@@ -463,7 +487,9 @@ class controlador_mvc extends manejador {
             $this->inicio();
         } else {
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
@@ -596,7 +622,9 @@ class controlador_mvc extends manejador {
         . "</thead>";
         
         $pagina = $this->load_template("inicio");
+        $head = $this->load_page("vistas/html/headPrincipal.html");
         $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
         $pagina = $this->replace_content("/Header/", $header, $pagina);
         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
         $pagina = $this->replace_content("/Titulo/", "Alumnos", $pagina);
@@ -671,7 +699,9 @@ class controlador_mvc extends manejador {
         . "</thead>";
         
         $pagina = $this->load_template("inicio");
+        $head = $this->load_page("vistas/html/headPrincipal.html");
         $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
         $pagina = $this->replace_content("/Header/", $header, $pagina);
         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
         $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
@@ -753,7 +783,9 @@ class controlador_mvc extends manejador {
         . "</thead>";
         
         $pagina = $this->load_template("inicio");
+        $head = $this->load_page("vistas/html/headPrincipal.html");
         $header = $this->load_page("vistas/html/headerLogueado.html");
+        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
         $pagina = $this->replace_content("/Header/", $header, $pagina);
         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
         $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
@@ -848,7 +880,9 @@ class controlador_mvc extends manejador {
             ."<select class='form-control' id='select' name='asignarCurso'>";
             
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Agregar Alumnos", $pagina);
@@ -992,7 +1026,9 @@ class controlador_mvc extends manejador {
             ."<select class='form-control' id='select' name='asignarCurso'>";
             
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Agregar Profesor", $pagina);
@@ -1109,7 +1145,9 @@ class controlador_mvc extends manejador {
             ."</div>"      ;  
                                            
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Agregar Curso", $pagina);
