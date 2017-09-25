@@ -83,16 +83,10 @@
                     }
                 }
             }
-
-            function guardarPosicionEntidad(ladoIzquierdo, ladoDerecho) {
-                if(ladoIzquierdo === undefined) {
-                    ladoIzquierdo = "false";
-                }
-                if(ladoDerecho === undefined) {
-                    ladoDerecho = "false";
-                }
-                sessionStorage.setItem("ladoIzquierdo", ladoIzquierdo);
-                sessionStorage.setItem("ladoDerecho", ladoDerecho);
+            
+            function guardarLadosRelaciones() {
+                sessionStorage.setItem("izquierda", "false");
+                sessionStorage.setItem("derecha", "false");
             }
 
             function validarPosicionEntidad(idRelacion, idEntidad) {
@@ -112,10 +106,13 @@
                 var maxAlto = yRelacion+20;
 
                 var divHijo = document.getElementById(idEntidad).childNodes[1];
-
-                if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
-                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
-                    if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                
+                var izquierda = xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda;
+                var derecha = xEntidad <= minXDerecha && xEntidad >= maxXDerecha;
+                var alto = yEntidad >= minAlto && yEntidad <= maxAlto;
+                
+                if(izquierda || derecha) {
+                    if(alto) {
                         divHijo.style.backgroundColor = "green";
                         //var mensaje = "Ok";
                     }
@@ -134,7 +131,7 @@
         </script>
         <title>A practicar</title>
     </head>
-    <body>
+    <body onload="guardarLadosRelaciones()">
         <!-- <button onclick="validarPosicionObjeto('relacion1', 'entidad2')">Posicion</button>-->
         <!-- header -->
         <nav class="navbar navbar-default">
@@ -171,19 +168,18 @@
                 </li>
             </ul>
         </div>
-
+        <p id="texto"></p>
         <div class="col-lg-2">
             <div id="snaptarget" class="ui-widget-header">
+                <div class="form" align="left">
+                    <div id="agregacion" class="draggable ui-widget-content">
 
-                    <!-- agregacion -->
-                    <div id="agregacion" class="draggable ui-widget-content"></div>
-
-                    <!-- Entidad con 1 atributo -->
+                    </div>
                     <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
                         <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15"></div>
                         <div id="lineaAtributo1"></div>
                     </div>
-
+                </div>
 
                     <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
                         <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15"></div>

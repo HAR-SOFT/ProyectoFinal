@@ -7,23 +7,23 @@ class controlador_mvc extends manejador {
 
     private $mensaje;
     private $usuario;
+    private $ciUsuario;
     private $nombreUsuario;
     private $apellidoUsuario;
+    private $claveActualUsuario;
+    private $categoriaUsuario;
+    private $cursoUsuario;
 
     public function getMensaje() {
         return $this->mensaje;
-    }
-
-    public function setMensaje($mensaje) {
-        $this->mensaje = $mensaje;
     }
 
     public function getUsuario() {
         return $this->usuario;
     }
 
-    public function setUsuario($usuario) {
-        $this->usuario = $usuario;
+    public function getCiUsuario() {
+        return $this->ciUsuario;
     }
 
     public function getNombreUsuario() {
@@ -34,6 +34,30 @@ class controlador_mvc extends manejador {
         return $this->apellidoUsuario;
     }
 
+    public function getClaveActualUsuario() {
+        return $this->claveActualUsuario;
+    }
+
+    public function getCategoriaUsuario() {
+        return $this->categoriaUsuario;
+    }
+
+    public function getCursoUsuario() {
+        return $this->cursoUsuario;
+    }
+
+    public function setMensaje($mensaje) {
+        $this->mensaje = $mensaje;
+    }
+
+    public function setUsuario($usuario) {
+        $this->usuario = $usuario;
+    }
+
+    public function setCiUsuario($ciUsuario) {
+        $this->ciUsuario = $ciUsuario;
+    }
+
     public function setNombreUsuario($nombreUsuario) {
         $this->nombreUsuario = $nombreUsuario;
     }
@@ -42,6 +66,19 @@ class controlador_mvc extends manejador {
         $this->apellidoUsuario = $apellidoUsuario;
     }
 
+    public function setClaveActualUsuario($claveActualUsuario) {
+        $this->claveActualUsuario = $claveActualUsuario;
+    }
+
+    public function setCategoriaUsuario($categoriaUsuario) {
+        $this->categoriaUsuario = $categoriaUsuario;
+    }
+
+    public function setCursoUsuario($cursoUsuario) {
+        $this->cursoUsuario = $cursoUsuario;
+    }
+
+    
     public function load_template($title = "Sin Titulo") {
         $pagina = $this->load_page("vistas/plantilla.php");
         return $pagina;
@@ -107,7 +144,6 @@ class controlador_mvc extends manejador {
 
                 $this->login($ci, $clave);
 
-                //var_dump($this->getMensajeManejador());
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
                     $header = $this->load_page("vistas/html/headerInicio.html");
@@ -119,26 +155,27 @@ class controlador_mvc extends manejador {
                     $this->modal($this->getMensajeManejador());
                 } else {
                     session_start();
+                    
                     $_SESSION["ciUsuario"] = $this->getCiUsuarioManejador();
                     $_SESSION["nombreUsuario"] = $this->getNombreUsuarioManejador();
                     $_SESSION["apellidoUsuario"] = $this->getApellidoUsuarioManejador();
-                    $_SESSION["claveUsuario"] = $this->getClaveActualUsuarioManejador();
+                    $_SESSION["claveActualUsuario"] = $this->getClaveActualUsuarioManejador();
                     $_SESSION["categoriaUsuario"] = $this->getCategoriaUsuarioManejador();
                     $_SESSION["cursoUsuario"] = $this->getCursoUsuarioManejador();
-                    switch (get_class($this->getUsuarioManejador())) {
+                    $_SESSION["usuario"] = $this->getUsuarioManejador();
+                    
+                    switch (get_class($_SESSION["usuario"])) {
                         case("alumno");
                             $pagina = $this->load_template("inicio");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
-                            $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
-                            $pagina = $this->replace_content("/Contenido/", $this->menuAlumno(), $pagina);
+                            $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
                             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                             break;
                         case("profesor");
                             $pagina = $this->load_template("inicio");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
-                            $contenido = $this->load_page("vistas/html/Profesor.html");
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
@@ -167,28 +204,26 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            if (!$_SESSION) {
+            if (!isset($_SESSION["ciUsuario"])) {
                 $this->inicio();
             } else {
                 $pagina = $this->load_template("inicio");
-                switch ($_SESSION["categoriaUsuario"]) {
-                    case("Alumno");
+                switch (get_class($_SESSION["usuario"])) {
+                    case("alumno");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
-                        $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
-                        $pagina = $this->replace_content("/Contenido/", $this->menuAlumno(), $pagina);
+                        $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
-                    case("Profesor");
+                    case("profesor");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
-                        $contenido = $this->load_page("vistas/html/Profesor.html");
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
-                    case("Administrativo");
+                    case("administrativo");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Administrativo.html");
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
@@ -197,7 +232,7 @@ class controlador_mvc extends manejador {
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                 }
-
+                
                 $this->view_page($pagina);
             }
         } catch (Exception $ex) {
@@ -208,12 +243,15 @@ class controlador_mvc extends manejador {
     public function cerrarSesion() {
         try {
             session_start();
+            
             unset($_SESSION["ciUsuario"]);
             unset($_SESSION["nombreUsuario"]);
             unset($_SESSION["apellidoUsuario"]);
-            unset($_SESSION["claveUsuario"]);
+            unset($_SESSION["claveActualUsuario"]);
             unset($_SESSION["categoriaUsuario"]);
             unset($_SESSION["cursoUsuario"]);
+            unset($_SESSION["usuario"]);
+                    
             session_destroy();
 
             $this->inicio();
@@ -226,7 +264,7 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            if (!$_SESSION) {
+            if (!isset($_SESSION["ciUsuario"])) {
                 $this->inicio();
             } else {
                 $pagina = $this->load_template("inicio");
@@ -247,7 +285,7 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            if (!$_SESSION) {
+            if (!isset($_SESSION["ciUsuario"])) {
                 $this->inicio();
             } else {
                 if (isset($_REQUEST["aceptar"])) {
@@ -288,10 +326,10 @@ class controlador_mvc extends manejador {
     public function ejercicio() {
         try {
             $mer = $this->armarMerSolucionSistema("PerroCucha");
-            //var_dump($this->armarMerSolucionSistema("PerroCucha"));
+            var_dump($this->armarMerSolucionSistema("PerroCucha"));
             session_start();
 
-            if (!$_SESSION) {
+            if (!isset($_SESSION["ciUsuario"])) {
                 $this->inicio();
             } else {
                 if (!$this->getMensajeManejador() == NULL) {
@@ -327,194 +365,114 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-
-    public function menuAlumno() {
+    
+    public function menuTemasCurso() {
         try {
-            // <!-- Columnas -->
-            echo "<div class='col-lg-2'>"
+            $contenido = "<div class='col-lg-2'>"
             . "<ul class='nav nav-pills nav-stacked'>"
-            . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
-
+            . "<li class='dropdown-menu'><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=Introduccion'>Introduccion</a></li>";
+            
             $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
-            $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
+            
+            for ($i = 0; $i < sizeof($tema); $i++) {
+                $nombreTema = $tema[$i]["nombre_tema"];
+                $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $nombreTema);
+                //si hay subtemas
+ 
+                if (!$subTemas[0][0] == NULL) {
+                    $contenido = $contenido. "<li class='active'>"
+                    . "<a class='dropdown-toggle' data-toggle='dropdown'"
+                    . " href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=$nombreTema' aria-expanded='false'>"
+                    . $nombreTema
+                    . "<span class='caret'></span></a>";
 
-            //itera sobre el Tema
-            foreach ($tema as $menu => $menu_tema) {
-                echo "<li class='active'>"
-                . "<a class='dropdown-toggle' data-toggle='dropdown'"
-                . " href='' aria-expanded='false'>"
-                . $menu_tema['nombre_tema']
-                . "<span class='caret'></span></a>";
+                    $contenido = $contenido. "<ul class='dropdown-menu'>";
 
-                //si es distinto de NULL
-                if (!$subTemas == NULL) {
-                    echo "<ul class='dropdown-menu'>";
-
-                    foreach ($subTemas as $sub => $sub_tema) {
-                        echo "<li><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema'>" 
-                        . $sub_tema['nombre_subtema'] . "</a></li>";
+                    for ($x = 0; $x < sizeof($subTemas); $x++) {
+                        $subTemaAVer = $subTemas[$x][0];
+                        $contenido = $contenido. "<li><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&subtema=$subTemaAVer'>" 
+                        . $subTemaAVer . "</a></li>";
                     }
 
-                    echo "</ul></li>";
+                    $contenido = $contenido. "</ul></li>";
                 } else {
-                    echo "</li>";
+                    $contenido = $contenido. "<li class='active'>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=$nombreTema'>"
+                    . $nombreTema
+                    . "</a>"
+                    . "</li>";
                 }
             }
-            echo "</ul>";
-            echo "</div>"
-            . "<div>"
-            . "<div class='container'>"
-            . "<div class='item'>"
-            . "<div class='jumbotron'>"
-            . "<h1>Introduccion</h1>"
-            . "<p>Modelo conceptual gráfico, usado para representar "
-            . "estructuras que almacenan información.No contiene lenguaje "
-            . "para representar operaciones de manipulación información. "
-            . "Se utilizan Entidades, Conjuntos de Entidades y Relaciones</p>"
-            . "<p align='right'>"
-            . "<input type='button' class='btn btn-primary btn-lg' value='Practica tu mismo' onClick='' />"
-            . "</p>"
-            . "</div>"
-            . "</div>"
-            . "</div>"
-            . "</div>";
+            
+            $contenido = $contenido. "</ul></div>";
+            
+            return $contenido;
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-
-//    public function verTema() {
-//        session_start();
-//
-//        // <!-- Columnas -->
-//        echo "<div class='col-lg-2'>"
-//        . "<ul class='nav nav-pills nav-stacked'>"
-//        . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
-//
-//        $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
-//        $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
-//
-//        //itera sobre el Tema
-//        foreach ($tema as $menu => $menu_tema) {
-//            echo "<li class='active'>"
-//            . "<a class='dropdown-toggle' data-toggle='dropdown'"
-//            . " href='' aria-expanded='false'>"
-//            . $menu_tema['nombre_tema']
-//            . "<span class='aret'></span></a>";
-//
-//            //si es distinto de NULL
-//            if (!$subTemas == NULL) {
-//                echo "<ul class='dropdown-menu'>";
-//
-//                foreach ($subTemas as $sub => $sub_tema) {
-//                    echo "<li><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema'>" 
-//                    . $sub_tema["nombre_subtema"] . "</a></li>";
-//                }
-//
-//                echo "</ul></li>";
-//            } else {
-//                echo "</li>";
-//            }
-//        }
-//        echo "</ul>";
-//        echo "</div>"
-//        . "<div>"
-//        . "<div class='container'>"
-//        . "<div class='item'>"
-//        . "<div class='jumbotron'>"
-//        . "<h2>";
-//        echo $sub_tema['nombre_subtema'] . "</h2>"
-//        . "<p>";
-//
-//        $this->temaManejador($sub_tema['nombre_subtema']);
-//
-//        echo "</p>"
-//        . "<p align='right'>"
-//        . "<input type='button' class='btn btn-primary btn-lg' value='Practica tu mismo' onClick='' />"
-//        . "</p>"
-//        . "</div>"
-//        . "</div>"
-//        . "</div>"
-//        . "</div>";
-//
-//        $pagina = $this->load_template("inicio");
-//        $header = $this->load_page("vistas/html/headerLogueado.html");
-//        //$contenido = $this->load_page("vistas/html/AlumnoTeorico.html");                    
-//        $pagina = $this->replace_content("/Header/", $header, $pagina);
-//        //$contenido = $this->menuAlumno();                        
-//        //$pagina = $this->replace_content('/Contenido/',$contenido ,$pagina);
-//        $pagina = $this->replace_content("/Titulo/", $sub_tema["nombre_subtema"], $pagina);
-//        $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-//        $this->view_page($pagina);
-//    }
     
-    public function verTema() {
-        session_start();
-        
-      // <!-- Columnas -->
-        echo "<div class='col-lg-2'>"
-                . "<ul class='nav nav-pills nav-stacked'>"
-                . "<li class='dropdown-menu'><a href='#'>Introduccion</a></li>";
-
-        
-        $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
-        $subTemas = $this->listarSubTemasPorCursoYTema($_SESSION["cursoUsuario"], $tema);
-        
-        //itera sobre el Tema
-        foreach ($tema as $menu => $menu_tema) {
-            echo "<li class='active'>"
-            . "<a class='dropdown-toggle' data-toggle='dropdown'"
-            . " href='' aria-expanded='false'> "
-            . $menu_tema['nombre_tema']
-            . "<span class='caret'></span></a>";
-        
-            //si es distinto de NULL
-           
-            if (!$subTemas == NULL) {
-                echo "<ul class='dropdown-menu'>";
-                
-                foreach ($subTemas as $sub => $sub_tema){    
-                    echo " <li><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=tema' >" 
-                    . $sub_tema['nombre_subtema'] 
-                    . "</a></li>";
+    public function menuTemasCursoYLetra() {
+        try {
+            if (isset($_REQUEST["tema"])) {
+                $tema = $_REQUEST["tema"];
+                $subtema = false;
+            } 
+            else {
+                if (isset($_REQUEST["subtema"])) {
+                    $tema = $_REQUEST["subtema"];
+                    $subtema = true;
+                } 
+                else {
+                    $tema = "Introduccion";
+                    $subtema = false;
                 }
-                echo "</ul></li>";
-            } else {
-                echo "</li>";
             }
+            
+            $contenido = $this->menuTemasCurso();
+
+            $contenido = $contenido. "<div class='col-lg-2'>"
+            . "<div class='container'>"
+            . "<div class='item'>"
+            . "<div class='jumbotron'>"
+            . "<h2>";
+            $contenido = $contenido. $tema ."</h2>"
+            . "<p>";
+
+            $letra = $this->temaManejador($tema, $subtema);
+
+            $contenido = $contenido. $letra[0][0];
+
+            $contenido = $contenido. "</p>"
+            . "</div>"
+            . "<div class='form' align='right'>"
+            . "<button type='submit' class='btn btn-primary btn-lg' name='practica'>Practica tu mismo</button>"
+            . "</div>"
+            . "</div>"
+            . "</div>";
+
+            return $contenido;
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
-        echo "</ul>";
-        echo "</div>"
-        . "<div>"
-        . "<div class='container'>"
-        . "<div class='item'>"
-        . "<div class='jumbotron'>"
-        . "<h2>";
-        echo $sub_tema['nombre_subtema'] ."</h2>"
-        . "<p>";
-                    
-        $this->temaManejador($sub_tema["nombre_subtema"]);
-                
-        echo "</p>"
-        . "<p align='right'>"
-        . "<input type='button' class='btn btn-primary btn-lg' value='Practica tu mismo' onClick='' />"
-        . "</p>"
-        . "</div>"
-        . "</div>"
-        . "</div>"
-        . "</div>"; 
-                
-        $pagina = $this->load_template("inicio");
-        $header = $this->load_page("vistas/html/headerLogueado.html"); 
-        //$contenido = $this->load_page("vistas/html/AlumnoTeorico.html");                    
-        $pagina = $this->replace_content('/Header/',$header , $pagina);                            
-        //$contenido = $this->menuAlumno();                        
-        //$pagina = $this->replace_content('/Contenido/',$contenido ,$pagina);
-        $pagina = $this->replace_content('/Titulo/', $sub_tema['nombre_subtema'], $pagina);
-        $pagina = $this->replace_content('/NombreUsuario/', $_SESSION["nombreUsuario"]. " ". $_SESSION["apellidoUsuario"], $pagina);
-        $this->view_page($pagina);        
     }
     
+    public function teoricoCurso() {
+        session_start();
+
+        if (!isset($_SESSION["ciUsuario"])) {
+            $this->inicio();
+        } else {
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
+        }
+    }
     
     public function cursosProfesor() {
         try {
@@ -534,7 +492,11 @@ class controlador_mvc extends manejador {
             . "</th>"
             . "<th>"
             . "<div class='form'>"
+
             . "<label class='control-label'>Temas</label>"
+
+            . "<label class='control-label'>Tema</label>"
+
             . "</div>"
             . "</th>"
             . "<th>"
@@ -552,6 +514,7 @@ class controlador_mvc extends manejador {
 
             $ciUsuario = $_SESSION["ciUsuario"];
             $resultado = $this->cursoAsingadosProfesor($ciUsuario);
+
         
             if(!$resultado){            
                 $this->modal("No tiene sin Curso asginado");  
@@ -574,10 +537,31 @@ class controlador_mvc extends manejador {
                     . "</tr>"
                     . "</tbody>";
                 }        
+
+
+            foreach ($resultado as $fila) {
+                echo "<tbody>"
+                . "<tr class='info'>"
+                . "<td></td>"
+                . "<td></td>"
+                . "<td></td>"
+                . "<td></td>"
+                . "<td></td>"
+                . "</tr>"
+                . "<tr class='active'>"
+                . "<td>" . $fila['nombre_curso'] . "</td>"
+                . "<td>" . $fila['horario'] . "</td>"
+                . "<td>" . $fila['tema'] . "</td>"
+                . "<td>" . $fila['estado'] . "</td>"
+                . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
+                . "</tr>"
+                . "</tbody>";
+
             }
-        } catch (Exception $ex) {
+        } 
+        }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        }
+         }
     }
     public function editarCurso() {
         try {            
@@ -775,6 +759,7 @@ class controlador_mvc extends manejador {
          try {
              session_start();
        
+
              $contenido = "<div>"
              . "<div class='page-header' id='tables'>"
              . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
@@ -812,6 +797,45 @@ class controlador_mvc extends manejador {
              . "</div>"
              . "</th>"
              . "</thead>";
+
+        $contenido = "<div>"
+        . "<div class='page-header' id='tables'>"
+        . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
+        . "</div>"
+        . "<div class='item'>"
+        . "<table class='table table-striped table-hover'>"
+        . "<thead>"
+        . "<tr class='danger'>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Curso</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
+        . "</div>"
+        . "</th>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Año</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
+        . "</div>"
+        . "</th>"
+        . "<th><div class='form'>"
+        . "<label class='control-label'>Horario</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
+        . "</div>"
+        . "</th>". "<th><div class='form'>"
+        . "<label class='control-label'>Profesor</label>"
+        . "<div class='input'>"
+        . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
+        . "</div>"
+        . "</th>"
+        . "<th>"
+        . "<div class='form'>"
+        . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+        . "</div>"
+        . "</th>"
+        . "</thead>";
+
         
              $pagina = $this->load_template("inicio");
              $header = $this->load_page("vistas/html/headerLogueado.html");
