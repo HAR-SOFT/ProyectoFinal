@@ -65,6 +65,7 @@ else {
             break;
         case "temarioCurso":
             $mvc->teoricoCurso();
+             break;
          case "asignarCursoAlumno":
             $mvc->asignarCursoAlumnos();
             break;
