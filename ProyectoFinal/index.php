@@ -62,7 +62,19 @@ else {
             break;
         case "agregoCurso":
             $mvc->agregoCurso();
-            break;   
+            break;
+         case "asignarCursoAlumno":
+            $mvc->asignarCursoAlumnos();
+            break;
+        case "asignarCursoProfesor":
+            $mvc->asignarCursoProfesores();
+            break;
+        case "asignoCursoAlumnos":
+            $mvc->asignoCursoAlumnos();
+            break;
+        case "asignoCursoProfesores":
+            $mvc->asignoCursoProfesores();
+            break;
     }
 }
 

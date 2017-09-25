@@ -19,8 +19,11 @@
         <script src="vistas/js/bootstrap.js"></script>
         <script src="vistas/js/app.js"></script>
         <script src="vistas/js/custom.js"></script>
+        <script src="vistas/js/noback.js"></script>
+        <script src="vistas/js/buscador.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </head>
-    <body>
+    <body onload="deshabilitaRetroceso()">
         <!-- Inicio header  -->
         Header
         <!-- Fin header  -->
