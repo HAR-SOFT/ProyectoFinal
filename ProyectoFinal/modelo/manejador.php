@@ -133,7 +133,27 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarAlumnosPorCurso);
     }
+    
+    public function listarAlumnosSinCurso() {
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno ,"
+                . "ci as ci , 'Sin Curso Asignado' as curso "
+                . "FROM dim_usuario WHERE categoria_usuario = 'Alumno' "
+                . "and ci NOT IN (select ci_usuario from asc_curso_usuario);";
+        $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
 
+        return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
+    }
+    
+    public function listarProfesoresSinCurso() {
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
+                . "ci as ci , 'Sin Curso Asignado' as curso "
+                . "FROM dim_usuario WHERE categoria_usuario = 'Profesor' "
+                . "and ci NOT IN (select ci_usuario from asc_curso_usuario);";
+        $msjlistarProfesoresSinCurso = "No hay profesores para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarProfesoresSinCurso);
+    }
+    
     public function buscarCursoDeUsuario($ciUsuario) {
         $this->query = "SELECT C.nombre_curso"
                 . " FROM asc_curso_usuario AS C"
@@ -162,10 +182,10 @@ class manejador extends conexionDB {
                 . " AND dt.nombre = asctse.nombre_tema"
                 . " AND curso.nombre = c.nombre_curso"
                 . " GROUP BY nombre_curso , horario ,ejercicio,estado;";
-        $cursoAsingadosProfesor = "No tiene ningún curso activo asigando."
+        $msjcursoAsingadosProfesor = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
-        return $this->ejecutarQuery($this->query, $cursoAsingadosProfesor);
+        return $this->ejecutarQuery($this->query, $msjcursoAsingadosProfesor);
     }
 
     public function editarCursoManejador($nombreCurso) {
@@ -185,10 +205,10 @@ class manejador extends conexionDB {
                 . " AND dt.nombre = asctse.nombre_tema"
                 . " AND curso.nombre = c.nombre_curso"
                 . " group by nombre_curso , tema ,nombre_subtema, ejercicio";
-        $editarCurso = "No tiene ningún curso activo asigando."
+        $msjeditarCurso = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
-        return $this->ejecutarQuery($this->query, $editarCurso);
+        return $this->ejecutarQuery($this->query, $msjeditarCurso);
     }
 
     public function listarCursosActivos() {
@@ -502,12 +522,24 @@ class manejador extends conexionDB {
     }
 
      public function asignarCursoUsuario($curso,$ci) {
+       $cedula = $ci[0];
+         
         $this->query = "INSERT INTO asc_curso_usuario "
                 . "(nombre_curso , ci_usuario) VALUE "
-                . "('$curso',$ci);";
-        $msjasignarCursoUsuario = "No hay temas para el curso seleccionado.";
+                . "('$curso',$cedula);";
+        $msjasignarCursoUsuario = "No se pudo ingresar al curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuario);
+    }
+       
+    
+     public function asignarCursoUsuarios($valores) {                
+        $this->query = "INSERT INTO asc_curso_usuario "
+                . "(nombre_curso , ci_usuario)"
+                . " VALUE ($valores);";
+        $msjasignarCursoUsuarios = "No se pudo ingresar al curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjasignarCursoUsuarios);
     }
     
     public function temaManejador($tema, $subtema) {

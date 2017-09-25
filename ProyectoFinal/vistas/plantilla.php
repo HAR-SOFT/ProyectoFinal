@@ -3,7 +3,7 @@
     <!-- Inicio head  -->
     HeadHTML
     <!-- Fin head  -->
-    <body>
+    <body onload="deshabilitaRetroceso()">
         <!-- Inicio header  -->
         Header
         <!-- Fin header  -->

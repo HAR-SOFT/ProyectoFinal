@@ -65,6 +65,18 @@ else {
             break;
         case "temarioCurso":
             $mvc->teoricoCurso();
+             break;
+         case "asignarCursoAlumno":
+            $mvc->asignarCursoAlumnos();
+            break;
+        case "asignarCursoProfesor":
+            $mvc->asignarCursoProfesores();
+            break;
+        case "asignoCursoAlumnos":
+            $mvc->asignoCursoAlumnos();
+            break;
+        case "asignoCursoProfesores":
+            $mvc->asignoCursoProfesores();
             break;
     }
 }
