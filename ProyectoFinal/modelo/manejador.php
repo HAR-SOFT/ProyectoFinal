@@ -542,20 +542,14 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuarios);
     }
     
-    public function temaManejador($tema) {
-        $this->query = "SELECT"
-                . " dt.letra"
-                . " FROM"
-                . " dim_subtema dt"
-                . " WHERE"
-                . " dt.nombre = '$tema'";
-        $this->mensaje = "No hay letra para ese tema";
-        
-        $resultado = $this->ejecutarQuery($this->query, $this->mensaje);
-
-        if ($resultado) {
-            foreach ($resultado as $letra)
-                echo $letra["letra"];
+    public function temaManejador($tema, $subtema) {
+        if($subtema == true) {
+            $this->query = "SELECT"
+                    . " dt.letra"
+                    . " FROM"
+                    . " dim_subtema dt"
+                    . " WHERE"
+                    . " dt.nombre = '$tema'";
         } else {
             $this->query = "SELECT"
                     . " dt.letra"

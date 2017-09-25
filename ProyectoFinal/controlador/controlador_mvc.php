@@ -492,11 +492,7 @@ class controlador_mvc extends manejador {
             . "</th>"
             . "<th>"
             . "<div class='form'>"
-
-            . "<label class='control-label'>Temas</label>"
-
             . "<label class='control-label'>Tema</label>"
-
             . "</div>"
             . "</th>"
             . "<th>"
@@ -515,30 +511,6 @@ class controlador_mvc extends manejador {
             $ciUsuario = $_SESSION["ciUsuario"];
             $resultado = $this->cursoAsingadosProfesor($ciUsuario);
 
-        
-            if(!$resultado){            
-                $this->modal("No tiene sin Curso asginado");  
-            }else{
-                foreach ($resultado as $fila) {
-                    echo "<tbody>"
-                    . "<tr class='info'>"
-                    . "<td></td>"
-                    . "<td></td>"
-                    . "<td></td>"
-                    . "<td></td>"
-                    . "<td></td>"
-                    . "</tr>"
-                    . "<tr class='active'>"
-                    . "<td>" . $fila['nombre_curso'] . "</td>"
-                    . "<td>" . $fila['horario'] . "</td>"
-                    . "<td>" . $fila['tema'] . "</td>"
-                    . "<td>" . $fila['estado'] . "</td>"
-                    . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
-                    . "</tr>"
-                    . "</tbody>";
-                }        
-
-
             foreach ($resultado as $fila) {
                 echo "<tbody>"
                 . "<tr class='info'>"
@@ -556,37 +528,35 @@ class controlador_mvc extends manejador {
                 . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
                 . "</tr>"
                 . "</tbody>";
-
             }
-        } 
-        }catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-         }
-    }
-    public function editarCurso() {
-        try {            
-        $resultado = $this->editarCursoManejador("ATI2017");
-            foreach ($resultado as $fila) {
-               echo "<tbody>"
-                 . "<tr class='info'>"
-                 . "<td></td>"
-                 . "<td></td>"
-                 . "<td></td>"
-                 . "<td></td>"
-                 . "<td></td>"
-                 . "</tr>"
-                 . "<tr class='active'>"
-                 . "<td>" . $fila['nombre_curso'] . "</td>"
-                 . "<td>" . $fila['horario'] . "</td>"
-                 . "<td>" . $fila['tema'] . "</td>"
-                 . "<td>" . $fila['estado'] . "</td>"
-                 . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
-                 . "</tr>"
-                 . "</tbody>";
-            }
-        
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+
+    public function editarCurso() {
+        //session_start();
+        //$curso =  'ATI2017';
+
+        $resultado = $this->editarCurso("ATI2017");
+
+        foreach ($resultado as $fila) {
+            echo "<tbody>"
+            . "<tr class='info'>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "<td></td>"
+            . "</tr>"
+            . "<tr class='active'>"
+            . "<td>" . $fila['nombre_curso'] . "</td>"
+            . "<td>" . $fila['horario'] . "</td>"
+            . "<td>" . $fila['tema'] . "</td>"
+            . "<td>" . $fila['estado'] . "</td>"
+            . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
+            . "</tr>"
+            . "</tbody>";
         }
     }
 
@@ -759,45 +729,6 @@ class controlador_mvc extends manejador {
          try {
              session_start();
        
-
-             $contenido = "<div>"
-             . "<div class='page-header' id='tables'>"
-             . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
-             . "</div>"
-             . "<div class='item'>"
-             . "<table class='table table-striped table-hover'>"
-             . "<thead>"
-             . "<tr class='danger'>"
-             . "<th><div class='form'>"
-             . "<label class='control-label'>Curso</label>"
-             . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
-             . "</div>"
-             . "</th>"
-             . "<th><div class='form'>"
-             . "<label class='control-label'>Año</label>"
-             . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
-             . "</div>"
-             . "</th>"
-             . "<th><div class='form'>"
-             . "<label class='control-label'>Horario</label>"
-             . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
-             . "</div>"
-             . "</th>". "<th><div class='form'>"
-             . "<label class='control-label'>Profesor</label>"
-             . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
-             . "</div>"
-             . "</th>"
-             . "<th>"
-             . "<div class='form'>"
-             . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
-             . "</div>"
-             . "</th>"
-             . "</thead>";
-
         $contenido = "<div>"
         . "<div class='page-header' id='tables'>"
         . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
