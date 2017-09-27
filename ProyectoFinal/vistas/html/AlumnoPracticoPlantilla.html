@@ -151,9 +151,10 @@
 
         //alert(mensaje);
     }
-    
-    
-    
+
+
+
+
     </script>
     <title>A practicar</title>
 </head>
@@ -210,58 +211,63 @@
             <!-- Entidad con 1 atributo -->
             <!-- con funcion onmousemove=validarPosicionEntidad -->
             <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
-                    <input id="inputEnt" type="tel" name="nombre" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
+                <div id="entidad" title=""><p></p><input id="inputEnt"  type="text" placeholder="Entidad" size="10" maxlength="15">
+                    <input id="inputEnt" type="tel" placeholder="cardi" size="1" maxlength="6">
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10">
+					</div>
                 </div>
             </div>
 
             <!-- Entidad con 2 atributo -->
             <!-- con funcion onmousemove=validarPosicionEntidad -->
             <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
-                    <input id="inputEnt" type="tel" name="nombre" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
-                    <div id="lineaAtributo2"></div>
+                <div id="entidad" title=""><p></p><input id="inputEnt" placeholder="Entidad" type="text" name="nombre" size="10" maxlength="15">
+                    <input id="inputEnt" type="tel" placeholder="cardi" name="nombre" size="1" maxlength="6">
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10">
+					</div>
+                    <div id="lineaAtributo2"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10">
+                    </div>
                 </div>
             </div>
 
             <!-- Entidad con 3 atributo -->
             <div id="entidad3" class="draggable ui-widget-content">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
-                    <input id="inputEnt" type="tel" name="nombre" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
-                    <div id="lineaAtributo2"></div>
-                    <div id="lineaAtributo3"></div>
+                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" placeholder="Entidad" size="10" maxlength="15">
+                    <input id="inputEnt" type="tel" placeholder="cardi" name="nombre" size="1" maxlength="6">
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10">
+					</div>
+                    <div id="lineaAtributo2"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10">
+                    </div>
+                    <div id="lineaAtributo3"><input type="text" id="inputAtr3" placeholder="Atributo" size="4" maxlength="10"></div>
                 </div>
             </div>
 
             <!-- Entidad con 2 atributos, uno de ellos multivaluado-->
             <div id="entidad4" class="draggable ui-widget-content">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
-                    <input id="inputEnt" type="tel" name="nombre" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
-                    <div id="lineaAtributo2Multi"></div>
-                    <div id="lineaAtributoMulti1"></div>
-                    <div id="lineaAtributoMulti2"></div>
+                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" name="nombre" size="10" maxlength="15">
+                    <input id="inputEnt" type="tel" name="nombre" placeholder="cardi" size="1" maxlength="6">
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributo2Multi"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributoMulti1"><input type="text" id="inputAtrMult1" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributoMulti2"><input type="text" id="inputAtrMult2" placeholder="Atributo" size="4" maxlength="10"></div>
                 </div>
             </div>
 
             <!-- Entidad con 3 atributo, uno de ellos multivaluado -->
             <div id="entidad5" class="draggable ui-widget-content">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
-                    <input id="inputEnt" type="tel" name="nombre" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
-                    <div id="lineaAtributo2Multi"></div>
-                    <div id="lineaAtributoMulti1"></div>
-                    <div id="lineaAtributoMulti2"></div>
-                    <div id="lineaAtributo3"></div>
+                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" name="nombre" size="10" maxlength="15">
+                    <input id="inputEnt" type="tel" name="nombre" placeholder="cardi" size="1" maxlength="6">
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributo2Multi"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributoMulti1"><input type="text" id="inputAtrMult1" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributoMulti2"><input type="text" id="inputAtrMult2" placeholder="Atributo" size="4" maxlength="10"></div>
+                    <div id="lineaAtributo3"><input type="text" id="inputAtr3" placeholder="Atributo" size="4" maxlength="10"></div>
                 </div>
             </div>
 
             <!-- categorizacion con dos "hijos"-->
             <div id="categorizacionDrag" class="draggable ui-widget-content">
-                <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                <div id="entidad" title=""><br><input id="inputEnt" placeholder="Entidad" type="text" name="nombre" size="10" maxlength="15">
                     <div id="categorizacion"></div>
                     <div id="lineaCategorizacionIzq"></div>
                     <div id="lineaCategorizacionDer"></div>
@@ -270,7 +276,7 @@
 
             <!-- categorizacion con dos "hijos" totalidad  -->
             <div id="categorizacionDragTotalidad" class="draggable ui-widget-content">
-                <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                <div id="entidad" title=""><br><input id="inputEnt" placeholder="Entidad" type="text" name="nombre" size="10" maxlength="15">
                     <div id="totalidad"></div>
                     <div id="categorizacionTotalidad"></div>
                     <div id="lineaCategorizacionIzq"></div>
@@ -280,7 +286,7 @@
 
             <!-- categorizacion disjunta con dos "hijos" -->
             <div id="categorizacionDisDrag" class="draggable ui-widget-content">
-                <div id="entidad" title=""><br><input id="inputEnt" type="text" name="nombre" size="10" maxlength="15">
+                <div id="entidad" title=""><br><input id="inputEnt" placeholder="Entidad" type="text" name="nombre" size="10" maxlength="15">
                     <div id="categorizacion"></div>
                     <div id="disjunta"></div>
                     <div id="lineaCategorizacionIzq"></div>
@@ -291,7 +297,7 @@
             <!-- Relacion con 2 "relaciones" -->
             <!-- con funcion onmousemove=validarPosicionRelacion -->
             <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacion(this.id, ['entidad1','entidad2'])">
-                <div id="relacion" title=""><br><input id="inputRel" type="text" name="nombre" size="7" maxlength="15">
+                <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" name="nombre" size="7" maxlength="15">
                     <div id="lineaEntidadDerecha"></div>
                     <div id="lineaEntidadIzquierda"></div>
                 </div>
@@ -299,22 +305,16 @@
 
             <!-- Relacion con 2 "relaciones" y un atributo -->
             <div id="relacion2" class="draggable ui-widget-content">
-                <div id="relacion" title=""><br><input id="inputRel" type="text" name="nombre" size="7" maxlength="15">
+                <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" name="nombre" size="7" maxlength="15">
                     <div id="lineaEntidadDerecha"></div>
                     <div id="lineaEntidadIzquierda"></div>
-                    <div id="lineaAtributoRelacion"></div>
-                </div>
-            </div>
-
-            <div id="atributo1" class="draggable ui-widget-content">
-                <div id="atributo" class="well well-sm">
-                    Nombre
+                    <div id="lineaAtributoRelacion"><input type="text" id="inputAtrRel" placeholder="Atributo" size="4" maxlength="10"></div>
                 </div>
             </div>
 
             <!-- Autorelacion -->
             <div id="relacion3" class="draggable ui-widget-content">
-                <div id="relacion" title=""><br><input id="inputRel" type="text" name="nombre" size="7" maxlength="15">
+                <div id="relacion" title=""><br><input id="inputRel" type="text" name="nombre" placeholder="Relacion" size="7" maxlength="15">
                     <div id="lineaEntidadDerecha"></div>
                     <div id="lineaAutorelacionArriba"></div>
                     <div id="lineaAutorelacionIzquierda"></div>

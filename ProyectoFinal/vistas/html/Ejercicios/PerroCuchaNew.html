@@ -36,9 +36,6 @@
         $("#relacion1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#relacion2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#relacion3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
     });
 
     function posicionObjeto(idObjeto) {
@@ -195,7 +192,7 @@
             </li>
         </ul>
     </div>
-
+<br><br><br>
     <!-- Contenedor -->
     <div class="col-lg-9">
         <!-- Respetar el orden de creacion para que no se pisen los divs -->
@@ -204,30 +201,13 @@
         <!-- area de trabajo -->
         <div id="snaptarget" class="ui-widget-header">
 
-            <div id="atributo1" class="draggable ui-widget-content">
-                <div id="atributo"class="well well-sm">
-                    <input type="text" id="inputAtr" class="form-control" placeholder="Atributo" size="10">
-                </div>
-            </div>
-
-            <div id="atributo2" class="draggable ui-widget-content">
-                <div id="atributo"class="well well-sm">
-                    <input type="text" id="inputAtr" class="form-control" placeholder="Atributo" size="10">
-                </div>
-            </div>
-
-            <div id="atributo3" class="draggable ui-widget-content">
-                <div id="atributo"class="well well-sm">
-                    <input type="text" id="inputAtr" class="form-control" placeholder="Atributo" size="10">
-                </div>
-            </div>
-
             <!-- Entidad con 1 atributo -->
             <!-- con funcion onmousemove=validarPosicionEntidad -->
             <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-                <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" size="10" maxlength="15">
+                <div id="entidad" title=""><p></p><input id="inputEnt"  type="text" placeholder="Entidad" size="10" maxlength="15">
                     <input id="inputEnt" type="tel" placeholder="cardi" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10">
+					</div>
                 </div>
             </div>
 
@@ -236,8 +216,10 @@
             <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
                 <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" size="10" maxlength="15">
                     <input id="inputEnt" type="tel" placeholder="cardi" size="1" maxlength="6">
-                    <div id="lineaAtributo1"></div>
-                    <div id="lineaAtributo2"></div>
+                    <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10">
+					</div>
+                    <div id="lineaAtributo2"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10">
+                    </div>
                 </div>
             </div>
 
@@ -245,7 +227,7 @@
             <!-- Relacion con 2 "relaciones" -->
             <!-- con funcion onmousemove=validarPosicionRelacion -->
             <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacion(this.id, ['entidad1','entidad2'])">
-                <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" size="7" maxlength="15">
+                <div id="relacion" title=""><br><input id="inputRel" type="text"  placeholder="Relacion" size="7" maxlength="15">
                     <div id="lineaEntidadDerecha"></div>
                     <div id="lineaEntidadIzquierda"></div>
                 </div>
