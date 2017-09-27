@@ -6,8 +6,8 @@
         <link rel="stylesheet" href="vistas/css/bootstrap1.css">
         <link rel="stylesheet" href="vistas/css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/bootstrap1.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css.map">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/bootstrap.min.css.map">
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
         <script>
             function closeModal() {
                 $('#source-modal').hide();

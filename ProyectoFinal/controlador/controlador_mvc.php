@@ -441,7 +441,7 @@ class controlador_mvc extends manejador {
 
             $letra = $this->temaManejador($tema,$subtema);
 
-            $contenido = $contenido. $letra[0][0];
+            $contenido = $contenido. utf8_encode($letra[0][0]) ;
 
             $contenido = $contenido. "</p>"
             . "</div>";
@@ -450,9 +450,9 @@ class controlador_mvc extends manejador {
             
             if($ejercicio){
                foreach ($ejercicio as $ej){
-                       $contenido = $contenido. "<div class='form' align='left'>"                    
-                       . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-primary btn-lg' name='practica'>$ej[0]</button></a>"
-                       . "</div>";
+                       $contenido = $contenido. "<div class='col-lg-3'>"                    
+                       . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-primary btn-lg' name='practica'>Ejercicio $ej[0]</button></a>"
+                       . "</span></div>";
                };         
             $contenido = $contenido. "</div>";
             };
@@ -638,9 +638,8 @@ class controlador_mvc extends manejador {
             ."</form>"
             ."<br>"
             ."</p>"       
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'>Agregar alumno</a></button>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'>Alumnos sin Curso</a></button>";     
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='submit' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='submit' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";     
          } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
          }            
@@ -721,9 +720,8 @@ class controlador_mvc extends manejador {
             ."</form>"
             ."<br>"
             ."</p>"        
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'>Agregar Profesor</a></button>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'>Profesores sin Curso</a></button>";;     
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</a></button>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</a></button>";     
         
             } 
         } catch (Exception $ex) {
@@ -800,9 +798,8 @@ class controlador_mvc extends manejador {
              echo "</table>";
          
              echo "<br>"                
-             ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg' type='reset'>"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>Agregar Curso</a></button>"; 
-         
+             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</a></button>";
+
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
           }
@@ -1456,7 +1453,7 @@ class controlador_mvc extends manejador {
            $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);          
            //var_dump($letraEjercicio[0][0]);
            $verLetra = $letraEjercicio[0][0];
-            
+           
            $contenido = "<div class='col-lg-2'>"
            . "<ul class='nav nav-pills nav-stacked'>" 
            . "<li class='dropdown-menu'>$ejercicio</li>"
