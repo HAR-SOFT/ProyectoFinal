@@ -170,7 +170,7 @@ class manejador extends conexionDB {
                 . " c.nombre_curso as nombre_curso,"
                 . " curso.horario as horario,"
                 . " GROUP_CONCAT(DISTINCT dt.nombre SEPARATOR ' - ') as tema,"
-                . " asctse.nombre_ejercicio as ejercicio,"
+                . " GROUP_CONCAT(DISTINCT asctse.nombre_ejercicio SEPARATOR ' - ') as ejercicio,"
                 . " if(curso.estado = 1 , 'activo' , 'finalizado') as estado"
                 . " FROM"
                 . " asc_curso_usuario AS c,"
@@ -181,7 +181,7 @@ class manejador extends conexionDB {
                 . " AND c.nombre_curso = asctse.nombre_curso"
                 . " AND dt.nombre = asctse.nombre_tema"
                 . " AND curso.nombre = c.nombre_curso"
-                . " GROUP BY nombre_curso , horario ,ejercicio,estado;";
+                . " GROUP BY nombre_curso , horario ,estado;";
         $msjcursoAsingadosProfesor = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
