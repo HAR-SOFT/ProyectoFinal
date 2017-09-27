@@ -344,38 +344,38 @@ class controlador_mvc extends manejador {
 
     public function ejercicio() {
         try {
-            $mer = $this->armarMerSolucionSistema("PerroCucha");
-            var_dump($this->armarMerSolucionSistema("PerroCucha"));
+//            $mer = $this->armarMerSolucionSistema("PerroCucha");
+//            var_dump($this->armarMerSolucionSistema("PerroCucha"));
             session_start();
 
-            if (!isset($_SESSION["ciUsuario"])) {
-                $this->inicio();
-            } else {
+//            if (!isset($_SESSION["ciUsuario"])) {
+//                $this->inicio();
+//            } else {
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
-                    $head = $this->load_page("vistas/html/headPrincipal.html");
+                    $head = $this->load_page("vistas/html/headEjercicio.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
-                    $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
+                    $contenido = $this->load_page("vistas/html/ejercicios/PerroCucha.html");
                     $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                    $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+                    $pagina = $this->replace_content("/Titulo/", "Ejercicio", $pagina);
                     $pagina = $this->replace_content("/none/", "block", $pagina);
                     $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                     $this->modal($this->getMensajeManejador());
                 } else {
                     $pagina = $this->load_template("inicio");
-                    $head = $this->load_page("vistas/html/headPrincipal.html");
+                    $head = $this->load_page("vistas/html/headEjercicio.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
-                    $contenido = $this->load_page("vistas/html/AlumnoPractico.html");
+                    $contenido = $this->load_page("vistas/html/ejercicios/PerroCucha.html");
                     $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                    $pagina = $this->replace_content("/Titulo/", "A practicar", $pagina);
+                    $pagina = $this->replace_content("/Titulo/", "Ejercicio", $pagina);
                     $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                 }
                 $this->view_page($pagina);
-            }
+//            }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
