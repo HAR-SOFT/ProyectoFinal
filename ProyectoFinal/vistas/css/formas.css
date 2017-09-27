@@ -64,10 +64,45 @@
     margin-button:5px;
     border:1px solid #053E15;
 }
-#inputAtr{
-    margin-top:1px;
+#inputAtr1{
+    margin: 0px 0px 25px 30px;
     border:1px solid #053E15;
+    transform : rotate(45deg);
+    transform-origin: 50% ;
 }
+#inputAtr2{
+    margin: 0px 0px 0px 0px;
+    border:1px solid #053E15;
+    transform : rotate(-89deg);
+    transform-origin: 10% 100%;
+}
+#inputAtr3{
+    margin: 0px 0px 0px 0px;
+    border:1px solid #053E15;
+    transform : rotate(120deg);
+    transform-origin: 70%;
+}
+#inputAtrMult1{
+    margin: 0px 0px 0px 0px;
+    border:1px solid #053E15;
+    transform : rotate(45deg);
+    transform-origin: 95%;
+}
+#inputAtrMult2{
+    margin: 0px 0px 0px 0px;
+    border:1px solid #053E15;
+    transform : rotate(150deg);
+    transform-origin: 70%;
+}
+
+
+#inputAtrRel{
+    margin: 0px 0px 0px 0px;
+    border:1px solid #053E15;
+    transform : rotate(89deg);
+    transform-origin: 70% 70%;
+}
+
 #lineaAtributo1 {
     height: 1px;
     width: 50px;

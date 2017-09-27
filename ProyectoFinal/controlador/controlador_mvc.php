@@ -1,5 +1,4 @@
 <?php
-//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 require_once "modelo/manejador.php";
 
@@ -99,8 +98,10 @@ class controlador_mvc extends manejador {
     public function inicio() {
         try {
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerInicio.html");
             $contenido = $this->load_page("vistas/html/index.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
@@ -146,8 +147,10 @@ class controlador_mvc extends manejador {
 
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerInicio.html");
                     $contenido = $this->load_page("vistas/html/index.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
@@ -167,7 +170,9 @@ class controlador_mvc extends manejador {
                     switch (get_class($_SESSION["usuario"])) {
                         case("alumno");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
@@ -175,7 +180,9 @@ class controlador_mvc extends manejador {
                             break;
                         case("profesor");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
@@ -183,8 +190,10 @@ class controlador_mvc extends manejador {
                             break;
                         case("administrativo");
                             $pagina = $this->load_template("inicio");
+                            $head = $this->load_page("vistas/html/headPrincipal.html");
                             $header = $this->load_page("vistas/html/headerLogueado.html");
                             $contenido = $this->load_page("vistas/html/Administrativo.html");
+                            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                             $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
@@ -210,22 +219,28 @@ class controlador_mvc extends manejador {
                 $pagina = $this->load_template("inicio");
                 switch (get_class($_SESSION["usuario"])) {
                     case("alumno");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("profesor");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->cursosProfesor(), $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Cursos Asignados", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("administrativo");
+                        $head = $this->load_page("vistas/html/headPrincipal.html");
                         $header = $this->load_page("vistas/html/headerLogueado.html");
                         $contenido = $this->load_page("vistas/html/Administrativo.html");
+                        $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                         $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
@@ -268,8 +283,10 @@ class controlador_mvc extends manejador {
                 $this->inicio();
             } else {
                 $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
                 $header = $this->load_page("vistas/html/headerLogueado.html");
                 $contenido = $this->load_page("vistas/html/menuUsuario.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                 $pagina = $this->replace_content("/Header/", $header, $pagina);
                 $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                 $pagina = $this->replace_content("/Titulo/", "Cambio de clave", $pagina);
@@ -304,8 +321,10 @@ class controlador_mvc extends manejador {
                     }
 
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headPrincipal.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
                     $contenido = $this->load_page("vistas/html/menuUsuario.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
                     $pagina = $this->replace_content("/Titulo/", "Cambio de clave", $pagina);
@@ -325,34 +344,38 @@ class controlador_mvc extends manejador {
 
     public function ejercicio() {
         try {
-            $mer = $this->armarMerSolucionSistema("PerroCucha");
-            var_dump($this->armarMerSolucionSistema("PerroCucha"));
+//            $mer = $this->armarMerSolucionSistema("PerroCucha");
+//            var_dump($this->armarMerSolucionSistema("PerroCucha"));
             session_start();
 
-            if (!isset($_SESSION["ciUsuario"])) {
-                $this->inicio();
-            } else {
+//            if (!isset($_SESSION["ciUsuario"])) {
+//                $this->inicio();
+//            } else {
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headEjercicio.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
-                    $contenido = $this->load_page("vistas/html/AlumnoTeorico.html");
+                    $contenido = $this->load_page("vistas/html/ejercicios/PerroCucha.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                    $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+                    $pagina = $this->replace_content("/Titulo/", "Ejercicio", $pagina);
                     $pagina = $this->replace_content("/none/", "block", $pagina);
                     $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                     $this->modal($this->getMensajeManejador());
                 } else {
                     $pagina = $this->load_template("inicio");
+                    $head = $this->load_page("vistas/html/headEjercicio.html");
                     $header = $this->load_page("vistas/html/headerLogueado.html");
-                    $contenido = $this->load_page("vistas/html/AlumnoPractico.html");
+                    $contenido = $this->load_page("vistas/html/ejercicios/PerroCucha.html");
+                    $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                     $pagina = $this->replace_content("/Header/", $header, $pagina);
                     $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                    $pagina = $this->replace_content("/Titulo/", "A practicar", $pagina);
+                    $pagina = $this->replace_content("/Titulo/", "Ejercicio", $pagina);
                     $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                 }
                 $this->view_page($pagina);
-            }
+//            }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
@@ -471,7 +494,9 @@ class controlador_mvc extends manejador {
             $this->inicio();
         } else {
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
@@ -605,7 +630,9 @@ class controlador_mvc extends manejador {
             . "</thead>";
         
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Alumnos", $pagina);
@@ -684,7 +711,9 @@ class controlador_mvc extends manejador {
              . "</thead>";
         
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
@@ -696,17 +725,17 @@ class controlador_mvc extends manejador {
         
             if(!$resultado){
                 $this->modal("No existen Profesores con Curso asginado");                     
-            }else{            
+            } else {            
                 foreach ($resultado as $fila) {
-                echo "<tbody>"
-                . "<tr class='active'>"
-                . "<td>" . $fila['profesor'] . "</td>"
-                . "<td>" . $fila['ci'] . "</td>"
-                . "<td>" . $fila['curso'] . "</td>"
-                . "<td></td>"
-                . "</tr>"
-                . "</tbody>";
-            }
+                    echo "<tbody>"
+                    . "<tr class='active'>"
+                    . "<td>" . $fila['profesor'] . "</td>"
+                    . "<td>" . $fila['ci'] . "</td>"
+                    . "<td>" . $fila['curso'] . "</td>"
+                    . "<td></td>"
+                    . "</tr>"
+                    . "</tbody>";
+                }
         
             echo "</table>";
         
@@ -726,65 +755,66 @@ class controlador_mvc extends manejador {
             } 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }  
+        }  
     }
     
     
     public function cursosBedelia() {
-         try {
+        try {
              session_start();
        
-        $contenido = "<div>"
-        . "<div class='page-header' id='tables'>"
-        . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
-        . "</div>"
-        . "<div class='item'>"
-        . "<table class='table table-striped table-hover'>"
-        . "<thead>"
-        . "<tr class='danger'>"
-        . "<th><div class='form'>"
-        . "<label class='control-label'>Curso</label>"
-        . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
-        . "</div>"
-        . "</th>"
-        . "<th><div class='form'>"
-        . "<label class='control-label'>Año</label>"
-        . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
-        . "</div>"
-        . "</th>"
-        . "<th><div class='form'>"
-        . "<label class='control-label'>Horario</label>"
-        . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
-        . "</div>"
-        . "</th>". "<th><div class='form'>"
-        . "<label class='control-label'>Profesor</label>"
-        . "<div class='input'>"
-        . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
-        . "</div>"
-        . "</th>"
-        . "<th>"
-        . "<div class='form'>"
-        . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
-        . "</div>"
-        . "</th>"
-        . "</thead>";
+            $contenido = "<div>"
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
+            . "</div>"
+            . "<div class='item'>"
+            . "<table class='table table-striped table-hover'>"
+            . "<thead>"
+            . "<tr class='danger'>"
+            . "<th><div class='form'>"
+            . "<label class='control-label'>Curso</label>"
+            . "<div class='input'>"
+            . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
+            . "</div>"
+            . "</th>"
+            . "<th><div class='form'>"
+            . "<label class='control-label'>Año</label>"
+            . "<div class='input'>"
+            . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
+            . "</div>"
+            . "</th>"
+            . "<th><div class='form'>"
+            . "<label class='control-label'>Horario</label>"
+            . "<div class='input'>"
+            . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
+            . "</div>"
+            . "</th>". "<th><div class='form'>"
+            . "<label class='control-label'>Profesor</label>"
+            . "<div class='input'>"
+            . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
+            . "</div>"
+            . "</th>"
+            . "<th>"
+            . "<div class='form'>"
+            . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+            . "</div>"
+            . "</th>"
+            . "</thead>";
 
+            $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
         
-             $pagina = $this->load_template("inicio");
-             $header = $this->load_page("vistas/html/headerLogueado.html");
-             $pagina = $this->replace_content("/Header/", $header, $pagina);
-             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-             $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
-             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+            $resultado = $this->listarCursosBedelia();
 
-             $this->view_page($pagina);
-        
-             $resultado = $this->listarCursosBedelia();
-
-             foreach ($resultado as $fila) {
+            foreach ($resultado as $fila) {
                 echo "<tbody>"
                 . "<tr class='active'>"
                 . "<td>" . $fila['curso'] . "</td>"
@@ -794,15 +824,15 @@ class controlador_mvc extends manejador {
                 . "<td></td>"
                 . "</tr>"
                 . "</tbody>";
-             }
-             echo "</table>";
+            }
+            echo "</table>";
          
              echo "<br>"                
              . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</a></button>";
 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
             
     }
         
@@ -873,7 +903,9 @@ class controlador_mvc extends manejador {
             ."<select class='form-control' id='select' name='asignarCurso'>";
             
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Agregar Alumnos", $pagina);
@@ -904,7 +936,7 @@ class controlador_mvc extends manejador {
           
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
             
     }
     
@@ -913,131 +945,130 @@ class controlador_mvc extends manejador {
         try {                                                    
             if (isset($_REQUEST['aceptar'])){             
                 
-              $ciUsuario = $_REQUEST["inputCI"];
-              $nombreUsuario = $_REQUEST["inputNombre"];
-              $apellidoUsuario = $_REQUEST["inputApellido"];
-              $sexoUsuario = $_REQUEST["sexo"];
-              $emailUsuario = $_REQUEST["inputMail"];
-              $claveUsuario = md5($ciUsuario);
-              $telefonoUsuario = $_REQUEST["inputTelefono"];
-              $celularUsuario = $_REQUEST["inputCelular"];
-              $curso = $_REQUEST["asignarCurso"];
-                  
-              $resultado = $this->altaAlumnoManejador($ciUsuario,
-                                                      $nombreUsuario,
-                                                      $apellidoUsuario,
-                                                      $sexoUsuario,
-                                                      $emailUsuario,
-                                                      $claveUsuario,
-                                                      $telefonoUsuario,
-                                                      $celularUsuario);
-            
-                if(!$resultado){
-                  $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
-                      if(!$asignar) {                
-                        $this->modal("Se agrego el Alumno $nombreUsuario "
-                                  . "$apellidoUsuario y se asocio al Curso "
-                                  . "$curso.");
-                       $this->agregarAlumno();
-                      }else{
-                        $this->modal("No se ha podido asociar el Alumno "
-                                  . "$nombreUsuario $apellidoUsuario al $curso.");            
-                        $this->agregarAlumno();
-                      }        
-                
-                }else {
-                 $this->modal("No se ha podido ingresar el Alumno "
-                                  . "$nombreUsuario $apellidoUsuario al sistema.");
-                 $this->agregarAlumno();
-                }
-                          
-            }
+                $ciUsuario = $_REQUEST["inputCI"];
+                $nombreUsuario = $_REQUEST["inputNombre"];
+                $apellidoUsuario = $_REQUEST["inputApellido"];
+                $sexoUsuario = $_REQUEST["sexo"];
+                $emailUsuario = $_REQUEST["inputMail"];
+                $claveUsuario = md5($ciUsuario);
+                $telefonoUsuario = $_REQUEST["inputTelefono"];
+                $celularUsuario = $_REQUEST["inputCelular"];
+                $curso = $_REQUEST["asignarCurso"];
 
-              
+                $resultado = $this->altaAlumnoManejador($ciUsuario,
+                                                        $nombreUsuario,
+                                                        $apellidoUsuario,
+                                                        $sexoUsuario,
+                                                        $emailUsuario,
+                                                        $claveUsuario,
+                                                        $telefonoUsuario,
+                                                        $celularUsuario);
+
+                if(!$resultado){
+                    $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
+                        if(!$asignar) {                
+                          $this->modal("Se agrego el Alumno $nombreUsuario "
+                                    . "$apellidoUsuario y se asocio al Curso "
+                                    . "$curso.");
+                         $this->agregarAlumno();
+                        }else{
+                          $this->modal("No se ha podido asociar el Alumno "
+                                    . "$nombreUsuario $apellidoUsuario al $curso.");            
+                          $this->agregarAlumno();
+                        }        
+
+                } else {
+                    $this->modal("No se ha podido ingresar el Alumno "
+                                  . "$nombreUsuario $apellidoUsuario al sistema.");
+                    $this->agregarAlumno();
+                }
+            }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
     }
     
     public function agregarProfesor(){  
          try {
-             session_start();
-            
-             $contenido = "<div class='page-header' id='tables'>"
-             ."<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
-             ."</div>"
-             ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
-             ."<fieldset>"
-             ."<div class='form-group'>"
-             ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label class='col-lg-2 control-label'>Sexo</label>"
-             ."<div class='col-lg-10'>"
-             ."<div class='radio'>"
-             ."<label>"
-             ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
-             ."Masculino"
-             ."</label>"
-             ."<label>"
-             ."<input type='radio' name='sexo' id='sexo' value='F'>"
-             ."Femenino"
-             ."</label>"
-             ."</div>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678'>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
-             ."<div class='col-lg-8'>"
-             ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567'>"
-             ."</div>"
-             ."</div>"
-             ."<div class='form-group'>"
-             ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
-             ."<div class='col-lg-8'>"
-             ."<select class='form-control' id='select' name='asignarCurso'>";
-            
-             $pagina = $this->load_template("inicio");
-             $header = $this->load_page("vistas/html/headerLogueado.html");
-             $pagina = $this->replace_content("/Header/", $header, $pagina);
-             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-             $pagina = $this->replace_content("/Titulo/", "Agregar Profesor", $pagina);
-             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+            session_start();
 
-             $this->view_page($pagina);
-            
-             $resultado = $this->listarCursosActivos();
-            
-             foreach ($resultado as $fila ) {
-                 echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
-             }
+            $contenido = "<div class='page-header' id='tables'>"
+            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
+            ."</div>"
+            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
+            ."<fieldset>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label class='col-lg-2 control-label'>Sexo</label>"
+            ."<div class='col-lg-10'>"
+            ."<div class='radio'>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
+            ."Masculino"
+            ."</label>"
+            ."<label>"
+            ."<input type='radio' name='sexo' id='sexo' value='F'>"
+            ."Femenino"
+            ."</label>"
+            ."</div>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            ."<div class='col-lg-8'>"
+            ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567'>"
+            ."</div>"
+            ."</div>"
+            ."<div class='form-group'>"
+            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            ."<div class='col-lg-8'>"
+            ."<select class='form-control' id='select' name='asignarCurso'>";
+
+            $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Agregar Profesor", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
+
+            $resultado = $this->listarCursosActivos();
+
+            foreach ($resultado as $fila ) {
+                echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+            }
         
             echo"</select>"
             ."<br>"
@@ -1052,10 +1083,10 @@ class controlador_mvc extends manejador {
             ."</fieldset>"
             ."</form>";
             
-             echo "</table>"; 
+            echo "</table>"; 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
         
     }
        
@@ -1063,51 +1094,48 @@ class controlador_mvc extends manejador {
         try {                                                    
             if (isset($_REQUEST['aceptar'])){             
                              
-             $ciUsuario = $_REQUEST["inputCI"];
-             $nombreUsuario = $_REQUEST["inputNombre"];
-             $apellidoUsuario = $_REQUEST["inputApellido"];
-             $sexoUsuario = $_REQUEST["sexo"];
-             $emailUsuario = $_REQUEST["inputMail"];
-             $claveUsuario = md5($ciUsuario);
-             $telefonoUsuario = $_REQUEST["inputTelefono"];
-             $celularUsuario = $_REQUEST["inputCelular"];
-             $curso = $_REQUEST["asignarCurso"];
-                  
-             $resultado = $this->altaProfesorManejador($ciUsuario,
-                                                       $nombreUsuario,
-                                                       $apellidoUsuario,
-                                                       $sexoUsuario,
-                                                       $emailUsuario,
-                                                       $claveUsuario,
-                                                       $telefonoUsuario,
-                                                       $celularUsuario);
-            
+            $ciUsuario = $_REQUEST["inputCI"];
+            $nombreUsuario = $_REQUEST["inputNombre"];
+            $apellidoUsuario = $_REQUEST["inputApellido"];
+            $sexoUsuario = $_REQUEST["sexo"];
+            $emailUsuario = $_REQUEST["inputMail"];
+            $claveUsuario = md5($ciUsuario);
+            $telefonoUsuario = $_REQUEST["inputTelefono"];
+            $celularUsuario = $_REQUEST["inputCelular"];
+            $curso = $_REQUEST["asignarCurso"];
+
+            $resultado = $this->altaProfesorManejador($ciUsuario,
+                                                      $nombreUsuario,
+                                                      $apellidoUsuario,
+                                                      $sexoUsuario,
+                                                      $emailUsuario,
+                                                      $claveUsuario,
+                                                      $telefonoUsuario,
+                                                      $celularUsuario);
+
                 if(!$resultado){
-                 $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
+                    $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
                     if(!$asignar) {                
-                      $this->modal("Se agrego el Profesor $nombreUsuario "
-                                . "$apellidoUsuario y se asocio al Curso "
-                                . "$curso.");
-                      $this->agregarProfesor();
-                 }else{
-                   $this->modal("No se ha podido asociar el Profesor "
-                              . "$nombreUsuario $apellidoUsuario al $curso.");            
-                   $this->agregarProfesor();
-                 }        
-                
-                }else {
-                 $this->modal("No se ha podido ingresar el Profesor "
+                        $this->modal("Se agrego el Profesor $nombreUsuario "
+                                  . "$apellidoUsuario y se asocio al Curso "
+                                  . "$curso.");
+                        $this->agregarProfesor();
+                    } else {
+                        $this->modal("No se ha podido asociar el Profesor "
+                                   . "$nombreUsuario $apellidoUsuario al $curso.");            
+                        $this->agregarProfesor();
+                    }        
+                } else {
+                $this->modal("No se ha podido ingresar el Profesor "
                              . "$nombreUsuario $apellidoUsuario al sistema.");
                 $this->agregarProfesor();
-                }
-                          
+                }          
             }
-    
+   
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
     }
-    
     
     public function agregarCurso(){
         try {
@@ -1150,7 +1178,9 @@ class controlador_mvc extends manejador {
             ."</div>";  
                                            
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Agregar Curso", $pagina);
@@ -1174,38 +1204,37 @@ class controlador_mvc extends manejador {
                      
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
+        }
     }
        
     public function agregoCurso(){
         try {                                            
             if (isset($_REQUEST['aceptar'])){                                                     
-               $nombreCurso = $_REQUEST["inputNombre"];
-               $anioCurso = $_REQUEST["inputAnio"];
-               $horarioCurso = $_REQUEST["inputHorario"];
-               $inicioCurso = $_REQUEST["inputFechaIni"];
-               $finCurso = $_REQUEST["inputFechaFin"];
-                                 
-               $resultado = $this->altaCursoManejador($nombreCurso,
-                                                      $anioCurso,
-                                                      $horarioCurso,
-                                                      $inicioCurso,
-                                                      $finCurso);
-            
-                 if($resultado){                             
-                    $this->modal("Se agrego el Curso $nombreCurso");
+                $nombreCurso = $_REQUEST["inputNombre"];
+                $anioCurso = $_REQUEST["inputAnio"];
+                $horarioCurso = $_REQUEST["inputHorario"];
+                $inicioCurso = $_REQUEST["inputFechaIni"];
+                $finCurso = $_REQUEST["inputFechaFin"];
+
+                $resultado = $this->altaCursoManejador($nombreCurso,
+                                                       $anioCurso,
+                                                       $horarioCurso,
+                                                       $inicioCurso,
+                                                       $finCurso);
+
+                if($resultado){                             
+                   $this->modal("Se agrego el Curso $nombreCurso");
+                   $this->agregarCurso();
+                } else {
+                    $this->modal("No se ha podido agregar el Curso.");                                              
                     $this->agregarCurso();
-                }else{
-                     $this->modal("No se ha podido agregar el Curso.");                                              
-                     $this->agregarCurso();
                 }                                                           
             }
                     
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }       
+        }       
     }
-    
     
     public function asignarCursoAlumnos(){
         try {
@@ -1239,7 +1268,9 @@ class controlador_mvc extends manejador {
             ."<select class='form-control' id='select' name='asignarCurso'>";
         
             $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "Alumnos Sin Curso", $pagina);
@@ -1249,9 +1280,9 @@ class controlador_mvc extends manejador {
                        
             $cursos = $this->listarCursosActivos();
             
-             foreach ($cursos as $filaCurso ) {
+            foreach ($cursos as $filaCurso ) {
                echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
-             }           
+            }           
              echo"</select>"        
             . "</div>"
             . "</th>"
@@ -1262,18 +1293,18 @@ class controlador_mvc extends manejador {
             $resultado = $this->listarAlumnosSinCurso();
         
             if(!$resultado){           
-              $this->modal("No existen Alumnos sin Curso asignado");                    
-            }else{
+                $this->modal("No existen Alumnos sin Curso asignado");                    
+            } else {
                 foreach ($resultado as $fila) {
-                   echo "<tbody>"
-                   . "<tr class='active'>"
-                   . "<td>" . $fila['alumno'] . "</td>"
-                   . "<td>" . $fila['ci'] . "</td>"
-                   . "<td>" . $fila['curso'] ."</td>"  
-                   . "<td><input type='checkbox' name='curso[]' value = ". $fila['ci'] ." </td>"
-                   . "<td></td>"
-                   . "</tr>"
-                   . "</tbody>";
+                    echo "<tbody>"
+                    . "<tr class='active'>"
+                    . "<td>" . $fila['alumno'] . "</td>"
+                    . "<td>" . $fila['ci'] . "</td>"
+                    . "<td>" . $fila['curso'] ."</td>"  
+                    . "<td><input type='checkbox' name='curso[]' value = ". $fila['ci'] ." </td>"
+                    . "<td></td>"
+                    . "</tr>"
+                    . "</tbody>";
                 }
 
             echo "</table>"      
@@ -1290,71 +1321,72 @@ class controlador_mvc extends manejador {
         
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }   
-        
+        }   
     }
     
     public function asignarCursoProfesores(){
          try {       
-             session_start();
-               
-             $contenido = "<div>"
-             ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoProfesores'>"
-             . "<div class='page-header' id='tables'>"
-             . "<h1 style='color:#d3d3d3;' align='center'>Profesores sin Curso </h1>"
-             . "</div>"
-             . "<div>"
-             . "<table id='tabla_resultado' class='table table-striped table-hover'>"
-             . "<thead>"
-             . "<tr class='danger'>"
-             . "<th><div class='form'>"
-             . "<label class='control-label'>Nombre</label>"
-             . "<div class='input'>"
-             . "<input type=text' class='form-control' name='busqueda' id='busqueda' placeholder='Filtrar por nombre'>"            
-             . "</div>"
-             . "</th>"
-             . "<th><div class='form'>"
-             . "<label class='control-label'>Cedula</label>"
-             . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por cedula'>"
-             . "</div>"
-             . "</th>"
-             . "<th><div class='form'>"
-             . "<label  for='select' class='control-label'>Seleccionar curso</label>"
-             ."<label for='select' class='col-lg-2 control-label'></label>"
-             ."<div class='col-lg-8'>"
-             ."<select class='form-control' id='select' name='asignarCurso'>";
-        
-             $pagina = $this->load_template("inicio");
-             $header = $this->load_page("vistas/html/headerLogueado.html");
-             $pagina = $this->replace_content("/Header/", $header, $pagina);
-             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-             $pagina = $this->replace_content("/Titulo/", "Profesores Sin Curso", $pagina);
-             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+            session_start();
 
-             $this->view_page($pagina);
-                       
-             $cursos = $this->listarCursosActivos();
-            
-             foreach ($cursos as $filaCurso ) {
-               echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
-             }           
-             echo"</select>"        
-             . "</div>"
-             . "</th>"
-             . "<th>"
-             . "</th>"
-             . "</thead>";
-             
-             $resultado = $this->listarProfesoresSinCurso();
-            
-        
-             if (!$resultado){          
+            $contenido = "<div>"
+            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoProfesores'>"
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Profesores sin Curso </h1>"
+            . "</div>"
+            . "<div>"
+            . "<table id='tabla_resultado' class='table table-striped table-hover'>"
+            . "<thead>"
+            . "<tr class='danger'>"
+            . "<th><div class='form'>"
+            . "<label class='control-label'>Nombre</label>"
+            . "<div class='input'>"
+            . "<input type=text' class='form-control' name='busqueda' id='busqueda' placeholder='Filtrar por nombre'>"            
+            . "</div>"
+            . "</th>"
+            . "<th><div class='form'>"
+            . "<label class='control-label'>Cedula</label>"
+            . "<div class='input'>"
+            . "<input type='text' class='form-control' placeholder='Filtrar por cedula'>"
+            . "</div>"
+            . "</th>"
+            . "<th><div class='form'>"
+            . "<label  for='select' class='control-label'>Seleccionar curso</label>"
+            ."<label for='select' class='col-lg-2 control-label'></label>"
+            ."<div class='col-lg-8'>"
+            ."<select class='form-control' id='select' name='asignarCurso'>";
+
+            $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Profesores Sin Curso", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
+
+            $cursos = $this->listarCursosActivos();
+
+            foreach ($cursos as $filaCurso ) {
+                echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
+            }           
+            echo"</select>"        
+            . "</div>"
+            . "</th>"
+            . "<th>"
+            . "</th>"
+            . "</thead>";
+
+            $resultado = $this->listarProfesoresSinCurso();
+
+
+            if (!$resultado){          
                 $this->modal("No existen Profesores sin Curso asginado");         
                 echo"<button type='submit' name = 'submit' class='btn btn-default btn-lg'>"
                 . "<a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>";
-             } else{
-                 foreach ($resultado as $fila) {
+            } else{
+                foreach ($resultado as $fila) {
                     echo "<tbody>"
                     . "<tr class='active'>"
                     . "<td>" . $fila['profesor'] . "</td>"
@@ -1364,127 +1396,114 @@ class controlador_mvc extends manejador {
                     . "<td></td>"
                     . "</tr>"
                     . "</tbody>";
-                 }
-
-                 echo "</table>"
-                 . "<br>"
-                 ."<p align='left'>"
-                 ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>"
-                 ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
-                 ."<br>"
-                 ."</p>"       
-                 ."<br>"                                   
-                 ."</form>"
-                 ."</div>";
-                                                   
                 }
+
+                echo "</table>"
+                . "<br>"
+                ."<p align='left'>"
+                ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+                ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
+                ."<br>"
+                ."</p>"       
+                ."<br>"                                   
+                ."</form>"
+                ."</div>";
+
+               }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }
-              
+        }      
     }     
     
     public function asignoCursoAlumnos(){
         try {            
             if (isset($_REQUEST['asignarCursoAlumno'])){             
            
-             $check[] = '';   
-             $curso = $_REQUEST['asignarCurso'];
-             $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
+            $check[] = '';   
+            $curso = $_REQUEST['asignarCurso'];
+            $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
                
-             foreach ($check as $check1 => $check2){
-                 
-                 
-                 $longitud = count($check2);
-                 
-                 
-                for($i=0 ;$i<$longitud ;$i++ ){
-                               
-                 $valores = "'" .$curso."' ," .$check2[$i];
-                                 
-                 $this->asignarCursoUsuarios($valores);
-                 
+            foreach ($check as $check1 => $check2){     
+                $longitud = count($check2);
+                  
+                for($i=0 ;$i<$longitud ;$i++ ){              
+                    $valores = "'" .$curso."' ," .$check2[$i];             
+                    $this->asignarCursoUsuarios($valores);
                 }
-             }
-                    
-                $this->asignarCursoAlumnos();
+            }        
+            $this->asignarCursoAlumnos();
                
             } 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }            
+        }            
     }      
     
     public function asignoCursoProfesores(){
         try {            
             if (isset($_REQUEST['asignarCursoProfesor'])){             
                           
-             $curso = $_REQUEST['asignarCurso'];
-             $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
+            $curso = $_REQUEST['asignarCurso'];
+            $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
                               
                 foreach ($check as $check1 => $check2){
-                   $longitud = count($check2);
+                    $longitud = count($check2);
                                   
-                   for($i=0 ;$i<$longitud ;$i++ ){                               
-                      $valores = "'" .$curso."' ," .$check2[$i];                                
-                      $this->asignarCursoUsuarios($valores);                 
-                   }
+                    for($i=0 ;$i<$longitud ;$i++ ){                               
+                        $valores = "'" .$curso."' ," .$check2[$i];                                
+                        $this->asignarCursoUsuarios($valores);                 
+                    }
                 }
                     
                 $this->asignarCursoProfesores();
-              
+
             }
-        
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          }            
+        }            
     }       
             
     
     public function practicar() {
         try{       
-           session_start(); 
+            session_start(); 
            
-           if (isset($_REQUEST["ejercicio"])) {
+            if (isset($_REQUEST["ejercicio"])) {
                 $ejercicio = $_REQUEST["ejercicio"];
                 
             } 
             
-           $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);          
-           //var_dump($letraEjercicio[0][0]);
-           $verLetra = $letraEjercicio[0][0];
-           
-           $contenido = "<div class='col-lg-2'>"
-           . "<ul class='nav nav-pills nav-stacked'>" 
-           . "<li class='dropdown-menu'>$ejercicio</li>"
-           . "<li>"
-           . "<button type='button' class='btn btn-primary btn-group-justified' data-container='body' data-toggle='popover' data-placement='bottom'"
-           . "data-content= '$verLetra'" 
-           . "data-original-title='' title=''>Letra ejercicio</button>"
-           . "</li>"
-           . "</ul>"
-           . "</div>";
-        
-           $pagina = $this->load_template("inicio");
-           $header = $this->load_page("vistas/html/headerLogueado.html");
-           $pagina = $this->replace_content("/Header/", $header, $pagina);
-           $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-           $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
-           $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-           
-           $this->view_page($pagina);
+            $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);          
+            //var_dump($letraEjercicio[0][0]);
+            $verLetra = $letraEjercicio[0][0];
+
+            $contenido = "<div class='col-lg-2'>"
+            . "<ul class='nav nav-pills nav-stacked'>" 
+            . "<li class='dropdown-menu'>$ejercicio</li>"
+            . "<li>"
+            . "<button type='button' class='btn btn-primary btn-group-justified' data-container='body' data-toggle='popover' data-placement='bottom'"
+            . "data-content= '$verLetra'" 
+            . "data-original-title='' title=''>Letra ejercicio</button>"
+            . "</li>"
+            . "</ul>"
+            . "</div>";
+            
+            $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
+
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $head = $this->load_page("vistas/html/headEjercicio.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
         
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-          } 
-        
+        }    
     }
-    
-    
-    
-    
-    
-    
-
 }
 ?>
