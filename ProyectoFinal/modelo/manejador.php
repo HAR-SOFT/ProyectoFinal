@@ -385,7 +385,7 @@ class manejador extends conexionDB {
         $nombreCurso = $nombreCurso[0]["nombre_curso"];
         
 
-        $this->query = " SELECT ASCCTSE.nombre_subtema  "
+        $this->query = " SELECT DISTINCT ASCCTSE.nombre_subtema  "
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE "
                 . " WHERE ASCCTSE.nombre_curso = '$nombreCurso'"
                 . " and ASCCTSE.nombre_tema = '$tema'";
@@ -561,6 +561,43 @@ class manejador extends conexionDB {
         $msjtemaManejador = "No hay letra para ese tema";
         
         return $this->ejecutarQuery($this->query, $msjtemaManejador);
+    }
+    
+    public function ejerciciosTemaManejador($tema, $subtema , $nombreCurso) {
+        $nombreCurso = $nombreCurso[0]["nombre_curso"];
+        if($subtema == true) {
+            $this->query = "SELECT
+                    acts.nombre_ejercicio as ejercicio 
+                    FROM
+                    asc_curso_tema_subtema_ejercicio acts
+                    WHERE
+                    acts.nombre_subtema = '$tema'
+                    and acts.nombre_curso = '$nombreCurso'";
+
+        } else {
+            $this->query = "SELECT
+                    acts.nombre_ejercicio as ejercicio
+                    FROM
+                    asc_curso_tema_subtema_ejercicio acts
+                    WHERE
+                    acts.nombre_tema = '$tema'
+                    and acts.nombre_curso = '$nombreCurso'";
+        }
+        $msjejerciciostemaManejador = "No hay ejercicio para ese tema";
+        
+        return $this->ejecutarQuery($this->query, $msjejerciciostemaManejador);
+    }
+    
+     public function letraEjercicioTemaManejador($ejercicio) {
+        
+            $this->query = "SELECT"
+                    . " de.letra"
+                    . " from dim_ejercicio de "
+                    . "where de.nombre = '$ejercicio'";
+
+        $msjletraEjercicioTemaManejador = "No hay ejercicio";
+        
+        return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
 
 }
