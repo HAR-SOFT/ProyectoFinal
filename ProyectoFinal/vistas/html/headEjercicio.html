@@ -39,48 +39,15 @@
         $("#entidad3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#entidad4").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#entidad5").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad6").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad7").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad8").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad9").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad10").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad11").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad12").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad13").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad14").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#entidad15").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#categorizacionDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#categorizacionDragTotalidad").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#categorizacionDisDrag").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#relacion1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#relacion2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#relacion3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion4").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion5").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion6").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion7").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion8").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion9").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#relacion10").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#atributo1").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#atributo2").draggable({snap: ".ui-widget-header", snapMode: "outer"});
         $("#atributo3").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo4").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo5").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo6").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo7").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo8").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo9").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo10").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo11").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo12").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo13").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo14").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo15").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo16").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo18").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo19").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-        $("#atributo20").draggable({snap: ".ui-widget-header", snapMode: "outer"});
     });
 
     function posicionObjeto(idObjeto) {
@@ -109,19 +76,19 @@
         alert(top + " - " + left);*/
     }
     
-    function guardarEntidades(nombreEntidad) {
+    function guardarEntidades(idEntidad) {
+        alert(sessionStorage.getItem("entidades"));
+        
         if(sessionStorage.getItem("entidades") === null) {
             var arrayEntidades = [];
-            arrayEntidades.push(nombreEntidad);
+            arrayEntidades.push(idEntidad);
             sessionStorage.setItem("entidades", arrayEntidades);
         } else {
-            if(sessionStorage.getItem("entidades").indexOf(nombreEntidad) === -1) {
-                arrayEntidades.push(nombreEntidad);
+            if(sessionStorage.getItem("entidades").indexOf(idEntidad) === -1) {
+                arrayEntidades.push(idEntidad);
                 sessionStorage.setItem("entidades", arrayEntidades);
             }
         }
-        
-        //alert(sessionStorage.getItem("entidades"));
     }
 
     //valida posicion de relacion
@@ -201,6 +168,9 @@
             if(yEntidad >= minAlto && yEntidad <= maxAlto) {
                 divHijo.style.backgroundColor = "green";
                 var validacion = true;
+                if(idEntidad.includes("entidad")) {
+                    guardarEntidades(idEntidad);
+                }
             }
             else {
                 divHijo.style.backgroundColor = "#e95420";

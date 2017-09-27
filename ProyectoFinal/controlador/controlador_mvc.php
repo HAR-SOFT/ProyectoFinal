@@ -462,17 +462,24 @@ class controlador_mvc extends manejador {
             $contenido = $contenido. $tema ."</h2>"
             . "<p>";
 
-            $letra = $this->temaManejador($tema, $subtema);
+            $letra = $this->temaManejador($tema,$subtema);
 
             $contenido = $contenido. $letra[0][0];
 
             $contenido = $contenido. "</p>"
-            . "</div>"
-            . "<div class='form' align='right'>"
-            . "<button type='submit' class='btn btn-primary btn-lg' name='practica'>Practica tu mismo</button>"
-            . "</div>"
-            . "</div>"
             . "</div>";
+ 
+            $ejercicio = $this->ejerciciosTemaManejador($tema,$subtema,$_SESSION["cursoUsuario"]);
+            
+            if($ejercicio){
+               foreach ($ejercicio as $ej){
+                       $contenido = $contenido. "<div class='form' align='left'>"                    
+                       . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-primary btn-lg' name='practica'>$ej[0]</button></a>"
+                       . "</div>";
+               };         
+            $contenido = $contenido. "</div>";
+            };
+            $contenido = $contenido. "</div>";
 
             return $contenido;
         } catch (Exception $ex) {
@@ -1457,6 +1464,49 @@ class controlador_mvc extends manejador {
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }            
-    }   
+    }       
+            
+    
+    public function practicar() {
+        try{       
+            session_start(); 
+           
+            if (isset($_REQUEST["ejercicio"])) {
+                $ejercicio = $_REQUEST["ejercicio"];
+                
+            } 
+            
+            $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);          
+            //var_dump($letraEjercicio[0][0]);
+            $verLetra = $letraEjercicio[0][0];
+
+            $contenido = "<div class='col-lg-2'>"
+            . "<ul class='nav nav-pills nav-stacked'>" 
+            . "<li class='dropdown-menu'>$ejercicio</li>"
+            . "<li>"
+            . "<button type='button' class='btn btn-primary btn-group-justified' data-container='body' data-toggle='popover' data-placement='bottom'"
+            . "data-content= '$verLetra'" 
+            . "data-original-title='' title=''>Letra ejercicio</button>"
+            . "</li>"
+            . "</ul>"
+            . "</div>";
+            
+            $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
+
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $head = $this->load_page("vistas/html/headEjercicio.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);
+        
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }    
+    }
 }
 ?>
