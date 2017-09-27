@@ -64,6 +64,10 @@
     margin-button:5px;
     border:1px solid #053E15;
 }
+#inputAtr{
+    margin-top:1px;
+    border:1px solid #053E15;
+}
 #lineaAtributo1 {
     height: 1px;
     width: 50px;
