@@ -78,6 +78,9 @@ else {
         case "asignoCursoProfesores":
             $mvc->asignoCursoProfesores();
             break;
+        case "practicar":
+            $mvc->practicar();
+            break;
     }
 }
 
