@@ -68,7 +68,7 @@
         alert(top + " - " + left);*/
     }
     
-    function validarEntidades(Entidades) {
+    function validar(Entidades) {
         var largoEntidades = Entidades.length;
         var validacion = [];
 
@@ -79,6 +79,24 @@
         
         if(validacion.indexOf("false") !== -1) {
             alert("Las entidades no están correctamente relacionadas.");
+        } else {
+            var elements = document.getElementsByTagName("input")
+            var arrayElements = [];
+            for (var i = 0; i < elements.length; i++) {
+                if(elements[i].value === "") {
+                    alert("Debe completar todos los nombres de Entidades, Relaciones y Atributos.");
+                    break;
+                } else {
+                    arrayElements.push(elements[i].name + ": " + elements[i].value);
+                }
+            }
+            
+            if(arrayElements.length === elements.length) {
+                window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio&inputs=" + arrayElements.toString() + "");
+                //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=inicio");
+                //document.write(" <?php $_SESSION['ciUsuario'] = " + arrayElements.toString() + " ?> ");
+            }
+            //alert(arrayElements.toString());
         }
     }
 
