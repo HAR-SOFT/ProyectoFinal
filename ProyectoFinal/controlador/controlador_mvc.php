@@ -1503,19 +1503,23 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }    
     }
+    
+    
+    
+    
         
-    public function validarEjercicio($datosEjercicio) {
+    public function validarEjercicio() {
         try{ 
             session_start();
           
             if (isset($_REQUEST['validar'])) {
-                
-            $datosEjercicio ='';    
+            
+            $datosEjercicio =$_REQUEST['validar'];    
             $nombreMer = $_SESSION["ejercicio"];
             $ci = $_SESSION["ciUsuario"];
             $nombreEjercicio = $_SESSION["ejercicio"];
 
-           
+            var_dump($datosEjercicio);
             $entidad1 = $_REQUEST["entidad1"];
             $entidad2 = $_REQUEST["entidad2"];
             //$entidad3 = $_REQUEST["entidad3"];
@@ -1549,14 +1553,14 @@ class controlador_mvc extends manejador {
               }                           
             } 
                     
-            $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
+            //$contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
 
             $pagina = $this->load_template("inicio");
             $header = $this->load_page("vistas/html/headerLogueado.html");
             $head = $this->load_page("vistas/html/headEjercicio.html");
             $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
-            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            //$pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
             $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
