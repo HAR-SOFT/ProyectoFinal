@@ -392,8 +392,11 @@ class controlador_mvc extends manejador {
     public function menuTemasCurso() {
         try {
             $contenido = "<div class='col-lg-2'>"
-            . "<ul class='nav nav-pills nav-stacked'>"
-            . "<li class='dropdown-menu'><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=Introduccion'>Introduccion</a></li>";
+            . "<div class='container' style='padding-top: 1em; margin-top: -11px;'>"
+            . "<div class='btn-md'>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=Introduccion'>"
+            . "<button type='button' class='btn btn-primary' style='width: 105px; text-align:left;'>Introduccion</button>"
+            . "</a></div></div>";
             
             $tema = $this->listarTemasPorCurso($_SESSION["cursoUsuario"]);
             
@@ -403,11 +406,14 @@ class controlador_mvc extends manejador {
                 //si hay subtemas
  
                 if (!$subTemas[0][0] == NULL) {
-                    $contenido = $contenido. "<li class='active'>"
-                    . "<a class='dropdown-toggle' data-toggle='dropdown'"
-                    . " href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=$nombreTema' aria-expanded='false'>"
-                    . $nombreTema
-                    . "<span class='caret'></span></a>";
+                    $contenido = $contenido. "<div class='container' style='padding-top: 1em; margin-top: -11px;'>"
+                    . "<div class='btn-group'>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=$nombreTema'>"
+                    . "<button type='button' class='btn btn-primary btn-md'>$nombreTema</button></a>"
+                    . "<div class='btn-group'>"
+                    . "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' style='height:38px'>"
+                    . "<span class='caret'></span>"
+                    . "</button>";
 
                     $contenido = $contenido. "<ul class='dropdown-menu'>";
 
@@ -417,17 +423,18 @@ class controlador_mvc extends manejador {
                         . $subTemaAVer . "</a></li>";
                     }
 
-                    $contenido = $contenido. "</ul></li>";
+                    $contenido = $contenido. "</ul></div></div></div>";
+                    
                 } else {
-                    $contenido = $contenido. "<li class='active'>"
+                    $contenido = $contenido. "<div class='container' style='padding-top: 1em; margin-top: -11px;'>"
+                    . "<div class='btn-md'>"
                     . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=$nombreTema'>"
-                    . $nombreTema
-                    . "</a>"
-                    . "</li>";
+                    . "<button type='button' class='btn btn-primary' style='width: 105px; text-align:left;'>$nombreTema</button></a>"
+                    . "</div></div>";
                 }
             }
             
-            $contenido = $contenido. "</ul></div>";
+            $contenido = $contenido. "</div>";
             
             return $contenido;
         } catch (Exception $ex) {
@@ -475,11 +482,11 @@ class controlador_mvc extends manejador {
                foreach ($ejercicio as $ej){
                        $contenido = $contenido. "<div class='col-lg-3'>"                    
                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-primary btn-lg' name='practica'>Ejercicio $ej[0]</button></a>"
-                       . "</span></div>";
+                       . "</div>";
                };         
-            $contenido = $contenido. "</div>";
+            //$contenido = $contenido. "</div>";
             };
-            $contenido = $contenido. "</div>";
+            $contenido = $contenido. "</div></div>";
 
             return $contenido;
         } catch (Exception $ex) {
