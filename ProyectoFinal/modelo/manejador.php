@@ -457,6 +457,16 @@ class manejador extends conexionDB {
         }
     }
     
+     public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
+        $this->query = "INSERT INTO sol_mer"
+        . " (id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+        . " VALUE"
+        . "(null , $nombreMer , 'sol_alumno' , $ci , $nombreEjercicio);";
+        $msjguardarMerSolucionAlumno = "Clave actualizada correctamente.";
+
+        return $this->ejecutarQuery($this->query, $msjguardarMerSolucionAlumno);
+    }
+    /*    
     public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
         $this->query = "UPDATE"
         . " dim_usuario"
@@ -466,7 +476,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
     }
-    
+    */
     public function cambiarClaveManejador($ci, $claveNuevaParam) {
         $this->query = "UPDATE"
                 . " dim_usuario"

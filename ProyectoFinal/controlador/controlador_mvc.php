@@ -740,17 +740,17 @@ class controlador_mvc extends manejador {
             echo "</table>";
         
             echo "<br>"
-            ."<p align='left'>"
-            ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo Profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
-            ."</form>"
-            ."<br>"
-            ."</p>"        
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</a></button>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</a></button>";     
+            . "<div style='display:inline'>"          
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>    "
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>    "
+            . "<form action='../importarAlumnos.php' method='post' style='display:inline' enctype='multipart/form-data'>    "
+            . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>    "
+            . "<input type='button'  value='Importar grupo Profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />    "
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar Importacion</button>    "                    
+            . "</form> <br> <br>"
+            . "</div>" 
+            . "<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a href='javascript:history.back(-1)'>&laquo; Volver atrás</a></button>";
+            
         
             } 
         } catch (Exception $ex) {
@@ -827,9 +827,8 @@ class controlador_mvc extends manejador {
             }
             echo "</table>";
          
-             echo "<br>"                
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</a></button>";
-
+            echo "<br>"                
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</button></a>";        
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
@@ -1417,8 +1416,7 @@ class controlador_mvc extends manejador {
     
     public function asignoCursoAlumnos(){
         try {            
-            if (isset($_REQUEST['asignarCursoAlumno'])){             
-           
+            if (isset($_REQUEST['asignarCursoAlumno'])){                       
             $check[] = '';   
             $curso = $_REQUEST['asignarCurso'];
             $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
@@ -1431,8 +1429,7 @@ class controlador_mvc extends manejador {
                     $this->asignarCursoUsuarios($valores);
                 }
             }        
-            $this->asignarCursoAlumnos();
-               
+            $this->asignarCursoAlumnos();               
             } 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -1441,10 +1438,9 @@ class controlador_mvc extends manejador {
     
     public function asignoCursoProfesores(){
         try {            
-            if (isset($_REQUEST['asignarCursoProfesor'])){             
-                          
-            $curso = $_REQUEST['asignarCurso'];
-            $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
+            if (isset($_REQUEST['asignarCursoProfesor'])){                                       
+               $curso = $_REQUEST['asignarCurso'];
+               $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
                               
                 foreach ($check as $check1 => $check2){
                     $longitud = count($check2);
@@ -1453,28 +1449,24 @@ class controlador_mvc extends manejador {
                         $valores = "'" .$curso."' ," .$check2[$i];                                
                         $this->asignarCursoUsuarios($valores);                 
                     }
-                }
-                    
+                }                    
                 $this->asignarCursoProfesores();
-
             }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }            
     }       
-            
-    
+                
     public function practicar() {
         try{       
             session_start(); 
            
             if (isset($_REQUEST["ejercicio"])) {
-                $ejercicio = $_REQUEST["ejercicio"];
-                
+                $ejercicio = $_REQUEST["ejercicio"];                
             } 
             
             $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);          
-            //var_dump($letraEjercicio[0][0]);
+          
             $verLetra = $letraEjercicio[0][0];
 
             $contenido = "<div class='col-lg-2'>"
@@ -1505,5 +1497,87 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }    
     }
+    
+    
+    public function validarEjercicio() {
+        try{ 
+            session_start();
+          
+            if (isset($_REQUEST['validar'])) {
+                
+            $nombreEjercicio = $_REQUEST['ejercicio']; 
+                                            
+            $ci = $_SESSION["ciUsuario"];
+           
+            $entidad1 = $_REQUEST["entidad1"];
+            $entidad2 = $_REQUEST["entidad2"];
+            //$entidad3 = $_REQUEST["entidad3"];
+            //$entidad4 = $_REQUEST["entidad4"];
+            //$entidad5 = $_REQUEST["entidad5"];
+            //$entidad6 = $_REQUEST["entidad6"];
+            $atributo1 = $_REQUEST["atributo1"];
+            $atributo2 = $_REQUEST["atributo2"];
+            $atributo3 = $_REQUEST["atributo3"];
+            //$atributoMulti = $_REQUEST["atributoMulti"];
+            //$atributoRel = $_REQUEST["atributoRel"];
+            $cardi1 = $_REQUEST['cardi1'];
+            $cardi2 = $_REQUEST['cardi2'];
+            //$cardi3 = $_REQUEST['cardi3'];
+            //$cardi4 = $_REQUEST['cardi4'];
+            //$cardi5 = $_REQUEST['cardi5'];
+            //$cardi6 = $_REQUEST['cardi6'];
+            $relacion1 = $_REQUEST["relacion1"];
+            //$relacion2 = $_REQUEST["relacion2"];
+            //$relacion3 = $_REQUEST["relacion3"];
+            //$categorizacion1 = $_REQUEST["categorizacion1"];
+            //$agregacion1 = $_REQUEST["agregacion1"];
+            $reestriccion = $_REQUEST["reestriccion"] ;
+            
+           /* echo '<div align = "center">'
+                .'Alumno C.I:'.$ci 
+                .'<br>'
+                .'Ejercicio:' .$nombreEjercicio    
+                .'<br><br><br>'
+                .'<br>'.'Entidad 1:'.$entidad1 
+                .'<br>'.'Atributo 1:'.$atributo1  
+                .'<br>'.'Cardinalidad 1: '.$cardi1 
+                .'<br>'.'Relacion 1:'.$relacion1     
+                .'<br>'.'Entidad 2:'. $entidad2                
+                .'<br>'.'Atributo 2:'. $atributo2                
+                .'<br>'.'Cardinalidad 2: '.$cardi2 
+                .'<br>'.'Restriccion :'. $reestriccion
+                .'</div>';           
+            */
+                $resultado = $this->guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio);
+                 
+                if($resultado){
+                    
+                    $this->modal("se guardo la solucion");
+                    
+                } else {   
+                  $this->modal("No se ha podido validar el ejercicio ");                                
+                }                           
+            } 
+                    
+            $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
+
+            $pagina = $this->load_template("inicio");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $head = $this->load_page("vistas/html/headEjercicio.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+            $this->view_page($pagina);    
+                          
+        }catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        } 
+               
+        echo '<a href='.$_SERVER['HTTP_REFERER'].'>VOLVER</a>';
+    }
+
 }
 ?>
