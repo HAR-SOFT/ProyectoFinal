@@ -55,11 +55,6 @@
         // capturar la posicion del elemento por atributo de css
         var objeto = document.getElementById(idObjeto);
         var idObjeto = objeto.getAttribute("id");
-        //alert(idObjeto.includes("entidad"));
-
-        //if(idObjeto.includes("entidad")) {
-        //    guardarEntidades(idObjeto);
-        //}
         
         var x = objeto.offsetLeft;
         var y = objeto.offsetTop;
@@ -73,18 +68,17 @@
         alert(top + " - " + left);*/
     }
     
-    function guardarEntidades(idEntidad) {
-        alert(sessionStorage.getItem("entidades"));
+    function validarEntidades(Entidades) {
+        var largoEntidades = Entidades.length;
+        var validacion = [];
+
+        for(i = 0; i < largoEntidades; i++) {
+            var divHijo = document.getElementById(Entidades[i]).childNodes[1];
+            validacion.push((divHijo.style.backgroundColor === "green").toString());
+        }
         
-        if(sessionStorage.getItem("entidades") === null) {
-            var arrayEntidades = [];
-            arrayEntidades.push(idEntidad);
-            sessionStorage.setItem("entidades", arrayEntidades);
-        } else {
-            if(sessionStorage.getItem("entidades").indexOf(idEntidad) === -1) {
-                arrayEntidades.push(idEntidad);
-                sessionStorage.setItem("entidades", arrayEntidades);
-            }
+        if(validacion.indexOf("false") !== -1) {
+            alert("Las entidades no están correctamente relacionadas.");
         }
     }
 
@@ -128,21 +122,10 @@
         }
     }
 
-    //guarda posicion de entidad
-    function guardarPosicionEntidad(ladoIzquierdo, ladoDerecho) {
-        if(ladoIzquierdo === undefined) {
-            ladoIzquierdo = "false";
-        }
-        if(ladoDerecho === undefined) {
-            ladoDerecho = "false";
-        }
-        sessionStorage.setItem("ladoIzquierdo", ladoIzquierdo);
-        sessionStorage.setItem("ladoDerecho", ladoDerecho);
-    }
-
     // valida posicion entidad
     // check de asosiado por id de relacion y entidades
     function validarPosicionEntidad(idRelacion, idEntidad) {
+        //alert(idEntidad);
         var entidad = posicionObjeto(idEntidad);
         var xEntidad = entidad[0];
         var yEntidad = entidad[1];
@@ -165,9 +148,9 @@
             if(yEntidad >= minAlto && yEntidad <= maxAlto) {
                 divHijo.style.backgroundColor = "green";
                 var validacion = true;
-                if(idEntidad.includes("entidad")) {
-                    guardarEntidades(idEntidad);
-                }
+                //if(idEntidad.includes("entidad")) {
+                //    guardarEntidades(idEntidad);
+                //}
             }
             else {
                 divHijo.style.backgroundColor = "#e95420";
@@ -180,20 +163,6 @@
         }
 
         //alert(mensaje);
-    }
-    
-    function validarPosicionEntidades(Entidades) {
-        var largoEntidades = Entidades.length;
-
-        for(i = 0; i < largoEntidades; i++) {
-            var entidadesOK = document.getBackgroundColor("green");
-        }
-        
-        if(largoEntidades === entidadesOK) {
-            alert("Todo OK");
-        } else {
-            alert("Falta algo");
-        }
     }
     </script>
     <title>A practicar</title>
