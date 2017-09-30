@@ -3448,6 +3448,13 @@ fieldset[disabled] .btn-link:focus {
 .btn-lg{
 
 }
+.btn-group-md {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
 .btn-group-lg > .btn {
   padding: 14px 16px;
   font-size: 18px;
@@ -3519,6 +3526,17 @@ tbody.collapse.in {
   display: inline-block;
   width: 0;
   height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid \9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+.caretOtro {
+  display: inline-block;
+  width: 9px;
+  height: 8px;
   margin-left: 2px;
   vertical-align: middle;
   border-top: 4px dashed;
@@ -6786,4 +6804,11 @@ button.close {
   .navbar .dropdown-menu a {
     color: #fff;
   }
+}
+
+#separador {
+    height: 5px;
+    width: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
