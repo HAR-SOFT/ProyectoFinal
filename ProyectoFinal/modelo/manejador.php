@@ -99,7 +99,7 @@ class manejador extends conexionDB {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
-//        var_dump(strpos($queryParametro, "UPDATE"));
+// var_dump(strpos($queryParametro, "UPDATE"));
         if (strpos($queryParametro, "INSERT" ) !== false) {
             $this->mensaje = $msjParametro;
         } else {
@@ -457,26 +457,23 @@ class manejador extends conexionDB {
         }
     }
     
-     public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
+    public function transaccion (){
+   
+    $this->conexion->commit(); 
+        
+    $this->autocommit(false);
+    }
+    
+    public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
         $this->query = "INSERT INTO sol_mer"
-        . " (id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
-        . " VALUE"
-        . "(null , $nombreMer , 'sol_alumno' , $ci , $nombreEjercicio);";
-        $msjguardarMerSolucionAlumno = "Clave actualizada correctamente.";
+                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+                . " VALUE"
+                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
+        $msjguardarMerSolucionAlumno = "No se ha cargado la solucion.";
 
         return $this->ejecutarQuery($this->query, $msjguardarMerSolucionAlumno);
     }
-    /*    
-    public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
-        $this->query = "UPDATE"
-        . " dim_usuario"
-        . " SET clave = '$claveNuevaParam'"
-        . " WHERE ci = '$ci';";
-        $msjCambiarClaveManejador = "Clave actualizada correctamente.";
 
-        return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
-    }
-    */
     public function cambiarClaveManejador($ci, $claveNuevaParam) {
         $this->query = "UPDATE"
                 . " dim_usuario"
