@@ -32,6 +32,18 @@ class conexionDB {
             echo "Excepción capturada: ",  $ex->getMessage(), "\n";
         }
     }
+    
+    public function consultaConRollBack($sql) {
+        try {
+            $this->conexion->autocommit(FALSE);
+            $resultado = mysqli_query($this->conexion, $sql);
+            $this->conexion->commit();
+            return $resultado;
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+            $this->conexion->rollback();
+        }
+    }
 
     public function cantidadRegistros($resultado) {
 //        var_dump(gettype($resultado));
