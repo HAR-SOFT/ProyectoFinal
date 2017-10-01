@@ -33,15 +33,27 @@ class conexionDB {
         }
     }
     
-    public function consultaConRollBack($sql) {
+    public function autocommit($estado = false) {
         try {
-            $this->conexion->autocommit(FALSE);
-            $resultado = mysqli_query($this->conexion, $sql);
-            $this->conexion->commit();
-            return $resultado;
+            $this->conexion->autocommit($estado);
         } catch (Exception $ex) {
             echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function commit() {
+        try {
+            $this->conexion->commit();
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function rollback() {
+        try {
             $this->conexion->rollback();
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
         }
     }
 
