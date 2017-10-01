@@ -457,11 +457,57 @@ class manejador extends conexionDB {
         }
     }
     
-    public function transaccion (){
-   
-    $this->conexion->commit(); 
+    public function transaccion ($nombreMer , $ci ,$nombreEjercicio ){
+       
+        //$conex = new mysqli("localhost", "root", "", "e-mer");
+       
+        //$conex->autocommit(0);
         
-    $this->autocommit(false);
+        $this->mysqli_autocommit($this->conexion,FALSE);
+                   
+        $this->query = "INSERT INTO sol_mer "
+                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+                . " VALUE "
+                . "(null , 'PerroChulo' , 'sol_alumno' , '38072948' , 'PerroChulo');";
+        $msjtransaccion = "No se ha cargado la solucion.";
+
+        $this->ejecutarQuery($this->query, $msjtransaccion);
+        
+        var_dump($this->ejecutarQuery);
+        
+           if(!$this->query) {           
+               $this->query = "INSERT INTO sol_entidad 
+                        (id_entidad , nombre , tipo_entidad , entidad_supertipo, 
+                        atributo_simple , atributo_multivaluado , agregacion ,
+                        tipo_categorizacion , nombre_mer , ci_usuario) 
+                        VALUE 
+                        (null , 'PerroChulo' , 'comun' , 'entidad_supertipo' ,
+                        'atributo_simple' , 'atributo_multivaluado' , 'agreagacion' ,
+                        'solapada' , 'PerroChulo' , '38072948');";
+        
+              $msjtransaccion = "No se ha cargado la solucion.";
+              $this->ejecutarQuery($this->query, $msjtransaccion);
+                
+                if(!$this->mensaje) {
+                    $this->query = " INSERT INTO sol_relacion 
+                             (id_relacion , nombre , nombre_entidadA , 
+                              nombre_entidadB , cardinalidadA, cardinalidadB ,
+                              nombre_atributo_simple , nombre_mer , ci_usuario) 
+                              VALUE 
+                              (null, 'nombre' , 'nombre_entidadA' , 'nombre_entidadB' ,
+                              '1', '1' , 'nombre_atributo_simple' , 
+                              'PerroChulo' , '38072948');";
+                 
+                   $msjtransaccion = "No se ha cargado la solucion.";
+
+                   $this->ejecutarQuery($this->query, $msjtransaccion);       
+                   
+                   $this->commit();                  
+                }          
+        }    
+      
+     return $this->rollback();
+
     }
     
     public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {

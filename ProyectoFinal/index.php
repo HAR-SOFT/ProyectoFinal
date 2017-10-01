@@ -82,7 +82,7 @@ else {
             $mvc->practicar();
             break;
          case "validarEjercicio":
-            $mvc->validarEjercicio();
+            $mvc->transaccionInsert();
             break;
     }
 }
