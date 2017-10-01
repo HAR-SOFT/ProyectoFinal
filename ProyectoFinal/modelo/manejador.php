@@ -457,10 +457,10 @@ class manejador extends conexionDB {
         }
     }
     
-    public function guardarSolucion ($nombreMer , $ci ,$nombreEjercicio ){
+    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){
                                   
-        $this->autocommit();
-        
+        $this->autocommit(FALSE);
+                          //insert sol_mer
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
@@ -468,39 +468,46 @@ class manejador extends conexionDB {
         $msjtransaccion = "No se ha cargado la solucion.";
 
         $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);
-                
-           if(!$this->query) {           
-               $this->query = "INSERT INTO sol_entidad 
-                        (id_entidad , nombre , tipo_entidad , entidad_supertipo, 
-                        atributo_simple , atributo_multivaluado , agregacion ,
-                        tipo_categorizacion , nombre_mer , ci_usuario) 
-                        VALUE 
-                        (null , 'PerroChulo' , 'comun' , 'entidad_supertipo' ,
-                        'atributo_simple' , 'atributo_multivaluado' , 'agreagacion' ,
-                        'solapada' , 'PerroChulo' , '38072948');";
+                          //insert sol_entidad 
+           if($resultado) {           
+               $this->query = "INSERT INTO sol_entidad"
+                       . " (id_entidad , nombre , tipo_entidad ,"
+                       . " entidad_supertipo, atributo_simple ,"
+                       . " atributo_multivaluado , agregacion ,"
+                       . "tipo_categorizacion , nombre_mer , ci_usuario) "
+                       . "VALUE "
+                       . "(null , 'Perro' , 'comun' , 'entidad_supertipo' ,"
+                       . "'atributo_simple' , 'atributo_multivaluado' , "
+                       . "'agreagacion' , 'solapada' , 'PerroChulo' , '38072948');";
         
               $msjtransaccion = "No se ha cargado la solucion.";
-              $this->ejecutarQuery($this->query, $msjtransaccion);
-                
-                if(!$this->mensaje) {
-                    $this->query = " INSERT INTO sol_relacion 
-                             (id_relacion , nombre , nombre_entidadA , 
-                              nombre_entidadB , cardinalidadA, cardinalidadB ,
-                              nombre_atributo_simple , nombre_mer , ci_usuario) 
-                              VALUE 
-                              (null, 'nombre' , 'nombre_entidadA' , 'nombre_entidadB' ,
-                              '1', '1' , 'nombre_atributo_simple' , 
-                              'PerroChulo' , '38072948');";
+              
+              $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);
+                            //insert sol_relacion
+                if($resultado) {
+                    $this->query = " INSERT INTO sol_relacion (id_relacion , "
+                            . "nombre , nombre_entidadA ,nombre_entidadB , "
+                            . "cardinalidadA, cardinalidadB ,nombre_atributo_simple "
+                            . ", nombre_mer , ci_usuario) "
+                            . "VALUE "
+                            . "(null, 'Perro' , 'nombre_entidadA' , "
+                            . "'nombre_entidadB' ,'1', '1' , "
+                            . "'nombre_atributo_simple' , 'PerroChulo' , '38072948');";
                  
                    $msjtransaccion = "No se ha cargado la solucion.";
 
-                   $this->ejecutarQuery($this->query, $msjtransaccion);       
+                   $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);       
                    
-                   $this->commit();                  
+                   if($resultado){
+                      $this->commit();         
+                   } else{
+                      $this->rollback();
+                   }
+                           
                 }          
-        }    
+            }    
       
-     return $this->rollback();
+     return ;
 
     }
     

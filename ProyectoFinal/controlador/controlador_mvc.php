@@ -1530,6 +1530,8 @@ class controlador_mvc extends manejador {
             
             if (isset($_REQUEST["inputs"])) {
                 $_SESSION["inputs"] = $_REQUEST["inputs"];
+                
+                $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
             }
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
