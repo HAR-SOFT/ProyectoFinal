@@ -457,25 +457,18 @@ class manejador extends conexionDB {
         }
     }
     
-    public function transaccion ($nombreMer , $ci ,$nombreEjercicio ){
-       
-        $conexion = new mysqli("localhost", "root", "", "e-mer");
-       
-        $conexion->autocommit(0);
+    public function guardarSolucion ($nombreMer , $ci ,$nombreEjercicio ){
+                                  
+        $this->autocommit();
         
-        
-       $this->$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-                           
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
                 . "(null , 'PerroChulo' , 'sol_alumno' , '38072948' , 'PerroChulo');";
         $msjtransaccion = "No se ha cargado la solucion.";
 
-       $resultado =  $this->ejecutarQuery($this->query, $msjtransaccion);
-        
-        var_dump($resultado);
-        
+        $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);
+                
            if(!$this->query) {           
                $this->query = "INSERT INTO sol_entidad 
                         (id_entidad , nombre , tipo_entidad , entidad_supertipo, 
@@ -511,7 +504,7 @@ class manejador extends conexionDB {
 
     }
     
-    public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
+    /*-public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
         $this->query = "INSERT INTO sol_mer"
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE"
@@ -520,7 +513,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjguardarMerSolucionAlumno);
     }
-
+    */
     public function cambiarClaveManejador($ci, $claveNuevaParam) {
         $this->query = "UPDATE"
                 . " dim_usuario"

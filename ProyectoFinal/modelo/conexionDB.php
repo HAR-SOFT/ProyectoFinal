@@ -60,30 +60,6 @@ class conexionDB {
         }
     }
     
-    public function autocommit() {
-        try {
-            mysqli_autocommit($this->conexion,$valor);
-        } catch (Exception $ex) {
-            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
-        }
-    }
-    
-      public function commit() {
-        try {
-            mysqli_commit($this->conexion);
-        } catch (Exception $ex) {
-            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
-        }
-    }
-      public function rollback() {
-        try {
-            mysqli_rollback($this->conexion);
-        } catch (Exception $ex) {
-            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
-        }
-    }
-
-
 }
 
 ?>
