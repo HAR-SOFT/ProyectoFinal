@@ -81,6 +81,12 @@ else {
         case "practicar":
             $mvc->practicar();
             break;
+        case "validarEjercicio":
+            $mvc->validarEjercicio();
+            break;
+        case "guardarInputsEjercicio":
+            $mvc->guardarInputsEjercicio();
+            break;
     }
 }
 

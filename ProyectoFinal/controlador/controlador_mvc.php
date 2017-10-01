@@ -266,6 +266,7 @@ class controlador_mvc extends manejador {
             unset($_SESSION["categoriaUsuario"]);
             unset($_SESSION["cursoUsuario"]);
             unset($_SESSION["usuario"]);
+            unset($_SESSION["ejercicio"]);
 
             session_destroy();
 
@@ -1477,7 +1478,7 @@ class controlador_mvc extends manejador {
 
             if (isset($_REQUEST["ejercicio"])) {
                 $ejercicio = $_REQUEST["ejercicio"];
-
+                $_SESSION["ejercicio"] = $ejercicio;
             }
 
             $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);
@@ -1508,6 +1509,31 @@ class controlador_mvc extends manejador {
 
             $this->view_page($pagina);
 
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function validarEjercicio() {
+        try {
+            session_start();
+            
+            var_dump($_SESSION["inputs"]);
+            var_dump($_SESSION["ejercicio"]);
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function guardarInputsEjercicio() {
+        try {
+            session_start();
+            
+            if (isset($_REQUEST["inputs"])) {
+                $_SESSION["inputs"] = $_REQUEST["inputs"];
+            }
+            
+            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
