@@ -32,6 +32,30 @@ class conexionDB {
             echo "Excepción capturada: ",  $ex->getMessage(), "\n";
         }
     }
+    
+    public function autocommit($estado = false) {
+        try {
+            $this->conexion->autocommit($estado);
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function commit() {
+        try {
+            $this->conexion->commit();
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function rollback() {
+        try {
+            $this->conexion->rollback();
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ",  $ex->getMessage(), "\n";
+        }
+    }
 
     public function cantidadRegistros($resultado) {
 //        var_dump(gettype($resultado));
