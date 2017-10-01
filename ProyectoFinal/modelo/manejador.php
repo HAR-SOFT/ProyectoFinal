@@ -459,21 +459,22 @@ class manejador extends conexionDB {
     
     public function transaccion ($nombreMer , $ci ,$nombreEjercicio ){
        
-        //$conex = new mysqli("localhost", "root", "", "e-mer");
+        $conexion = new mysqli("localhost", "root", "", "e-mer");
        
-        //$conex->autocommit(0);
+        $conexion->autocommit(0);
         
-        $this->mysqli_autocommit($this->conexion,FALSE);
-                   
+        
+       $this->$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+                           
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
                 . "(null , 'PerroChulo' , 'sol_alumno' , '38072948' , 'PerroChulo');";
         $msjtransaccion = "No se ha cargado la solucion.";
 
-        $this->ejecutarQuery($this->query, $msjtransaccion);
+       $resultado =  $this->ejecutarQuery($this->query, $msjtransaccion);
         
-        var_dump($this->ejecutarQuery);
+        var_dump($resultado);
         
            if(!$this->query) {           
                $this->query = "INSERT INTO sol_entidad 

@@ -266,6 +266,7 @@ class controlador_mvc extends manejador {
             unset($_SESSION["categoriaUsuario"]);
             unset($_SESSION["cursoUsuario"]);
             unset($_SESSION["usuario"]);
+            unset($_SESSION["ejercicio"]);
 
             session_destroy();
 
@@ -1476,7 +1477,7 @@ class controlador_mvc extends manejador {
 
             if (isset($_REQUEST["ejercicio"])) {
                 $ejercicio = $_REQUEST["ejercicio"];
-
+                $_SESSION["ejercicio"] = $ejercicio;
             }
 
             $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);
@@ -1512,123 +1513,29 @@ class controlador_mvc extends manejador {
         }
     }
     
-    
     public function validarEjercicio() {
-        try{ 
+        try {
             session_start();
-          
-            if (isset($_REQUEST['validar'])) {
-                
-            $nombreEjercicio = $_REQUEST['ejercicio']; 
-                                            
-            $ci = $_SESSION["ciUsuario"];
-           
-            $entidad1 = $_REQUEST["entidad1"];
-            $entidad2 = $_REQUEST["entidad2"];
-            //$entidad3 = $_REQUEST["entidad3"];
-            //$entidad4 = $_REQUEST["entidad4"];
-            //$entidad5 = $_REQUEST["entidad5"];
-            //$entidad6 = $_REQUEST["entidad6"];
-            $atributo1 = $_REQUEST["atributo1"];
-            $atributo2 = $_REQUEST["atributo2"];
-            $atributo3 = $_REQUEST["atributo3"];
-            //$atributoMulti = $_REQUEST["atributoMulti"];
-            //$atributoRel = $_REQUEST["atributoRel"];
-            $cardi1 = $_REQUEST['cardi1'];
-            $cardi2 = $_REQUEST['cardi2'];
-            //$cardi3 = $_REQUEST['cardi3'];
-            //$cardi4 = $_REQUEST['cardi4'];
-            //$cardi5 = $_REQUEST['cardi5'];
-            //$cardi6 = $_REQUEST['cardi6'];
-            $relacion1 = $_REQUEST["relacion1"];
-            //$relacion2 = $_REQUEST["relacion2"];
-            //$relacion3 = $_REQUEST["relacion3"];
-            //$categorizacion1 = $_REQUEST["categorizacion1"];
-            //$agregacion1 = $_REQUEST["agregacion1"];
-            $reestriccion = $_REQUEST["reestriccion"] ;
             
-           /* echo '<div align = "center">'
-                .'Alumno C.I:'.$ci 
-                .'<br>'
-                .'Ejercicio:' .$nombreEjercicio    
-                .'<br><br><br>'
-                .'<br>'.'Entidad 1:'.$entidad1 
-                .'<br>'.'Atributo 1:'.$atributo1  
-                .'<br>'.'Cardinalidad 1: '.$cardi1 
-                .'<br>'.'Relacion 1:'.$relacion1     
-                .'<br>'.'Entidad 2:'. $entidad2                
-                .'<br>'.'Atributo 2:'. $atributo2                
-                .'<br>'.'Cardinalidad 2: '.$cardi2 
-                .'<br>'.'Restriccion :'. $reestriccion
-                .'</div>';           
-            */
-                $resultado = $this->guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio);
-                 
-                if($resultado){
-                    
-                    $this->modal("se guardo la solucion");
-                    
-                } else {   
-                  $this->modal("No se ha podido validar el ejercicio ");                                
-                }                           
-            } 
-                    
-            $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
-
-            $pagina = $this->load_template("inicio");
-            $header = $this->load_page("vistas/html/headerLogueado.html");
-            $head = $this->load_page("vistas/html/headEjercicio.html");
-            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
-            $pagina = $this->replace_content("/Header/", $header, $pagina);
-            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-            $pagina = $this->replace_content("/Titulo/", "A Practicar", $pagina);
-            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-
-            $this->view_page($pagina);    
-                          
-        }catch (Exception $ex) {
+            var_dump($_SESSION["inputs"]);
+            var_dump($_SESSION["ejercicio"]);
+        } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        } 
-               
-        echo '<a href='.$_SERVER['HTTP_REFERER'].'>VOLVER</a>';
-    }
-
-    public function transaccionInsert() {
-       
-        $nombreMer = 'PerroCucha';
-        $ci = '40269737';
-        $nombreEjercicio = 'PerroCucha';
-        
-        $resultado = $this->transaccion($nombreMer,$ci,$nombreEjercicio);
-
-        
-        if($resultado){
-            
-            $this->modal("No se ha podido validar el ejercicio ");    
-            
-        }else{
-            $this->modal("Se realizo correcto ");    
-            
         }
-        
-        
-        
-        
-        
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public function guardarInputsEjercicio() {
+        try {
+            session_start();
+            
+            if (isset($_REQUEST["inputs"])) {
+                $_SESSION["inputs"] = $_REQUEST["inputs"];
+            }
+            
+            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
 }
 ?>
