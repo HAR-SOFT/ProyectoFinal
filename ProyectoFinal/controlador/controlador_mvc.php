@@ -1517,8 +1517,15 @@ class controlador_mvc extends manejador {
         try {
             session_start();
             
-            var_dump($_SESSION["inputs"]);
-            var_dump($_SESSION["ejercicio"]);
+            $inputsString = explode(",", $_SESSION["inputs"]);
+            $inputsArray = [];
+            
+            for ($i = 0; $i < sizeof($inputsString); $i++) {
+                array_push($inputsArray, explode(":", $inputsString[$i])[0], 
+                        explode(":", $inputsString[$i])[1]);
+            }
+
+            var_dump($inputsArray);
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
