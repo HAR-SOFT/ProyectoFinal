@@ -457,70 +457,6 @@ class manejador extends conexionDB {
         }
     }
     
-    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){
-                                  
-        $this->autocommit(FALSE);
-                          //insert sol_mer
-        $this->query = "INSERT INTO sol_mer "
-                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
-                . " VALUE "
-                . "(null , 'PerroChulo' , 'sol_alumno' , '38072948' , 'PerroChulo');";
-        $msjtransaccion = "No se ha cargado la solucion.";
-
-        $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);
-                          //insert sol_entidad 
-           if($resultado) {           
-               $this->query = "INSERT INTO sol_entidad"
-                       . " (id_entidad , nombre , tipo_entidad ,"
-                       . " entidad_supertipo, atributo_simple ,"
-                       . " atributo_multivaluado , agregacion ,"
-                       . "tipo_categorizacion , nombre_mer , ci_usuario) "
-                       . "VALUE "
-                       . "(null , 'Perro' , 'comun' , 'entidad_supertipo' ,"
-                       . "'atributo_simple' , 'atributo_multivaluado' , "
-                       . "'agreagacion' , 'solapada' , 'PerroChulo' , '38072948');";
-        
-              $msjtransaccion = "No se ha cargado la solucion.";
-              
-              $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);
-                            //insert sol_relacion
-                if($resultado) {
-                    $this->query = " INSERT INTO sol_relacion (id_relacion , "
-                            . "nombre , nombre_entidadA ,nombre_entidadB , "
-                            . "cardinalidadA, cardinalidadB ,nombre_atributo_simple "
-                            . ", nombre_mer , ci_usuario) "
-                            . "VALUE "
-                            . "(null, 'Perro' , 'nombre_entidadA' , "
-                            . "'nombre_entidadB' ,'1', '1' , "
-                            . "'nombre_atributo_simple' , 'PerroChulo' , '38072948');";
-                 
-                   $msjtransaccion = "No se ha cargado la solucion.";
-
-                   $resultado = $this->ejecutarQuery($this->query, $msjtransaccion);       
-                   
-                   if($resultado){
-                      $this->commit();         
-                   } else{
-                      $this->rollback();
-                   }
-                           
-                }          
-            }    
-      
-     return ;
-
-    }
-    
-    /*-public function guardarMerSolucionAlumno($nombreMer, $ci, $nombreEjercicio) {
-        $this->query = "INSERT INTO sol_mer"
-                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
-                . " VALUE"
-                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
-        $msjguardarMerSolucionAlumno = "No se ha cargado la solucion.";
-
-        return $this->ejecutarQuery($this->query, $msjguardarMerSolucionAlumno);
-    }
-    */
     public function cambiarClaveManejador($ci, $claveNuevaParam) {
         $this->query = "UPDATE"
                 . " dim_usuario"
@@ -653,7 +589,56 @@ class manejador extends conexionDB {
         
         return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
+    
+    //SOLO SE DEBE EJECUTAR UNA VEZ
+    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                  
+        //$this->autocommit(FALSE);                      
+        $this->query = "INSERT INTO sol_mer "
+                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+                . " VALUE "
+                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
+        $msjSolucionMer = "No se ha cargado la solucion.";
 
+        return $this->ejecutarQuery($this->query, $msjSolucionMer);                                 
+    }
+
+    // SE EJECUTA UNA VEZ POR CADA ATRIBUTO QUE TENGA LA ENTIDAD ( PUEDE TENER ATRIBUTOS MULTIVALUADOS )
+    public function guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
+                                             $entidadSupertipo ,
+                                             $atributo1_entidad1 ,
+                                             $atributoMultivaluado ,$agregacion ,
+                                             $tipoCategorizacion ,  
+                                             $nombreEjercicio, $ci) {
+         $this->query = "INSERT INTO sol_entidad"
+                 . " (id_entidad , nombre , tipo_entidad ,"
+                 . " entidad_supertipo, atributo_simple ,"
+                 . " atributo_multivaluado , agregacion ,"
+                 . "tipo_categorizacion , nombre_mer , ci_usuario) "
+                 . "VALUE "
+                 . "(null , '$nombreEntidad' , '$tipoEntidad' , '$entidadSupertipo' ,"
+                 . "'$atributo1_entidad1' , '$atributoMultivaluado' , "
+                 . "'$agregacion' , '$tipoCategorizacion' , '$nombreEjercicio' , '$ci');";
+        
+              $msjSolMerEntidad = "No se ha cargado la entidad.";
+              
+              return $this->ejecutarQuery($this->query, $msjSolMerEntidad);   ;
+    }
+    //ANTES QUE SE EJECUTE ESTA QUERY DEBEN ESTAR TODAS LAS ENTIDADES EN LA BASE (nombre_entidadA , nombre_entidadB )
+    public function guardarSolucionMerRelacion($nombreRelacion,$nombreEntidadA,$nombreEntidadB,$nombreEjercicio,$ci) {
+        $this->query = " INSERT INTO sol_relacion (id_relacion , "
+                 . "nombre , nombre_entidadA ,nombre_entidadB , "
+                 . "cardinalidadA, cardinalidadB ,nombre_atributo_simple "
+                 . ", nombre_mer , ci_usuario) "
+                 . "VALUE "
+                 . "(null, '$nombreRelacion' , '$nombreEntidadA' , "
+                 . "'$nombreEntidadB' ,'1', '1' , "
+                 . "'nombre_atributo_simple' , '$nombreEjercicio' , '$ci');";
+                 
+        $msjSolMerRelacion = "No se ha cargado la relacion.";
+
+        return $this->ejecutarQuery($this->query, $msjSolMerRelacion); 
+    }
+    
 }
 
 ?>

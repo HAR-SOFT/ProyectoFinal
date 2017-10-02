@@ -1517,10 +1517,52 @@ class controlador_mvc extends manejador {
         try {
             session_start();
             
-            var_dump($_SESSION["inputs"]);
-            var_dump($_SESSION["ejercicio"]);
+            $nombreMer = $_SESSION["ejercicio"];
+            $ci = $_SESSION["ciUsuario"];
+            $nombreEjercicio = $_SESSION["ejercicio"];
+            
+            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
+            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
                        
-        } catch (Exception $ex) {
+            $inputsString = explode(",", $_SESSION["inputs"]);
+            $inputsArray = [];
+            
+            for ($i = 0; $i < sizeof($inputsString); $i++) {
+
+                array_push($inputsArray, explode(":", $inputsString[$i])[0], 
+                        explode(":", $inputsString[$i])[1]);                                                 
+            }   
+            // entidad 1
+            $entidad1 = $inputsArray[1];
+            $atributo1_entidad1 = $inputsArray[5];
+           
+            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
+            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
+            
+            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
+            //  ATRIBUTOS TENGA LA ENTIDAD
+            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
+                                             $entidadSupertipo ,
+                                             $atributo1_entidad1 ,
+                                             $atributoMultivaluado ,$agregacion ,
+                                             $tipoCategorizacion ,  
+                                             $nombreEjercicio, $ci);
+            
+            // entidad 2
+            $entidad2 = $inputsArray[7];
+            $atributo1_entidad2 = $inputsArray[11];
+            $atributo2_entidad2 = $inputsArray[13];
+            
+            // relacion
+            $relacion1 = $inputsArray[15];
+            
+            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
+            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
+                                              $nombreEjercicio, $ci);
+            
+            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
+            
+        }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
