@@ -1519,6 +1519,7 @@ class controlador_mvc extends manejador {
             
             var_dump($_SESSION["inputs"]);
             var_dump($_SESSION["ejercicio"]);
+                       
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
@@ -1527,11 +1528,9 @@ class controlador_mvc extends manejador {
     public function guardarInputsEjercicio() {
         try {
             session_start();
-            
+            $nombreEjercicio = $_SESSION["ejercicio"];
             if (isset($_REQUEST["inputs"])) {
-                $_SESSION["inputs"] = $_REQUEST["inputs"];
-                
-                $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
+                $_SESSION["inputs"] = $_REQUEST["inputs"];                               
             }
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
