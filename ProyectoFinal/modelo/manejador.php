@@ -590,6 +590,22 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
     
+    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
+            $inputsCapturados) {
+        $tiposInputs = ["entidad", "relacion"];
+        // hay que recorrer el array que se paso para ver de que son los datos
+        // e ir armando objetos.
+        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
+            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
+                if (strpos($inputsCapturados[$i][0], $tiposInputs[$x]) !== false) {
+                    var_dump("El objeto es de tipo " . $tiposInputs[$x]);
+                } else {
+                    //var_dump("No Existe - ". $inputsCapturados[$i][0] . " - " . $tiposInputs[$x]);
+                }
+            }
+        }
+    }
+    
     //SOLO SE DEBE EJECUTAR UNA VEZ
     public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                  
         //$this->autocommit(FALSE);                      

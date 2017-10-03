@@ -1521,46 +1521,73 @@ class controlador_mvc extends manejador {
             $ci = $_SESSION["ciUsuario"];
             $nombreEjercicio = $_SESSION["ejercicio"];
             
-            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
+//            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
+//            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
             
+            // armamos array principal con todos los inputs.
             for ($i = 0; $i < sizeof($inputsString); $i++) {
+                // nos fijamos si el nombre del input tiene el caracter separador.
+                // si no lo tiene, entonces es el input de restricciones.
+                if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                    $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
+                } else {
+                    $tipoInput = explode(":", $inputsString[$i])[0];
+                }
+                // nos fijamos que atributo es el del input.
+                // si no lo tiene, entonces es el input de restricciones.
+                if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                    $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
+                } else {
+                    $atributoInput = explode(":", $inputsString[$i])[0];
+                }
+                // asignamos el valor
+                $valor = explode(":", $inputsString[$i])[1];
 
-                array_push($inputsArray, explode(":", $inputsString[$i])[0], 
-                        explode(":", $inputsString[$i])[1]);                                                 
-            }   
-            // entidad 1
-            $entidad1 = $inputsArray[1];
-            $atributo1_entidad1 = $inputsArray[5];
-           
-            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
-            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
+//                var_dump($tipoInput);
+//                var_dump($atributoInput);
+//                var_dump($valor);
+                
+                // armamos el array con clave-valor.
+                array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));                                                 
+            }
             
-            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
-            //  ATRIBUTOS TENGA LA ENTIDAD
-            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-                                             $entidadSupertipo ,
-                                             $atributo1_entidad1 ,
-                                             $atributoMultivaluado ,$agregacion ,
-                                             $tipoCategorizacion ,  
-                                             $nombreEjercicio, $ci);
+            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
+                    $inputsArray);
             
-            // entidad 2
-            $entidad2 = $inputsArray[7];
-            $atributo1_entidad2 = $inputsArray[11];
-            $atributo2_entidad2 = $inputsArray[13];
+            var_dump($inputsArray);
             
-            // relacion
-            $relacion1 = $inputsArray[15];
-            
-            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
-            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
-                                              $nombreEjercicio, $ci);
-            
-            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
+//            // entidad 1
+//            $entidad1 = $inputsArray[1];
+//            $atributo1_entidad1 = $inputsArray[5];
+//           
+//            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
+//            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
+//            
+//            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
+//            //  ATRIBUTOS TENGA LA ENTIDAD
+//            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
+//                                             $entidadSupertipo ,
+//                                             $atributo1_entidad1 ,
+//                                             $atributoMultivaluado ,$agregacion ,
+//                                             $tipoCategorizacion ,  
+//                                             $nombreEjercicio, $ci);
+//            
+//            // entidad 2
+//            $entidad2 = $inputsArray[7];
+//            $atributo1_entidad2 = $inputsArray[11];
+//            $atributo2_entidad2 = $inputsArray[13];
+//            
+//            // relacion
+//            $relacion1 = $inputsArray[15];
+//            
+//            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
+//            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
+//                                              $nombreEjercicio, $ci);
+//            
+//            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
             
         }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
