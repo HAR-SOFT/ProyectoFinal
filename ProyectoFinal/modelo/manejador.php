@@ -114,6 +114,32 @@ class manejador extends conexionDB {
             }
         }
     }
+    
+     public function ejecutarTransaccion($queryParametro, $msjParametro) {
+        $this->conectar();
+        $this->autocommit(FALSE);
+        $query = $this->consulta($queryParametro);
+        if ($query == true) {
+            $this->commit();
+        } else {
+            $this->rollback();    
+        }
+        $this->cerrarDB();
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false ))) {
+            $this->mensaje = $msjParametro;
+        } else {
+            if (!$this->cantidadRegistros($query) == 0) {
+                while ($array = $this->retornarRegistros($query)) {
+                    $datos[] = $array;
+                }
+
+                return $datos;
+            } else {
+                $this->mensaje = $msjParametro;
+            }
+        }
+    }
 
     public function listarCursos() {
         $this->query = "SELECT * FROM dim_curso;";
@@ -190,10 +216,8 @@ class manejador extends conexionDB {
 
     public function editarCursoManejador($nombreCurso) {
         $this->query = "SELECT "
-                . " curso.id_curso as id_curso,"
                 . " c.nombre_curso as nombre_curso,"
                 . " dt.nombre as tema,"
-                . " asctse.nombre_subtema as nombre_subtema,"
                 . " asctse.nombre_ejercicio as ejercicio"
                 . " FROM"
                 . " asc_curso_usuario AS c,"
@@ -372,6 +396,15 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
+    
+        public function listarTemasPorCursoSeleccionado() {
+        $this->query = "SELECT DISTINCT ASCCTSE.nombre_tema"
+                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE";
+        $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
+    }
+
 
     public function listarSubTemasPorCursoYTema($nombreCurso, $tema) {
         switch(gettype($tema)) {
@@ -607,15 +640,14 @@ class manejador extends conexionDB {
     }
     
     //SOLO SE DEBE EJECUTAR UNA VEZ
-    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                  
-        //$this->autocommit(FALSE);                      
+    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                                             
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
-                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
+                . "(null , '$nombreMer' , 'sol_alumno' , '23546444' , '$nombreEjercicio');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
-        return $this->ejecutarQuery($this->query, $msjSolucionMer);                                 
+        return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
     }
 
     // SE EJECUTA UNA VEZ POR CADA ATRIBUTO QUE TENGA LA ENTIDAD ( PUEDE TENER ATRIBUTOS MULTIVALUADOS )
