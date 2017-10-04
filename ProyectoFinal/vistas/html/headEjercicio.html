@@ -83,7 +83,7 @@
             var elements = document.getElementsByTagName("input")
             var arrayElements = [];
             for (var i = 0; i < elements.length; i++) {
-                if(elements[i].value === "") {
+                if(elements[i].value === "" && elements[i].required === true) {
                     alert("Debe completar todos los nombres de Entidades, Relaciones y Atributos.");
                     break;
                 } else {

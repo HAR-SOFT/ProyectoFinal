@@ -592,18 +592,33 @@ class manejador extends conexionDB {
     
     public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
             $inputsCapturados) {
-        $tiposInputs = ["entidad", "relacion"];
+        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacion", "restriccion"];
+        $atributosInputs = ["nombre", "atributo", "restriccion"];
+        $inputsRecorridos = [];
+        $arrayRegistros = [];
         // hay que recorrer el array que se paso para ver de que son los datos
         // e ir armando objetos.
         for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
             for ($x = 0; $x < sizeof($tiposInputs); $x++) {
                 if (strpos($inputsCapturados[$i][0], $tiposInputs[$x]) !== false) {
-                    var_dump("El objeto es de tipo " . $tiposInputs[$x]);
-                } else {
-                    //var_dump("No Existe - ". $inputsCapturados[$i][0] . " - " . $tiposInputs[$x]);
+                    if (in_array($inputsCapturados[$i][0], $inputsRecorridos) === false) {
+                        array_push($inputsRecorridos, $inputsCapturados[$i][0]);
+                        switch ($tiposInputs[$x]) {
+                            case "entidadComun";
+                                //var_dump(key($inputsCapturados[$i][1]) . " - " . $inputsCapturados[$i][1]);
+                                array_push($arrayRegistros, $inputsCapturados[$i][1]);
+                        }
+                    } else {
+                        switch ($tiposInputs[$x]) {
+                            case "entidadComun";
+                                //var_dump(key($inputsCapturados[$i][1]) . " - " . $inputsCapturados[$i][1]);
+                                array_merge($arrayRegistros, $inputsCapturados[$i][1]);
+                        }
+                    }
                 }
             }
         }
+        var_dump($arrayRegistros);
     }
     
     //SOLO SE DEBE EJECUTAR UNA VEZ
