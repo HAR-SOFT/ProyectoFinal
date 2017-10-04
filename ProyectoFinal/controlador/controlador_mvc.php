@@ -1558,29 +1558,32 @@ class controlador_mvc extends manejador {
             
             // armamos array principal con todos los inputs.
             for ($i = 0; $i < sizeof($inputsString); $i++) {
-                // nos fijamos si el nombre del input tiene el caracter separador.
-                // si no lo tiene, entonces es el input de restricciones.
-                if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                    $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
-                } else {
-                    $tipoInput = explode(":", $inputsString[$i])[0];
-                }
-                // nos fijamos que atributo es el del input.
-                // si no lo tiene, entonces es el input de restricciones.
-                if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                    $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
-                } else {
-                    $atributoInput = explode(":", $inputsString[$i])[0];
-                }
-                // asignamos el valor
-                $valor = explode(":", $inputsString[$i])[1];
+                // primero excluimos el atributo cardinalidad.
+                if (strpos($inputsString[$i], "cardinalidad") === false) {
+                    // nos fijamos si el nombre del input tiene el caracter separador.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
+                    } else {
+                        $tipoInput = explode(":", $inputsString[$i])[0];
+                    }
+                    // nos fijamos que atributo es el del input.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
+                    } else {
+                        $atributoInput = explode(":", $inputsString[$i])[0];
+                    }
+                    // asignamos el valor
+                    $valor = explode(":", $inputsString[$i])[1];
 
-//                var_dump($tipoInput);
-//                var_dump($atributoInput);
-//                var_dump($valor);
-                
-                // armamos el array con clave-valor.
-                array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));                                                 
+    //                var_dump($tipoInput);
+    //                var_dump($atributoInput);
+    //                var_dump($valor);
+
+                    // armamos el array con clave-valor.
+                    array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));
+                }
             }
             
             $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 

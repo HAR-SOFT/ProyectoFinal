@@ -13,8 +13,7 @@ class entidad extends conexionDB {
     private $colAtributosMultivaluados;
     private $nombreMer;
 
-    public function __construct($mensaje, $nombre, $colAtributosSimples, $colAtributosMultivaluados, $nombreMer) {
-        $this->mensaje = $mensaje;
+    public function __construct($nombre, $colAtributosSimples, $colAtributosMultivaluados, $nombreMer) {
         $this->nombre = $nombre;
         $this->colAtributosSimples = $colAtributosSimples;
         $this->colAtributosMultivaluados = $colAtributosMultivaluados;
