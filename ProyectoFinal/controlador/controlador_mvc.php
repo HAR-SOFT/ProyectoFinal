@@ -552,6 +552,7 @@ class controlador_mvc extends manejador {
             $resultado = $this->cursoAsingadosProfesor($ciUsuario);
 
             foreach ($resultado as $fila) {
+                $cursoSeleccionado =  $fila['nombre_curso'];
                 echo "<tbody>"
                 . "<tr class='info'>"
                 . "<td></td>"
@@ -564,8 +565,8 @@ class controlador_mvc extends manejador {
                 . "<td>" . $fila['nombre_curso'] . "</td>"
                 . "<td>" . $fila['horario'] . "</td>"
                 . "<td>" . $fila['tema'] . "</td>"
-                . "<td>" . $fila['estado'] . "</td>"
-                . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
+                . "<td>" . $fila['estado'] . "</td>" 
+                . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso&curso=$cursoSeleccionado'>editar</a></td>"
                 . "</tr>"
                 . "</tbody>";
             }
@@ -575,32 +576,69 @@ class controlador_mvc extends manejador {
     }
 
     public function editarCurso() {
-        //session_start();
-        //$curso =  'ATI2017';
+        try{ 
+            session_start();
+            if (isset($_REQUEST["curso"])) {
+                $curso = $_REQUEST["curso"];
+                
+            $temas = $this->listarTemasPorCursoSeleccionado();
+            //var_dump($temas);
+            
+            //$resultado = $this->editarCursoManejador($curso); 
+            //var_dump($resultado);
+            $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
+            foreach($temas as $item) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+               ."<button type='button; class='btn-primary btn' data-color='success'>"
+               . "".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"                     
+               ." </div>";           
+            }
+            
+            foreach($temas as $item) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+               ."<button type='button; class='btn-primary btn' data-color='success'>"
+               . "".$item['nombre_tema']."<input type='checkbox'></button>"                     
+               ." </div>";           
+            }
+                        
+            $contenido = $contenido." </div>"
+            . " <div class='col-lg-2'>"
+            . "<div class='container'>"
+            . "<div class='item'>"
+            . "<div class='jumbotron'>"
+            . "<h1>Introduccion</h1>"
+            ."<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                in voluptate velit esse cillum dolore eu fugiat nulla pariatur. t anim id est laborum.</p>"
+            . "</div>"       
+            . "</div>"   
+            . "<h4>Seleccione los ejercicios</h4>"                    
+            . "<div class=''>"
+            . "<button type='button' style='position: relative;' class='btn-primary btn' data-color='success'>Perro Cucha <input type='checkbox' class='btn-primary' checked /></button>"
+            . "<button type='submit' style='position: relative; align: right; margin-left: 800px;' class='btn btn-primary btn-lg' name='aceptar'>Aceptar</button>"
+            . "</div>"
+            . "</div>"
+            . "</div>";
+            
+            
+            $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Editar Curso", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
-        $resultado = $this->editarCurso("ATI2017");
-
-        foreach ($resultado as $fila) {
-            echo "<tbody>"
-            . "<tr class='info'>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "</tr>"
-            . "<tr class='active'>"
-            . "<td>" . $fila['nombre_curso'] . "</td>"
-            . "<td>" . $fila['horario'] . "</td>"
-            . "<td>" . $fila['tema'] . "</td>"
-            . "<td>" . $fila['estado'] . "</td>"
-            . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
-            . "</tr>"
-            . "</tbody>";
-        }
+            $this->view_page($pagina);
+            }
+                     
+            } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+         }
+             
     }
-
-    public function alumnosBedelia() {
+             public function alumnosBedelia() {
         try {
             session_start();
 
@@ -1522,7 +1560,7 @@ class controlador_mvc extends manejador {
             $nombreEjercicio = $_SESSION["ejercicio"];
             
 //            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-//            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
+            $this->guardarSolucionMer($nombreMer, '40269737', $nombreEjercicio);
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
