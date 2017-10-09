@@ -624,34 +624,149 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
     
+//    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
+//            $inputsCapturados) {
+//        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
+//        $atributosInputs = ["nombre", "atributo", "restriccion"];
+//        $arrayEntidades = [];
+//        $arrayRelaciones = [];
+//        $inputsRecorridos = [];
+//        $atributosRecorridos = [];
+//        $arrayRegistros = [];
+//        
+//        // hay que recorrer el array que se paso para ver de que son los datos
+//        // e ir armando objetos.
+//        
+//        // se recorre segun el largo del array.
+//        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
+//            $input = $inputsCapturados[$i][0];
+//            $atributo = $inputsCapturados[$i][1];
+//            $claveAtributo = key($atributo);
+//            $valorAtributo = implode(":", $atributo);
+//            
+//            // hacemos la recorrida segun la cantidad de tipo de inputs.
+//            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
+//                // si lo que estamos recorriendo es de uno de los tipos de inputs.
+//                if (strpos($input, $tiposInputs[$x]) !== false) {
+//                    $tipoInput = $tiposInputs[$x];
+//                    // si el input corresponde a una entidad, evaluamos que 
+//                    // tipo de entidad es.
+//                    if (strpos($tipoInput, "entidad") !== false ||
+//                            strpos($tipoInput, "relacion") !== false) {
+//                        if (strpos($tipoInput, "Comun") !== false) {
+//                            $tipo = "comun";
+//                        } else {
+//                            if (strpos($tipoInput, "SuperTipo") !== false) {
+//                                $tipo = "supertipo";
+//                            } else {
+//                                if (strpos($tipoInput, "SubTipo") !== false) {
+//                                    $tipo = "subtipo";
+//                                }
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//            // hacemos la recorrida segun la cantidad de tipo de atributos.
+//            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
+//                // si lo que estamos recorriendo es de uno de los tipos de atributos.
+//                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
+//                    $tipoAtributo = $atributosInputs[$z];
+//                    break;
+//                }
+//            }
+//            
+//            switch ($tipoInput) {
+//                case "entidadComun":
+//                    // si este nombre de objeto, todavia no lo recorri.
+//                    if (in_array($input, $inputsRecorridos) === false) {
+//                        // agrego el nombre del objeto al array de los ya recorridos.
+//                        array_push($inputsRecorridos, $input);
+//                        // nos fijamos si el atributo es el nombre.
+//                        if ($claveAtributo === "nombre") {
+//                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
+//                        }
+//                    } else {
+//                        $arrayRegistros[$input] = $arrayRegistros[$input] . ", " . $valorAtributo;
+//                    }
+////                case "relacionComun":
+////                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
+//            }
+//        }
+//        var_dump($arrayRegistros);
+//    }
+    
     public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
             $inputsCapturados) {
-        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacion", "restriccion"];
+        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
         $atributosInputs = ["nombre", "atributo", "restriccion"];
+        $arrayEntidades = [];
+        $arrayRelaciones = [];
         $inputsRecorridos = [];
+        $atributosRecorridos = [];
         $arrayRegistros = [];
+        
         // hay que recorrer el array que se paso para ver de que son los datos
         // e ir armando objetos.
+        
+        // se recorre segun el largo del array.
         for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
+            $input = $inputsCapturados[$i][0];
+            $atributo = $inputsCapturados[$i][1];
+            $claveAtributo = key($atributo);
+            $valorAtributo = implode(":", $atributo);
+            
+            // hacemos la recorrida segun la cantidad de tipo de inputs.
             for ($x = 0; $x < sizeof($tiposInputs); $x++) {
-                if (strpos($inputsCapturados[$i][0], $tiposInputs[$x]) !== false) {
-                    if (in_array($inputsCapturados[$i][0], $inputsRecorridos) === false) {
-                        array_push($inputsRecorridos, $inputsCapturados[$i][0]);
-                        switch ($tiposInputs[$x]) {
-                            case "entidadComun";
-                                //var_dump(key($inputsCapturados[$i][1]) . " - " . $inputsCapturados[$i][1]);
-                                array_push($arrayRegistros, $inputsCapturados[$i][1]);
-                        }
-                    } else {
-                        switch ($tiposInputs[$x]) {
-                            case "entidadComun";
-                                //var_dump(key($inputsCapturados[$i][1]) . " - " . $inputsCapturados[$i][1]);
-                                array_merge($arrayRegistros, $inputsCapturados[$i][1]);
+                // si lo que estamos recorriendo es de uno de los tipos de inputs.
+                if (strpos($input, $tiposInputs[$x]) !== false) {
+                    $tipoInput = $tiposInputs[$x];
+                    // si el input corresponde a una entidad, evaluamos que 
+                    // tipo de entidad es.
+                    if (strpos($tipoInput, "entidad") !== false ||
+                            strpos($tipoInput, "relacion") !== false) {
+                        if (strpos($tipoInput, "Comun") !== false) {
+                            $tipo = "comun";
+                        } else {
+                            if (strpos($tipoInput, "SuperTipo") !== false) {
+                                $tipo = "supertipo";
+                            } else {
+                                if (strpos($tipoInput, "SubTipo") !== false) {
+                                    $tipo = "subtipo";
+                                }
+                            }
                         }
                     }
+                    break;
                 }
             }
-        }
+            // hacemos la recorrida segun la cantidad de tipo de atributos.
+            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
+                // si lo que estamos recorriendo es de uno de los tipos de atributos.
+                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
+                    $tipoAtributo = $atributosInputs[$z];
+                    break;
+                }
+            }
+            
+            switch ($tipoInput) {
+                case "entidadComun":
+                    // si este nombre de objeto, todavia no lo recorri.
+                    if (in_array($input, $inputsRecorridos) === false) {
+                        // agrego el nombre del objeto al array de los ya recorridos.
+                        array_push($inputsRecorridos, $input);
+                        // nos fijamos si el atributo es el nombre.
+                        if ($claveAtributo === "nombre") {
+                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
+                        }
+                    } else {
+                        $arrayRegistros[$input] = $arrayRegistros[$input] . " | " . $valorAtributo;
+                    }
+//                case "relacionComun":
+//                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
+            }
+        } 
         var_dump($arrayRegistros);
     }
     
