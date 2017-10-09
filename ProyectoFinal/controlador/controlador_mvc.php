@@ -581,19 +581,21 @@ class controlador_mvc extends manejador {
             if (isset($_REQUEST["curso"])) {
                 $curso = $_REQUEST["curso"];
                 
-            $temas = $this->listarTemasPorCursoSeleccionado($curso);
+            $temas = $this->listarTemasPorCursoSeleccionado();
+            //var_dump($temas);
             
             //$resultado = $this->editarCursoManejador($curso); 
             //var_dump($resultado);
-            $contenido = "<div class='col-lg-2' style='margin-left:10px;'>"
-            . "<div class=container' style='padding-top: 1em;'>";
-            foreach($temas as $item) {       
-               $contenido = $contenido. "<button type='button; class='btn-primary btn' data-color='success'>$item[nombre_tema]<input type='checkbox' class='btn-primary' checked /></button>"        
-            ." </div>"
-            ." </div>";           
+            $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
+            foreach($temas as $item) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+               ."<button type='button; class='btn-primary btn' data-color='success'>"
+               . "".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"                     
+               ." </div>";           
             }
-            
-            $contenido = $contenido." <div class='col-lg-2'>"
+                        
+            $contenido = $contenido." </div>"
+            . " <div class='col-lg-2'>"
             . "<div class='container'>"
             . "<div class='item'>"
             . "<div class='jumbotron'>"

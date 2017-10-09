@@ -398,8 +398,9 @@ class manejador extends conexionDB {
     }
     
         public function listarTemasPorCursoSeleccionado() {
-        $this->query = "SELECT DISTINCT ASCCTSE.nombre_tema"
-                . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE";
+        $this->query = "SELECT dt.nombre as nombre_tema"
+                . " FROM dim_tema AS dt"
+                . " order by dt.indice;";
         $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
