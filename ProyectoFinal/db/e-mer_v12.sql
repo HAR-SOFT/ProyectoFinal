@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-10-2017 a las 22:45:40
+-- Tiempo de generación: 02-10-2017 a las 17:36:51
 -- Versión del servidor: 5.7.14
 -- Versión de PHP: 7.0.10
 
@@ -93,7 +93,7 @@ CREATE TABLE `dim_curso` (
 INSERT INTO `dim_curso` (`id_curso`, `nombre`, `anio`, `horario`, `fecha_inicio`, `fecha_fin`, `estado`) VALUES
 (7, 'ATI2016', 2016, '14-16', '2017-05-31', '2017-10-01', 1),
 (1, 'ATI2017', 2017, '20-22', '2017-08-07', '2017-08-15', 1),
-(9, 'ATI2018', 2018, '20-20', '2017-05-31', '2017-10-01', 1),
+(9, 'ATI20178', 2018, '20-20', '2017-05-31', '2017-10-01', 1),
 (2, 'ING2017', 2017, '16-18', '2017-05-10', '2017-09-30', 1),
 (8, 'ING2018', 2018, '20-22', '2017-05-31', '2017-12-31', 1),
 (3, 'LIC2017', 2017, '12-14', '2017-08-01', '2017-12-01', 1);
@@ -217,35 +217,6 @@ INSERT INTO `dim_usuario` (`id_usuario`, `ci`, `nombre`, `apellido`, `sexo`, `em
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sol_ agregacion`
---
-
-CREATE TABLE `sol_ agregacion` (
-  `id_agregacion` int(11) NOT NULL,
-  `nombre_agregacion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_entidad` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_mer` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sol_atributo`
---
-
-CREATE TABLE `sol_atributo` (
-  `id_atributo` int(11) NOT NULL,
-  `nombre_atributo` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `tipo_atributo` enum('comun','multivaluado') COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_entidad` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_mer` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `sol_entidad`
 --
 
@@ -254,10 +225,23 @@ CREATE TABLE `sol_entidad` (
   `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `tipo_entidad` enum('comun','supertipo','subtipo') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'comun',
   `entidad_supertipo` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `atributo_simple` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `atributo_multivaluado` varchar(40) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `agregacion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tipo_categorizacion` enum('N/A','Solapada','Disjunta') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'N/A',
   `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `sol_entidad`
+--
+
+INSERT INTO `sol_entidad` (`id_entidad`, `nombre`, `tipo_entidad`, `entidad_supertipo`, `atributo_simple`, `atributo_multivaluado`, `agregacion`, `tipo_categorizacion`, `nombre_mer`, `ci_usuario`) VALUES
+(6, 'Cucha', 'comun', NULL, 'Color', NULL, NULL, 'N/A', 'PerroCucha', '00000000'),
+(7, 'Cucha', 'comun', '', 'Tamaño', NULL, NULL, 'N/A', 'PerroCucha', '00000000'),
+(8, 'Perro', 'comun', NULL, 'Peso', NULL, NULL, 'N/A', 'PerroCucha', '00000000'),
+(5, 'Perro', 'comun', NULL, 'Raza', NULL, NULL, 'N/A', 'PerroCucha', '00000000');
 
 -- --------------------------------------------------------
 
@@ -270,9 +254,17 @@ CREATE TABLE `sol_mer` (
   `nombre` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `tipo` enum('sol_sistema','sol_alumno') COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre_ejercicio` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
-  `restriccion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL
+  `nombre_ejercicio` varchar(40) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `sol_mer`
+--
+
+INSERT INTO `sol_mer` (`id_mer`, `nombre`, `tipo`, `ci_usuario`, `nombre_ejercicio`) VALUES
+(3, 'PerroCucha', 'sol_sistema', '00000000', 'PerroCucha'),
+(19, 'PerroCucha', 'sol_alumno', '40269737', 'PerroCucha'),
+(38, 'PerroCucha', 'sol_alumno', '38072948', 'PerroCucha');
 
 -- --------------------------------------------------------
 
@@ -285,10 +277,19 @@ CREATE TABLE `sol_relacion` (
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadA` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadB` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `agregacion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `cardinalidadA` int(2) NOT NULL,
+  `cardinalidadB` int(2) NOT NULL,
+  `nombre_atributo_simple` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
   `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `sol_relacion`
+--
+
+INSERT INTO `sol_relacion` (`id_relacion`, `nombre`, `nombre_entidadA`, `nombre_entidadB`, `cardinalidadA`, `cardinalidadB`, `nombre_atributo_simple`, `nombre_mer`, `ci_usuario`) VALUES
+(3, 'Vive', 'Perro', 'Cucha', 1, 1, NULL, 'PerroCucha', '00000000');
 
 --
 -- Índices para tablas volcadas
@@ -354,29 +355,10 @@ ALTER TABLE `dim_usuario`
   ADD KEY `idx_dim_usuario_apellido` (`apellido`);
 
 --
--- Indices de la tabla `sol_ agregacion`
---
-ALTER TABLE `sol_ agregacion`
-  ADD PRIMARY KEY (`id_agregacion`),
-  ADD KEY `FK_nombre_mer_idx` (`nombre_mer`),
-  ADD KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  ADD KEY `FK_nombre_entidad_idx` (`nombre_entidad`),
-  ADD KEY `FK_agregacion` (`nombre_agregacion`);
-
---
--- Indices de la tabla `sol_atributo`
---
-ALTER TABLE `sol_atributo`
-  ADD PRIMARY KEY (`id_atributo`),
-  ADD KEY `FK_nombre_entidad_idx` (`nombre_entidad`),
-  ADD KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  ADD KEY `FK_nombre_mer_idx` (`nombre_mer`);
-
---
 -- Indices de la tabla `sol_entidad`
 --
 ALTER TABLE `sol_entidad`
-  ADD PRIMARY KEY (`nombre`,`tipo_entidad`,`nombre_mer`,`ci_usuario`),
+  ADD PRIMARY KEY (`nombre`,`tipo_entidad`,`atributo_simple`,`nombre_mer`,`ci_usuario`),
   ADD UNIQUE KEY `id_entidad` (`id_entidad`),
   ADD KEY `FK_nombre_mer_idx` (`nombre_mer`),
   ADD KEY `FK_ci_usuario_idx` (`ci_usuario`);
@@ -395,9 +377,12 @@ ALTER TABLE `sol_mer`
 -- Indices de la tabla `sol_relacion`
 --
 ALTER TABLE `sol_relacion`
-  ADD KEY `FK_ci_usuario_idx` (`ci_usuario`),
-  ADD KEY `FK_nombreMer_idx` (`nombre_mer`),
-  ADD KEY `FK_agrega_idx` (`agregacion`);
+  ADD PRIMARY KEY (`nombre`,`nombre_entidadA`,`nombre_entidadB`,`cardinalidadA`,`cardinalidadB`,`nombre_mer`,`ci_usuario`),
+  ADD UNIQUE KEY `id_relacion` (`id_relacion`),
+  ADD KEY `FK_entidadA_idx` (`nombre_entidadA`),
+  ADD KEY `FK_entidadB_idx` (`nombre_entidadB`),
+  ADD KEY `FK_nombre_mer_idx` (`nombre_mer`),
+  ADD KEY `FK_ci_usuario_idx` (`ci_usuario`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -429,16 +414,6 @@ ALTER TABLE `dim_tema`
 ALTER TABLE `dim_usuario`
   MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
--- AUTO_INCREMENT de la tabla `sol_ agregacion`
---
-ALTER TABLE `sol_ agregacion`
-  MODIFY `id_agregacion` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `sol_atributo`
---
-ALTER TABLE `sol_atributo`
-  MODIFY `id_atributo` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT de la tabla `sol_entidad`
 --
 ALTER TABLE `sol_entidad`
@@ -449,8 +424,22 @@ ALTER TABLE `sol_entidad`
 ALTER TABLE `sol_mer`
   MODIFY `id_mer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
+-- AUTO_INCREMENT de la tabla `sol_relacion`
+--
+ALTER TABLE `sol_relacion`
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `asc_curso_tema_subtema_ejercicio`
+--
+ALTER TABLE `asc_curso_tema_subtema_ejercicio`
+  ADD CONSTRAINT `FK_nombreCurso` FOREIGN KEY (`nombre_curso`) REFERENCES `dim_curso` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_nombreSubTema` FOREIGN KEY (`nombre_subtema`) REFERENCES `dim_subtema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_nombre_Ejercicio` FOREIGN KEY (`nombre_ejercicio`) REFERENCES `dim_ejercicio` (`nombre`),
+  ADD CONSTRAINT `FK_nombre_Tema` FOREIGN KEY (`nombre_tema`) REFERENCES `dim_tema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `asc_curso_usuario`
@@ -464,22 +453,6 @@ ALTER TABLE `asc_curso_usuario`
 --
 ALTER TABLE `dim_subtema`
   ADD CONSTRAINT `FK_nombreTema` FOREIGN KEY (`nombreTema`) REFERENCES `dim_tema` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `sol_ agregacion`
---
-ALTER TABLE `sol_ agregacion`
-  ADD CONSTRAINT `FK_ci_usu` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombreEntidad` FOREIGN KEY (`nombre_entidad`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombreMer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `sol_atributo`
---
-ALTER TABLE `sol_atributo`
-  ADD CONSTRAINT `FK_ciUsuario` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombre_entidad` FOREIGN KEY (`nombre_entidad`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombre_mer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `sol_entidad`
@@ -499,9 +472,10 @@ ALTER TABLE `sol_mer`
 -- Filtros para la tabla `sol_relacion`
 --
 ALTER TABLE `sol_relacion`
-  ADD CONSTRAINT `FK_agregacion` FOREIGN KEY (`agregacion`) REFERENCES `sol_ agregacion` (`nombre_agregacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_ciUsu` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombMer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_ci_usuario_3` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_entidadA` FOREIGN KEY (`nombre_entidadA`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_entidadB` FOREIGN KEY (`nombre_entidadB`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_nombre_mer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
