@@ -235,6 +235,15 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjeditarCurso);
     }
 
+     public function listarTemasSinCursoProfesor() {
+        $this->query = "SELECT *"
+                . " FROM dim_curso AS C"
+                . " WHERE C.estado = 1;";
+        $msjListarCursosActivos = "No hay cursos activos.";
+
+        return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
+    }
+    
     public function listarCursosActivos() {
         $this->query = "SELECT *"
                 . " FROM dim_curso AS C"

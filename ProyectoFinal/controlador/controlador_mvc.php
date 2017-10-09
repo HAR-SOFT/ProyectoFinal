@@ -593,6 +593,13 @@ class controlador_mvc extends manejador {
                . "".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"                     
                ." </div>";           
             }
+            
+            foreach($temas as $item) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+               ."<button type='button; class='btn-primary btn' data-color='success'>"
+               . "".$item['nombre_tema']."<input type='checkbox'></button>"                     
+               ." </div>";           
+            }
                         
             $contenido = $contenido." </div>"
             . " <div class='col-lg-2'>"
