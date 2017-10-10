@@ -1576,6 +1576,14 @@ class controlador_mvc extends manejador {
                     // si no lo tiene, entonces es el input de restricciones.
                     if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
                         $objeto = explode("_", explode(":", $inputsString[$i])[0])[1];
+                        // caso de una relacion. Hay que separar las entidades que la componen.
+                        if (strpos($objeto, "-")) {
+                            // Las entidades de la relacion.
+                            $entidadesRelacion = array(explode("-", $objeto)[1],
+                                explode("-", $objeto)[2]);
+                            // la relacion
+                            $objeto = explode("-", $objeto)[0];
+                        }
                     } else {
                         $objeto = explode(":", $inputsString[$i])[0];
                     }
@@ -1589,40 +1597,55 @@ class controlador_mvc extends manejador {
                     // asignamos el valor
                     $valor = explode(":", $inputsString[$i])[1];
                     
-                    // buscamos las entidades
-//                    for ($a = 0; $a < sizeof($tiposInputs); $a++) {
-//                        if () {
-//                            
-//                        }
-//                    }
+                    if ($objeto === "restricciones" ) {
+                        $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
+                    }
                     
-                    if (in_array($objeto, $objetosRecorridos) === false) {
-                        array_push($objetosRecorridos, $objeto);
-                        $objetosRecorridos[$objeto] = $valor;
-                    } else {
-                        $objetosRecorridos[$objeto] = $objetosRecorridos[$objeto] . ", " . $valor;
+                    if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayEntidades[$objeto] = array($valor, "comun",
+                                    "null", "null", $nombreMer, $ci);
+                        }
+                    }
+                    
+                    if (strpos($atributoInput, "atributo") !== false) {
+                        if (strpos($atributoInput, "Comun")) {
+                            $arrayAtributos[$objeto."_".$i] = 
+                                    array($valor, "comun", $arrayEntidades[$objeto][0],
+                                        $nombreMer, $ci);
+                        }
+                    }
+                    
+                    if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayRelaciones[$objeto] = 
+                                    array($valor, "comun", $entidadesRelacion[0],
+                                        $entidadesRelacion[1], "null", 
+                                        $nombreMer, $ci);
+                        }
                     }
 
 //                    var_dump($objeto);
 //                    var_dump($atributoInput);
-//                    var_dump($valor);
 
                     // armamos el array con clave-valor.
-                    array_push($inputsArray, array($objeto, array($atributoInput => $valor)));
+                    //array_push($inputsArray, array($objeto, array($atributoInput => $valor)));
                 }
             }
             
             // insert de sol_mer
-            $insertMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio,
-                 $restricciones);
+            //$insertMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio,
+            //     $restricciones);
             
 //            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
 //                    $inputsArray);
             
             var_dump($inputsString);
-            var_dump($inputsArray);
-            var_dump($insertMer);
-            var_dump($objetosRecorridos);
+            var_dump($arrayMer);
+            var_dump($arrayEntidades);
+            var_dump($arrayAtributos);
+            var_dump($arrayRelaciones);
+//            var_dump($objetosRecorridos);
             
 //            // entidad 1
 //            $entidad1 = $inputsArray[1];
