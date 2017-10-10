@@ -581,23 +581,22 @@ class controlador_mvc extends manejador {
             if (isset($_REQUEST["curso"])) {
                 $curso = $_REQUEST["curso"];
                 
-            $temas = $this->listarTemasPorCursoSeleccionado();
-            //var_dump($temas);
-            
-            //$resultado = $this->editarCursoManejador($curso); 
-            //var_dump($resultado);
             $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
+            
+            $temas = $this->listarTemasPorCursoSeleccionado();            
+            //itera sobre los temas que tiene el curso seleccionado
             foreach($temas as $item) {   
-               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
-               ."<button type='button; class='btn-primary btn' data-color='success'>"
-               . "".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"                     
-               ." </div>";           
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"                    
+               . "<button type='button' class='btn btn-primary btn-lg' ; text-align:left;'>".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"
+                       ." </div>";           
             }
             
-            foreach($temas as $item) {   
+            $temasSeleccionar = $this->listarTemasSinCursoProfesor();
+            //itera sobre los temas que no tiene el curso seleccionado
+            foreach($temasSeleccionar as $item2) {   
                $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
-               ."<button type='button; class='btn-primary btn' data-color='success'>"
-               . "".$item['nombre_tema']."<input type='checkbox'></button>"                     
+               . "<button type='button' class='btn btn-primary btn-lg'; text-align:left;'>".$item2['nombre_tema']."<input type='checkbox' /></button>"
+                     
                ." </div>";           
             }
                         

@@ -234,16 +234,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjeditarCurso);
     }
-
-     public function listarTemasSinCursoProfesor() {
-        $this->query = "SELECT *"
-                . " FROM dim_curso AS C"
-                . " WHERE C.estado = 1;";
-        $msjListarCursosActivos = "No hay cursos activos.";
-
-        return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
-    }
-    
+        
     public function listarCursosActivos() {
         $this->query = "SELECT *"
                 . " FROM dim_curso AS C"
@@ -406,15 +397,32 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
     
-        public function listarTemasPorCursoSeleccionado() {
-        $this->query = "SELECT dt.nombre as nombre_tema"
-                . " FROM dim_tema AS dt"
-                . " order by dt.indice;";
+    public function listarTemasPorCursoSeleccionado() {
+        $this->query = "select dt.nombre as nombre_tema "
+                . "from dim_tema dt  , "
+                . "asc_curso_tema_subtema_ejercicio actse,dim_usuario dm"
+                . " where dt.nombre =  actse.nombre_tema "
+                . "and actse.nombre_curso = 'ING2017' "
+                . "and dm.ci = '12345679';";
         $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
     }
 
+    public function listarTemasSinCursoProfesor() {
+        $this->query = "SELECT nombre as nombre_tema "
+                . "from dim_tema "
+                . "where nombre NOT IN "
+                . "(SELECT dt.nombre "
+                . "from dim_tema dt  ,"
+                . " asc_curso_tema_subtema_ejercicio actse,"
+                . "dim_usuario dm where dt.nombre =  actse.nombre_tema "
+                . "and actse.nombre_curso = 'ING2017'"
+                . " and dm.ci = '12345679');";
+        $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
+    }
 
     public function listarSubTemasPorCursoYTema($nombreCurso, $tema) {
         switch(gettype($tema)) {
@@ -784,47 +792,78 @@ class manejador extends conexionDB {
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
-                . "(null , '$nombreMer' , 'sol_alumno' , '23546444' , '$nombreEjercicio');";
+                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
         return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
     }
 
-    // SE EJECUTA UNA VEZ POR CADA ATRIBUTO QUE TENGA LA ENTIDAD ( PUEDE TENER ATRIBUTOS MULTIVALUADOS )
-    public function guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-                                             $entidadSupertipo ,
-                                             $atributo1_entidad1 ,
-                                             $atributoMultivaluado ,$agregacion ,
-                                             $tipoCategorizacion ,  
-                                             $nombreEjercicio, $ci) {
-         $this->query = "INSERT INTO sol_entidad"
-                 . " (id_entidad , nombre , tipo_entidad ,"
-                 . " entidad_supertipo, atributo_simple ,"
-                 . " atributo_multivaluado , agregacion ,"
-                 . "tipo_categorizacion , nombre_mer , ci_usuario) "
-                 . "VALUE "
-                 . "(null , '$nombreEntidad' , '$tipoEntidad' , '$entidadSupertipo' ,"
-                 . "'$atributo1_entidad1' , '$atributoMultivaluado' , "
-                 . "'$agregacion' , '$tipoCategorizacion' , '$nombreEjercicio' , '$ci');";
+    public function guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad ,
+                                             $entidad_supertipo ,
+                                             $tipo_categorizacion ,
+                                             $nombre_mer ,$ci_usuario) {
+        $this->query = "INSERT INTO sol_entidad "
+                 . "(id_entidad , nombre ,tipo_entidad , entidad_supertipo ,"
+                 . " tipo_categoriazacion , nombre_mer , ci_usuario)"
+                 . "VALUE"
+                . "(null , '$nombre_entidad' , '$tipo_entidad' , "
+                 . "'$entidad_supertipo' , '$tipo_categorizacion', "
+                 . "'$nombre_mer' , '$ci_usuario');";
         
-              $msjSolMerEntidad = "No se ha cargado la entidad.";
+        $msjSolMerEntidad = "No se ha cargado la entidad.";
               
-              return $this->ejecutarQuery($this->query, $msjSolMerEntidad);   ;
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
     }
-    //ANTES QUE SE EJECUTE ESTA QUERY DEBEN ESTAR TODAS LAS ENTIDADES EN LA BASE (nombre_entidadA , nombre_entidadB )
-    public function guardarSolucionMerRelacion($nombreRelacion,$nombreEntidadA,$nombreEntidadB,$nombreEjercicio,$ci) {
-        $this->query = " INSERT INTO sol_relacion (id_relacion , "
-                 . "nombre , nombre_entidadA ,nombre_entidadB , "
-                 . "cardinalidadA, cardinalidadB ,nombre_atributo_simple "
-                 . ", nombre_mer , ci_usuario) "
-                 . "VALUE "
-                 . "(null, '$nombreRelacion' , '$nombreEntidadA' , "
-                 . "'$nombreEntidadB' ,'1', '1' , "
-                 . "'nombre_atributo_simple' , '$nombreEjercicio' , '$ci');";
+    
+    public function guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo ,
+                                             $nombre_entidad ,
+                                             $nombre_mer ,
+                                             $ci_usuario) {
+        $this->query = "INSERT INTO sol_atributo "
+                . "(id_atributo , nombre_atributo ,tipo_atributo , "
+                . "nombre_entidad , nombre_mer , ci_usuario)"
+                . "VALUE"
+                . "(null , '$nombre_atributo' , '$tipo_atributo' ,"
+                . " '$nombre_entidad',"
+                . " '$nombre_mer' , '$ci_usuario');";
+        
+        $msjSolMerAtributo= "No se ha cargado la entidad.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAtributo);
+            
+    }
+    
+    public function guardarSolucionMerAgregacacion($nombre_agregacion, 
+                                                   $nombre_entidad ,
+                                                   $nombre_mer ,
+                                                   $ci_usuario) {
+        $this->query = "INSERT INTO sol_agregacion "
+                . "(id_agregacion , nombre_atributo , nombre_entidad ,"
+                . " nombre_mer , ci_usuario)"
+                . "VALUE"
+                . "(null , '$nombre_agregacion' , '$nombre_entidad',"
+                . " '$nombre_mer' , '$ci_usuario');";
+        
+        $msjSolMerAgregacion = "No se ha cargado la entidad.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAgregacion);
+           
+    }
+
+    public function guardarSolucionMerRelacion($nombre_relacion,$nombre_entidadA,
+                                               $nombre_entidadB,$agregacion,
+                                               $nombre_mer , $ci_usuario) {
+        $this->query = "INSERT INTO sol_relacion "
+                . "(id_relacion , nombre , nombre_entidadA , nombre_entidadB , "
+                . "agregacion , nombre_mer , ci_usuario)"
+                . "VALUE"
+                . "(null , '$nombre_relacion' , '$nombre_entidadA' , "
+                . "'$nombre_entidadB' , '$agregacion' , '$nombre_mer' ,"
+                . " '$ci_usuario');";
                  
         $msjSolMerRelacion = "No se ha cargado la relacion.";
 
-        return $this->ejecutarQuery($this->query, $msjSolMerRelacion); 
+        return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
     }
     
 }
