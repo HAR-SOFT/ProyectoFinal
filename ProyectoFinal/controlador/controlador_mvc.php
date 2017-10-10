@@ -1563,6 +1563,9 @@ class controlador_mvc extends manejador {
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
+            $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
+            $atributosInputs = ["nombre", "atributo", "restricciones"];
+            $objetosRecorridos = [];
             
             // armamos array principal con todos los inputs.
             for ($i = 0; $i < sizeof($inputsString); $i++) {
@@ -1571,9 +1574,17 @@ class controlador_mvc extends manejador {
                     // nos fijamos si el nombre del input tiene el caracter separador.
                     // si no lo tiene, entonces es el input de restricciones.
                     if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                        $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
+                        $objeto = explode("_", explode(":", $inputsString[$i])[0])[1];
+                        // caso de una relacion. Hay que separar las entidades que la componen.
+                        if (strpos($objeto, "-")) {
+                            // Las entidades de la relacion.
+                            $entidadesRelacion = array(explode("-", $objeto)[1],
+                                explode("-", $objeto)[2]);
+                            // la relacion
+                            $objeto = explode("-", $objeto)[0];
+                        }
                     } else {
-                        $tipoInput = explode(":", $inputsString[$i])[0];
+                        $objeto = explode(":", $inputsString[$i])[0];
                     }
                     // nos fijamos que atributo es el del input.
                     // si no lo tiene, entonces es el input de restricciones.
@@ -1584,20 +1595,56 @@ class controlador_mvc extends manejador {
                     }
                     // asignamos el valor
                     $valor = explode(":", $inputsString[$i])[1];
+                    
+                    if ($objeto === "restricciones" ) {
+                        $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
+                    }
+                    
+                    if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayEntidades[$objeto] = array($valor, "comun",
+                                    "null", "null", $nombreMer, $ci);
+                        }
+                    }
+                    
+                    if (strpos($atributoInput, "atributo") !== false) {
+                        if (strpos($atributoInput, "Comun")) {
+                            $arrayAtributos[$objeto."_".$i] = 
+                                    array($valor, "comun", $arrayEntidades[$objeto][0],
+                                        $nombreMer, $ci);
+                        }
+                    }
+                    
+                    if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayRelaciones[$objeto] = 
+                                    array($valor, "comun", $entidadesRelacion[0],
+                                        $entidadesRelacion[1], "null", 
+                                        $nombreMer, $ci);
+                        }
+                    }
 
-    //                var_dump($tipoInput);
-    //                var_dump($atributoInput);
-    //                var_dump($valor);
+//                    var_dump($objeto);
+//                    var_dump($atributoInput);
 
                     // armamos el array con clave-valor.
-                    array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));
+                    //array_push($inputsArray, array($objeto, array($atributoInput => $valor)));
                 }
             }
             
-            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
-                    $inputsArray);
+            // insert de sol_mer
+            //$insertMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio,
+            //     $restricciones);
             
-            var_dump($inputsArray);
+//            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
+//                    $inputsArray);
+            
+            var_dump($inputsString);
+            var_dump($arrayMer);
+            var_dump($arrayEntidades);
+            var_dump($arrayAtributos);
+            var_dump($arrayRelaciones);
+//            var_dump($objetosRecorridos);
             
 //            // entidad 1
 //            $entidad1 = $inputsArray[1];
@@ -1633,6 +1680,90 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
+    
+//     public function validarEjercicio() {
+//        try {
+//            session_start();
+//            
+//            $nombreMer = $_SESSION["ejercicio"];
+//            $ci = $_SESSION["ciUsuario"];
+//            $nombreEjercicio = $_SESSION["ejercicio"];
+//            
+////            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
+////            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
+//                       
+//            $inputsString = explode(",", $_SESSION["inputs"]);
+//            $inputsArray = [];
+//            
+//            // armamos array principal con todos los inputs.
+//            for ($i = 0; $i < sizeof($inputsString); $i++) {
+//                // primero excluimos el atributo cardinalidad.
+//                if (strpos($inputsString[$i], "cardinalidad") === false) {
+//                    // nos fijamos si el nombre del input tiene el caracter separador.
+//                    // si no lo tiene, entonces es el input de restricciones.
+//                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+//                        $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
+//                    } else {
+//                        $tipoInput = explode(":", $inputsString[$i])[0];
+//                    }
+//                    // nos fijamos que atributo es el del input.
+//                    // si no lo tiene, entonces es el input de restricciones.
+//                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+//                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
+//                    } else {
+//                        $atributoInput = explode(":", $inputsString[$i])[0];
+//                    }
+//                    // asignamos el valor
+//                    $valor = explode(":", $inputsString[$i])[1];
+//
+////                    var_dump($tipoInput);
+////                    var_dump($atributoInput);
+////                    var_dump($valor);
+//
+//                    // armamos el array con clave-valor.
+//                    array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));
+//                }
+//            }
+//            
+////            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
+////                    $inputsArray);
+//            
+//            var_dump($inputsArray);
+//            
+////            // entidad 1
+////            $entidad1 = $inputsArray[1];
+////            $atributo1_entidad1 = $inputsArray[5];
+////           
+////            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
+////            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
+////            
+////            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
+////            //  ATRIBUTOS TENGA LA ENTIDAD
+////            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
+////                                             $entidadSupertipo ,
+////                                             $atributo1_entidad1 ,
+////                                             $atributoMultivaluado ,$agregacion ,
+////                                             $tipoCategorizacion ,  
+////                                             $nombreEjercicio, $ci);
+////            
+////            // entidad 2
+////            $entidad2 = $inputsArray[7];
+////            $atributo1_entidad2 = $inputsArray[11];
+////            $atributo2_entidad2 = $inputsArray[13];
+////            
+////            // relacion
+////            $relacion1 = $inputsArray[15];
+////            
+////            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
+////            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
+////                                              $nombreEjercicio, $ci);
+////            
+////            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
+//            
+//        }catch (Exception $ex) {
+//            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+//        }
+//    }   
     
     public function guardarInputsEjercicio() {
         try {
