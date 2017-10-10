@@ -1650,8 +1650,9 @@ class controlador_mvc extends manejador {
             $nombre_mer = $arrayMer[0];
             $ci_usuario = $arrayMer[2];
             $nombre_ejercicio = $arrayMer[3];
+            $restriccion = $arrayMer[4];
             
-            $this->guardarSolucionMer($nombre_mer, $ci_usuario, $nombre_ejercicio);
+            $this->guardarSolucionMer($nombre_mer, $ci_usuario, $nombre_ejercicio, $restriccion);
             // entidad 1
             $nombre_entidad = $arrayEntidades['entidadComun1'][0];
             $tipo_entidad = $arrayEntidades['entidadComun1'][1];
@@ -1687,7 +1688,7 @@ class controlador_mvc extends manejador {
             $nombre_entidadA = $nombre_entidad;
             $nombre_entidadB = $nombre_entidad2;
             $agregacion = $arrayRelaciones['relacionComun1'][4];        
-            
+                        
             $this->guardarSolucionMerRelacion($nombre_relacion, $nombre_entidadA, $nombre_entidadB, $agregacion, $nombre_mer, $ci_usuario);
             
             echo 'se guardo correctamente el ejercicio';

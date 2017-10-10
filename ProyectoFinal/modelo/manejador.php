@@ -788,11 +788,11 @@ class manejador extends conexionDB {
     }
     
     //SOLO SE DEBE EJECUTAR UNA VEZ
-    public function guardarSolucionMer($nombre_mer , $ci ,$nombre_ejercicio ){                                                             
+    public function guardarSolucionMer($nombre_mer , $ci ,$nombre_ejercicio,$restriccion ){                                                             
         $this->query = "INSERT INTO sol_mer "
-                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio,restriccion)"
                 . " VALUE "
-                . "(null , '$nombre_mer' , 'sol_alumno' , '$ci' , '$nombre_ejercicio');";
+                . "(null , '$nombre_mer' , 'sol_alumno' , '$ci' , '$nombre_ejercicio','$restriccion');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
         return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
@@ -821,7 +821,7 @@ class manejador extends conexionDB {
                                              $ci_usuario) {
         $this->query = "INSERT INTO sol_atributo "
                 . "(id_atributo , nombre_atributo ,tipo_atributo , "
-                . "nombre_entidad , nombre_mer , ci_usuario)"
+                . "nombre_entidad , nombre_mer , ci_usuario )"
                 . "VALUE"
                 . "(null , '$nombre_atributo' , '$tipo_atributo' ,"
                 . " '$nombre_entidad',"
@@ -833,7 +833,7 @@ class manejador extends conexionDB {
             
     }
     
-    public function guardarSolucionMerAgregacacion($nombre_agregacion, 
+    public function guardarSolucionMerAgregacion($nombre_agregacion, 
                                                    $nombre_entidad ,
                                                    $nombre_mer ,
                                                    $ci_usuario) {
