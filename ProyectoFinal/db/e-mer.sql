@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-10-2017 a las 22:45:40
+-- Tiempo de generación: 10-10-2017 a las 20:50:57
 -- Versión del servidor: 5.7.14
 -- Versión de PHP: 7.0.10
 
@@ -68,7 +68,8 @@ CREATE TABLE `asc_curso_usuario` (
 INSERT INTO `asc_curso_usuario` (`nombre_curso`, `ci_usuario`) VALUES
 ('ATI2017', '38072948'),
 ('ATI2017', '12345679'),
-('ATI2016', '35378668');
+('ATI2016', '35378668'),
+('ING2017', '12345679');
 
 -- --------------------------------------------------------
 
@@ -163,13 +164,13 @@ CREATE TABLE `dim_tema` (
 --
 
 INSERT INTO `dim_tema` (`id_tema`, `nombre`, `letra`, `indice`) VALUES
+(6, 'Agregaciones', 'Se denomina Agregacion y representa una abstracción a través de la cual las relaciones se tratan como entidades de un nivel más alto. Se utiliza para expresar relaciones entre relaciones o entre entidades y relaciones. Se representa englobando la relación abstraída y las entidades que participan entre ellas en un rectángulo. En muchos casos de relaciones con orden > 2 no se refleja exactamente la realidad', 5),
 (2, 'Atributos', 'Son características que definen o identifican a una Entidad.De cada entidad del mundo real identificamos las propiedades. A cada propiedad le llamamos ATRIBUTO de la Entidad. Una entidad debe contener al menos UN atributo.', 3),
 (4, 'Autorelacion', 'Relaciones entre una Entidad y si misma', 5),
 (8, 'Categorizacion ', 'Mecanismo de Abstracción que permite expresar conjuntos de Entidades que comparte atributos comunes.', 8),
 (1, 'Entidades', 'Representación abstracta de un objeto del mundo real.Un grupo de entidades que comparten característicassimilares se denomina Conjunto Representación abstracta de un objeto del mundo real.Un grupo de entidades que comparten características similares se denomina Conjunto de Entidades.', 2),
 (7, 'Entidades Debiles', 'Entidad cuya existencia no tiene sentido en forma aislada.', 7),
 (9, 'Introduccion', 'Modelo conceptual gráfico, usado para representar estructuras que almacenan información.No contiene lenguaje para representar operaciones de manipulación información.Se utilizan Entidades, Conjuntos de Entidades y Relaciones', 1),
-(6, 'Relacion entre tres Entidades', 'Se denomina Agregacion y representa una abstracción a través de la cual las relaciones se tratan como entidades de un nivel más alto. Se utiliza para expresar relaciones entre relaciones o entre entidades y relaciones. Se representa englobando la relación abstraída y las entidades que participan entre ellas en un rectángulo. En muchos casos de relaciones con orden > 2 no se refleja exactamente la realidad', 5),
 (3, 'Relaciones', 'Vinculo que permite definir una dependencia entre los conjuntos de dos o más Entidades. Por lo general son Verbos como asignar, asociar. Las relaciones se representan con una figura de diamante y también pueden tener atributos.', 4);
 
 -- --------------------------------------------------------
@@ -228,6 +229,13 @@ CREATE TABLE `sol_ agregacion` (
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `sol_ agregacion`
+--
+
+INSERT INTO `sol_ agregacion` (`id_agregacion`, `nombre_agregacion`, `nombre_entidad`, `nombre_mer`, `ci_usuario`) VALUES
+(1, 'null', 'CUCHA', 'PerroCucha', '00000000');
+
 -- --------------------------------------------------------
 
 --
@@ -242,6 +250,18 @@ CREATE TABLE `sol_atributo` (
   `nombre_mer` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `sol_atributo`
+--
+
+INSERT INTO `sol_atributo` (`id_atributo`, `nombre_atributo`, `tipo_atributo`, `nombre_entidad`, `nombre_mer`, `ci_usuario`) VALUES
+(1, 'Color', 'comun', 'Cucha', 'PerroCucha', '00000000'),
+(2, 'Nombre', 'comun', 'Perro', 'PerroCucha', '00000000'),
+(3, 'Raza', 'comun', 'Perro', 'PerroCucha', '00000000'),
+(17, 'color', 'comun', 'cucha', 'PerroCucha', '38072948'),
+(18, 'nombre', 'comun', 'perro', 'PerroCucha', '38072948'),
+(19, 'raza', 'comun', 'perro', 'PerroCucha', '38072948');
 
 -- --------------------------------------------------------
 
@@ -259,6 +279,16 @@ CREATE TABLE `sol_entidad` (
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `sol_entidad`
+--
+
+INSERT INTO `sol_entidad` (`id_entidad`, `nombre`, `tipo_entidad`, `entidad_supertipo`, `tipo_categorizacion`, `nombre_mer`, `ci_usuario`) VALUES
+(15, 'Cucha', 'comun', NULL, 'N/A', 'PerroCucha', '00000000'),
+(19, 'cucha', 'comun', 'null', 'N/A', 'PerroCucha', '38072948'),
+(16, 'Perro', 'comun', NULL, 'N/A', 'PerroCucha', '00000000'),
+(20, 'perro', 'comun', 'null', 'N/A', 'PerroCucha', '38072948');
+
 -- --------------------------------------------------------
 
 --
@@ -274,6 +304,14 @@ CREATE TABLE `sol_mer` (
   `restriccion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `sol_mer`
+--
+
+INSERT INTO `sol_mer` (`id_mer`, `nombre`, `tipo`, `ci_usuario`, `nombre_ejercicio`, `restriccion`) VALUES
+(47, 'PerroCucha', 'sol_sistema', '00000000', 'PerroCucha', NULL),
+(59, 'PerroCucha', 'sol_alumno', '38072948', 'PerroCucha', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -285,10 +323,18 @@ CREATE TABLE `sol_relacion` (
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadA` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadB` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `agregacion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `agregacion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `sol_relacion`
+--
+
+INSERT INTO `sol_relacion` (`id_relacion`, `nombre`, `nombre_entidadA`, `nombre_entidadB`, `agregacion`, `nombre_mer`, `ci_usuario`) VALUES
+(1, 'Vive', 'Cucha', 'Perro', 'null', 'PerroCucha', '00000000'),
+(2, 'vive', 'cucha', 'perro', 'null', 'PerroCucha', '38072948');
 
 --
 -- Índices para tablas volcadas
@@ -395,6 +441,7 @@ ALTER TABLE `sol_mer`
 -- Indices de la tabla `sol_relacion`
 --
 ALTER TABLE `sol_relacion`
+  ADD UNIQUE KEY `id_relacion_UNIQUE` (`id_relacion`),
   ADD KEY `FK_ci_usuario_idx` (`ci_usuario`),
   ADD KEY `FK_nombreMer_idx` (`nombre_mer`),
   ADD KEY `FK_agrega_idx` (`agregacion`);
@@ -432,22 +479,27 @@ ALTER TABLE `dim_usuario`
 -- AUTO_INCREMENT de la tabla `sol_ agregacion`
 --
 ALTER TABLE `sol_ agregacion`
-  MODIFY `id_agregacion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_agregacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sol_atributo`
 --
 ALTER TABLE `sol_atributo`
-  MODIFY `id_atributo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_atributo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `sol_entidad`
 --
 ALTER TABLE `sol_entidad`
-  MODIFY `id_entidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_entidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `sol_mer`
 --
 ALTER TABLE `sol_mer`
-  MODIFY `id_mer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id_mer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+--
+-- AUTO_INCREMENT de la tabla `sol_relacion`
+--
+ALTER TABLE `sol_relacion`
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Restricciones para tablas volcadas
 --
@@ -487,13 +539,6 @@ ALTER TABLE `sol_atributo`
 ALTER TABLE `sol_entidad`
   ADD CONSTRAINT `FK_ci_usuario_2` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_nombre_mer_2` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `sol_mer`
---
-ALTER TABLE `sol_mer`
-  ADD CONSTRAINT `FK_ci_usuario2` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_nombre_ejercicio2` FOREIGN KEY (`nombre_ejercicio`) REFERENCES `dim_ejercicio` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `sol_relacion`

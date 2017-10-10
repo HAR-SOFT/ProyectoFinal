@@ -213,7 +213,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjcursoAsingadosProfesor);
     }
-
+/*
     public function editarCursoManejador($nombreCurso) {
         $this->query = "SELECT "
                 . " c.nombre_curso as nombre_curso,"
@@ -234,7 +234,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjeditarCurso);
     }
-        
+   */     
     public function listarCursosActivos() {
         $this->query = "SELECT *"
                 . " FROM dim_curso AS C"
@@ -397,13 +397,13 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
     
-    public function listarTemasPorCursoSeleccionado() {
+    public function listarTemasPorCursoSeleccionado($ciUsuario, $curso) {
         $this->query = "select dt.nombre as nombre_tema "
                 . "from dim_tema dt  , "
                 . "asc_curso_tema_subtema_ejercicio actse,dim_usuario dm"
                 . " where dt.nombre =  actse.nombre_tema "
-                . "and actse.nombre_curso = 'ING2017' "
-                . "and dm.ci = '12345679';";
+                . "and actse.nombre_curso = '$curso' "
+                . "and dm.ci = '$ciUsuario';";
         $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);

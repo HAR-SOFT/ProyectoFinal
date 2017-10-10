@@ -581,9 +581,11 @@ class controlador_mvc extends manejador {
             if (isset($_REQUEST["curso"])) {
                 $curso = $_REQUEST["curso"];
                 
+                $ciUsuario = $_SESSION["ciUsuario"];
+                
             $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
             
-            $temas = $this->listarTemasPorCursoSeleccionado();            
+            $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);            
             //itera sobre los temas que tiene el curso seleccionado
             foreach($temas as $item) {   
                $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"                    
@@ -1688,6 +1690,7 @@ class controlador_mvc extends manejador {
             
             $this->guardarSolucionMerRelacion($nombre_relacion, $nombre_entidadA, $nombre_entidadB, $agregacion, $nombre_mer, $ci_usuario);
             
+            echo 'se guardo correctamente el ejercicio';
 //            var_dump($objetosRecorridos);
             
 //            // entidad 1
