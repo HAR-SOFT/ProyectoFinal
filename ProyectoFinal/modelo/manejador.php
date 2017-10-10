@@ -788,11 +788,11 @@ class manejador extends conexionDB {
     }
     
     //SOLO SE DEBE EJECUTAR UNA VEZ
-    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                                             
+    public function guardarSolucionMer($nombre_mer , $ci ,$nombre_ejercicio ){                                                             
         $this->query = "INSERT INTO sol_mer "
                 . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
                 . " VALUE "
-                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
+                . "(null , '$nombre_mer' , 'sol_alumno' , '$ci' , '$nombre_ejercicio');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
         return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
@@ -804,7 +804,7 @@ class manejador extends conexionDB {
                                              $nombre_mer ,$ci_usuario) {
         $this->query = "INSERT INTO sol_entidad "
                  . "(id_entidad , nombre ,tipo_entidad , entidad_supertipo ,"
-                 . " tipo_categoriazacion , nombre_mer , ci_usuario)"
+                 . " tipo_categorizacion , nombre_mer , ci_usuario)"
                  . "VALUE"
                 . "(null , '$nombre_entidad' , '$tipo_entidad' , "
                  . "'$entidad_supertipo' , '$tipo_categorizacion', "

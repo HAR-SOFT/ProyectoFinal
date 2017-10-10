@@ -1559,7 +1559,7 @@ class controlador_mvc extends manejador {
             $nombreEjercicio = $_SESSION["ejercicio"];
             
 //            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-            $this->guardarSolucionMer($nombreMer, '40269737', $nombreEjercicio);
+            //$this->guardarSolucionMer($nombreMer, '40269737', $nombreEjercicio);
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
@@ -1639,11 +1639,55 @@ class controlador_mvc extends manejador {
 //            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
 //                    $inputsArray);
             
-            var_dump($inputsString);
-            var_dump($arrayMer);
-            var_dump($arrayEntidades);
-            var_dump($arrayAtributos);
-            var_dump($arrayRelaciones);
+            //var_dump($inputsString);
+            //var_dump($arrayMer);
+            //var_dump($arrayEntidades);
+            //var_dump($arrayAtributos);
+            //var_dump($arrayRelaciones);
+            
+            $nombre_mer = $arrayMer[0];
+            $ci_usuario = $arrayMer[2];
+            $nombre_ejercicio = $arrayMer[3];
+            
+            $this->guardarSolucionMer($nombre_mer, $ci_usuario, $nombre_ejercicio);
+            // entidad 1
+            $nombre_entidad = $arrayEntidades['entidadComun1'][0];
+            $tipo_entidad = $arrayEntidades['entidadComun1'][1];
+            $entidad_supertipo = $arrayEntidades['entidadComun1'][2];
+            $tipo_categorizacion = 'N/A';
+            
+            $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad, $entidad_supertipo, $tipo_categorizacion, $nombre_mer, $ci_usuario);
+            //entidad 2
+            $nombre_entidad2 = $arrayEntidades['entidadComun2'][0];
+            $tipo_entidad = $arrayEntidades['entidadComun2'][1];
+            $entidad_supertipo = $arrayEntidades['entidadComun2'][2];
+            $tipo_categorizacion = 'N/A';
+            
+            $this->guardarSolucionMerEntidad($nombre_entidad2, $tipo_entidad, $entidad_supertipo, $tipo_categorizacion, $nombre_mer, $ci_usuario);
+            
+            $nombre_atributo = $arrayAtributos['entidadComun1_2'][0];
+            $tipo_atributo = $arrayAtributos['entidadComun1_2'][1];            
+            // atributo 1 entidad 1
+            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad, $nombre_mer, $ci_usuario);
+            //atributo 1 entidad2        
+            $nombre_atributo = $arrayAtributos['entidadComun2_5'][0];
+            $tipo_atributo = $arrayAtributos['entidadComun2_5'][1];
+         
+            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad2, $nombre_mer, $ci_usuario);
+            //atributo 2 entidad2                        
+            $nombre_atributo = $arrayAtributos['entidadComun2_6'][0];
+            $tipo_atributo = $arrayAtributos['entidadComun2_6'][1];
+            
+            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad2, $nombre_mer, $ci_usuario);
+            
+            //Relacion 1
+            $nombre_relacion = $arrayRelaciones['relacionComun1'][0];
+            $nombre_entidadA = $nombre_entidad;
+            $nombre_entidadB = $nombre_entidad2;
+            $agregacion = $arrayRelaciones['relacionComun1'][4];        
+            
+            $this->guardarSolucionMerRelacion($nombre_relacion, $nombre_entidadA, $nombre_entidadB, $agregacion, $nombre_mer, $ci_usuario);
+            
 //            var_dump($objetosRecorridos);
             
 //            // entidad 1
