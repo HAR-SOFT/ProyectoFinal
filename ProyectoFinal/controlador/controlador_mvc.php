@@ -1552,6 +1552,20 @@ class controlador_mvc extends manejador {
         }
     }
     
+    public function guardarInputsEjercicio() {
+        try {
+            session_start();
+            $nombreEjercicio = $_SESSION["ejercicio"];
+            if (isset($_REQUEST["inputs"])) {
+                $_SESSION["inputs"] = $_REQUEST["inputs"];                               
+            }
+            
+            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
+        } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
     public function validarEjercicio() {
         try {
             session_start();
@@ -1559,9 +1573,6 @@ class controlador_mvc extends manejador {
             $nombreMer = $_SESSION["ejercicio"];
             $ci = $_SESSION["ciUsuario"];
             $nombreEjercicio = $_SESSION["ejercicio"];
-            
-//            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-            //$this->guardarSolucionMer($nombreMer, '40269737', $nombreEjercicio);
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
@@ -1598,10 +1609,12 @@ class controlador_mvc extends manejador {
                     // asignamos el valor
                     $valor = explode(":", $inputsString[$i])[1];
                     
+                    // armamos el array del Mer
                     if ($objeto === "restricciones" ) {
                         $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
                     }
                     
+                    // armamos el array de las Entidades
                     if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
                         if (strpos($objeto, "Comun")) {
                             $arrayEntidades[$objeto] = array($valor, "comun",
@@ -1609,6 +1622,7 @@ class controlador_mvc extends manejador {
                         }
                     }
                     
+                    // armamos el array de los Atributos
                     if (strpos($atributoInput, "atributo") !== false) {
                         if (strpos($atributoInput, "Comun")) {
                             $arrayAtributos[$objeto."_".$i] = 
@@ -1617,212 +1631,62 @@ class controlador_mvc extends manejador {
                         }
                     }
                     
+                    // armamos el array de las Relaciones
                     if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
                         if (strpos($objeto, "Comun")) {
                             $arrayRelaciones[$objeto] = 
-                                    array($valor, "comun", $entidadesRelacion[0],
-                                        $entidadesRelacion[1], "null", 
+                                    array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
+                                        $arrayEntidades[$entidadesRelacion[1]][0], "null", 
                                         $nombreMer, $ci);
                         }
                     }
-
-//                    var_dump($objeto);
-//                    var_dump($atributoInput);
-
-                    // armamos el array con clave-valor.
-                    //array_push($inputsArray, array($objeto, array($atributoInput => $valor)));
                 }
             }
             
-            // insert de sol_mer
-            //$insertMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio,
-            //     $restricciones);
+            var_dump($inputsString);
+//            var_dump($arrayMer);
+//            var_dump($arrayEntidades);
+//            var_dump($arrayAtributos);
+//            var_dump($arrayRelaciones);
             
-//            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
-//                    $inputsArray);
-            
-            //var_dump($inputsString);
-            //var_dump($arrayMer);
-            //var_dump($arrayEntidades);
-            //var_dump($arrayAtributos);
-            //var_dump($arrayRelaciones);
-            
+            // Percistimos sol_mer.
             $nombre_mer = $arrayMer[0];
             $ci_usuario = $arrayMer[2];
             $nombre_ejercicio = $arrayMer[3];
-            $restriccion = $arrayMer[4];
-            
+            $restriccion = ($arrayMer[4] === "") ? null : $arrayMer[4];
             $this->guardarSolucionMer($nombre_mer, $ci_usuario, $nombre_ejercicio, $restriccion);
-            // entidad 1
-            $nombre_entidad = $arrayEntidades['entidadComun1'][0];
-            $tipo_entidad = $arrayEntidades['entidadComun1'][1];
-            $entidad_supertipo = $arrayEntidades['entidadComun1'][2];
-            $tipo_categorizacion = 'N/A';
             
-            $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad, $entidad_supertipo, $tipo_categorizacion, $nombre_mer, $ci_usuario);
-            //entidad 2
-            $nombre_entidad2 = $arrayEntidades['entidadComun2'][0];
-            $tipo_entidad = $arrayEntidades['entidadComun2'][1];
-            $entidad_supertipo = $arrayEntidades['entidadComun2'][2];
-            $tipo_categorizacion = 'N/A';
-            
-            $this->guardarSolucionMerEntidad($nombre_entidad2, $tipo_entidad, $entidad_supertipo, $tipo_categorizacion, $nombre_mer, $ci_usuario);
-            
-            $nombre_atributo = $arrayAtributos['entidadComun1_2'][0];
-            $tipo_atributo = $arrayAtributos['entidadComun1_2'][1];            
-            // atributo 1 entidad 1
-            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad, $nombre_mer, $ci_usuario);
-            //atributo 1 entidad2        
-            $nombre_atributo = $arrayAtributos['entidadComun2_5'][0];
-            $tipo_atributo = $arrayAtributos['entidadComun2_5'][1];
-         
-            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad2, $nombre_mer, $ci_usuario);
-            //atributo 2 entidad2                        
-            $nombre_atributo = $arrayAtributos['entidadComun2_6'][0];
-            $tipo_atributo = $arrayAtributos['entidadComun2_6'][1];
-            
-            $this->guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo, $nombre_entidad2, $nombre_mer, $ci_usuario);
-            
-            //Relacion 1
-            $nombre_relacion = $arrayRelaciones['relacionComun1'][0];
-            $nombre_entidadA = $nombre_entidad;
-            $nombre_entidadB = $nombre_entidad2;
-            $agregacion = $arrayRelaciones['relacionComun1'][4];        
-                        
-            $this->guardarSolucionMerRelacion($nombre_relacion, $nombre_entidadA, $nombre_entidadB, $agregacion, $nombre_mer, $ci_usuario);
-            
-            echo 'se guardo correctamente el ejercicio';
-//            var_dump($objetosRecorridos);
-            
-//            // entidad 1
-//            $entidad1 = $inputsArray[1];
-//            $atributo1_entidad1 = $inputsArray[5];
-//           
-//            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
-//            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
-//            
-//            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
-//            //  ATRIBUTOS TENGA LA ENTIDAD
-//            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-//                                             $entidadSupertipo ,
-//                                             $atributo1_entidad1 ,
-//                                             $atributoMultivaluado ,$agregacion ,
-//                                             $tipoCategorizacion ,  
-//                                             $nombreEjercicio, $ci);
-//            
-//            // entidad 2
-//            $entidad2 = $inputsArray[7];
-//            $atributo1_entidad2 = $inputsArray[11];
-//            $atributo2_entidad2 = $inputsArray[13];
-//            
-//            // relacion
-//            $relacion1 = $inputsArray[15];
-//            
-//            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
-//            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
-//                                              $nombreEjercicio, $ci);
-//            
-//            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
-            
-        }catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        }
-    }
-    
-//     public function validarEjercicio() {
-//        try {
-//            session_start();
-//            
-//            $nombreMer = $_SESSION["ejercicio"];
-//            $ci = $_SESSION["ciUsuario"];
-//            $nombreEjercicio = $_SESSION["ejercicio"];
-//            
-////            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-////            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
-//                       
-//            $inputsString = explode(",", $_SESSION["inputs"]);
-//            $inputsArray = [];
-//            
-//            // armamos array principal con todos los inputs.
-//            for ($i = 0; $i < sizeof($inputsString); $i++) {
-//                // primero excluimos el atributo cardinalidad.
-//                if (strpos($inputsString[$i], "cardinalidad") === false) {
-//                    // nos fijamos si el nombre del input tiene el caracter separador.
-//                    // si no lo tiene, entonces es el input de restricciones.
-//                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-//                        $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
-//                    } else {
-//                        $tipoInput = explode(":", $inputsString[$i])[0];
-//                    }
-//                    // nos fijamos que atributo es el del input.
-//                    // si no lo tiene, entonces es el input de restricciones.
-//                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-//                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
-//                    } else {
-//                        $atributoInput = explode(":", $inputsString[$i])[0];
-//                    }
-//                    // asignamos el valor
-//                    $valor = explode(":", $inputsString[$i])[1];
-//
-////                    var_dump($tipoInput);
-////                    var_dump($atributoInput);
-////                    var_dump($valor);
-//
-//                    // armamos el array con clave-valor.
-//                    array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));
-//                }
-//            }
-//            
-////            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
-////                    $inputsArray);
-//            
-//            var_dump($inputsArray);
-//            
-////            // entidad 1
-////            $entidad1 = $inputsArray[1];
-////            $atributo1_entidad1 = $inputsArray[5];
-////           
-////            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
-////            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
-////            
-////            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
-////            //  ATRIBUTOS TENGA LA ENTIDAD
-////            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-////                                             $entidadSupertipo ,
-////                                             $atributo1_entidad1 ,
-////                                             $atributoMultivaluado ,$agregacion ,
-////                                             $tipoCategorizacion ,  
-////                                             $nombreEjercicio, $ci);
-////            
-////            // entidad 2
-////            $entidad2 = $inputsArray[7];
-////            $atributo1_entidad2 = $inputsArray[11];
-////            $atributo2_entidad2 = $inputsArray[13];
-////            
-////            // relacion
-////            $relacion1 = $inputsArray[15];
-////            
-////            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
-////            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
-////                                              $nombreEjercicio, $ci);
-////            
-////            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
-//            
-//        }catch (Exception $ex) {
-//            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-//        }
-//    }   
-    
-    public function guardarInputsEjercicio() {
-        try {
-            session_start();
-            $nombreEjercicio = $_SESSION["ejercicio"];
-            if (isset($_REQUEST["inputs"])) {
-                $_SESSION["inputs"] = $_REQUEST["inputs"];                               
+            // Percistimos sol_entidad.
+            foreach ($arrayEntidades as $key => $value) {
+                $nombre_entidad = $value[0];
+                $tipo_entidad = $value[1];
+                $entidad_supertipo = $value[2];
+                $tipo_categorizacion = "N/A";
+                $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
+                        $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
+                        $ci_usuario);
             }
             
-            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
-        } catch (Exception $ex) {
+            // Percistimos sol_atributo.
+            foreach ($arrayAtributos as $key => $value) {
+                $nombre_atributo = $value[0];
+                $tipo_atributo = $value[1];
+                $this->guardarSolucionMerAtributo($nombre_atributo,
+                        $tipo_atributo, $nombre_entidad, $nombre_mer,
+                        $ci_usuario);
+            }
+
+            // Percistimos sol_relacion.
+            foreach ($arrayRelaciones as $key => $value) {
+                $nombre_relacion = $value[0];
+                $nombre_entidadA = $value[2];
+                $nombre_entidadB = $value[3];
+                $agregacion = null;
+                $this->guardarSolucionMerRelacion($nombre_relacion,
+                        $nombre_entidadA, $nombre_entidadB, $agregacion,
+                        $nombre_mer, $ci_usuario);
+            }
+        }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
