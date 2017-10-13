@@ -639,7 +639,8 @@ class controlador_mvc extends manejador {
          }
              
     }
-             public function alumnosBedelia() {
+    
+    public function alumnosBedelia() {
         try {
             session_start();
 
@@ -701,12 +702,13 @@ class controlador_mvc extends manejador {
             }
 
              echo "</table>";
+             $onclick = "document.getElementById('selectedFile').click();";
 
              echo "<br>"
             ."<p align='left'>"
             ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+            ."<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            ."<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
             ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'>Volver</button>"
             ."</form>"
@@ -785,19 +787,20 @@ class controlador_mvc extends manejador {
                 }
 
             echo "</table>";
+            $onclick = "document.getElementById('selectedFile').click();";
 
             echo "<br>"
             ."<p align='left'>"
             ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
             ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo Profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+            ."<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
             ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
             ."</form>"
             ."<br>"
             ."</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</a></button>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</a></button>";
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
 
             }
         } catch (Exception $ex) {
@@ -875,7 +878,7 @@ class controlador_mvc extends manejador {
             echo "</table>";
 
              echo "<br>"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</a></button>";
+             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</button></a>";
 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
