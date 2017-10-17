@@ -552,6 +552,7 @@ class controlador_mvc extends manejador {
             $resultado = $this->cursoAsingadosProfesor($ciUsuario);
 
             foreach ($resultado as $fila) {
+                $cursoSeleccionado =  $fila['nombre_curso'];
                 echo "<tbody>"
                 . "<tr class='info'>"
                 . "<td></td>"
@@ -564,8 +565,8 @@ class controlador_mvc extends manejador {
                 . "<td>" . $fila['nombre_curso'] . "</td>"
                 . "<td>" . $fila['horario'] . "</td>"
                 . "<td>" . $fila['tema'] . "</td>"
-                . "<td>" . $fila['estado'] . "</td>"
-                . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
+                . "<td>" . $fila['estado'] . "</td>" 
+                . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso&curso=$cursoSeleccionado'>editar</a></td>"
                 . "</tr>"
                 . "</tbody>";
             }
@@ -575,31 +576,70 @@ class controlador_mvc extends manejador {
     }
 
     public function editarCurso() {
-        //session_start();
-        //$curso =  'ATI2017';
+        try{ 
+            session_start();
+            if (isset($_REQUEST["curso"])) {
+                $curso = $_REQUEST["curso"];
+                
+                $ciUsuario = $_SESSION["ciUsuario"];
+                
+            $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
+            
+            $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);            
+            //itera sobre los temas que tiene el curso seleccionado
+            foreach($temas as $item) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"                    
+               . "<button type='button' class='btn btn-primary btn-lg' ; text-align:left;'>".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"
+                       ." </div>";           
+            }
+            
+            $temasSeleccionar = $this->listarTemasSinCursoProfesor();
+            //itera sobre los temas que no tiene el curso seleccionado
+            foreach($temasSeleccionar as $item2) {   
+               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+               . "<button type='button' class='btn btn-primary btn-lg'; text-align:left;'>".$item2['nombre_tema']."<input type='checkbox' /></button>"
+                     
+               ." </div>";           
+            }
+                        
+            $contenido = $contenido." </div>"
+            . " <div class='col-lg-2'>"
+            . "<div class='container'>"
+            . "<div class='item'>"
+            . "<div class='jumbotron'>"
+            . "<h1>Introduccion</h1>"
+            ."<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                in voluptate velit esse cillum dolore eu fugiat nulla pariatur. t anim id est laborum.</p>"
+            . "</div>"       
+            . "</div>"   
+            . "<h4>Seleccione los ejercicios</h4>"                    
+            . "<div class=''>"
+            . "<button type='button' style='position: relative;' class='btn-primary btn' data-color='success'>Perro Cucha <input type='checkbox' class='btn-primary' checked /></button>"
+            . "<button type='submit' style='position: relative; align: right; margin-left: 800px;' class='btn btn-primary btn-lg' name='aceptar'>Aceptar</button>"
+            . "</div>"
+            . "</div>"
+            . "</div>";
+            
+            
+            $pagina = $this->load_template("inicio");
+            $head = $this->load_page("vistas/html/headPrincipal.html");
+            $header = $this->load_page("vistas/html/headerLogueado.html");
+            $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+            $pagina = $this->replace_content("/Header/", $header, $pagina);
+            $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Editar Curso", $pagina);
+            $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
-        $resultado = $this->editarCurso("ATI2017");
-
-        foreach ($resultado as $fila) {
-            echo "<tbody>"
-            . "<tr class='info'>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "<td></td>"
-            . "</tr>"
-            . "<tr class='active'>"
-            . "<td>" . $fila['nombre_curso'] . "</td>"
-            . "<td>" . $fila['horario'] . "</td>"
-            . "<td>" . $fila['tema'] . "</td>"
-            . "<td>" . $fila['estado'] . "</td>"
-            . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso'>editar</a></td>"
-            . "</tr>"
-            . "</tbody>";
-        }
+            $this->view_page($pagina);
+            }
+                     
+            } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+         }
+             
     }
-
+    
     public function alumnosBedelia() {
         try {
             session_start();
@@ -662,12 +702,13 @@ class controlador_mvc extends manejador {
             }
 
              echo "</table>";
+             $onclick = "document.getElementById('selectedFile').click();";
 
              echo "<br>"
             ."<p align='left'>"
             ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+            ."<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            ."<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
             ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'>Volver</button>"
             ."</form>"
@@ -746,19 +787,20 @@ class controlador_mvc extends manejador {
                 }
 
             echo "</table>";
+            $onclick = "document.getElementById('selectedFile').click();";
 
             echo "<br>"
             ."<p align='left'>"
             ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
             ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo Profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+            ."<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
             ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
             ."</form>"
             ."<br>"
             ."</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</a></button>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</a></button>";
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
 
             }
         } catch (Exception $ex) {
@@ -836,7 +878,7 @@ class controlador_mvc extends manejador {
             echo "</table>";
 
              echo "<br>"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</a></button>";
+             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</button></a>";
 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -1513,90 +1555,6 @@ class controlador_mvc extends manejador {
         }
     }
     
-    public function validarEjercicio() {
-        try {
-            session_start();
-            
-            $nombreMer = $_SESSION["ejercicio"];
-            $ci = $_SESSION["ciUsuario"];
-            $nombreEjercicio = $_SESSION["ejercicio"];
-            
-//            // guarda la solucion SOLO HAY QUE EJECUTARLA UNA VEZ
-//            $this->guardarSolucionMer($nombreMer, $ci, $nombreEjercicio);
-                       
-            $inputsString = explode(",", $_SESSION["inputs"]);
-            $inputsArray = [];
-            
-            // armamos array principal con todos los inputs.
-            for ($i = 0; $i < sizeof($inputsString); $i++) {
-                // primero excluimos el atributo cardinalidad.
-                if (strpos($inputsString[$i], "cardinalidad") === false) {
-                    // nos fijamos si el nombre del input tiene el caracter separador.
-                    // si no lo tiene, entonces es el input de restricciones.
-                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                        $tipoInput = explode("_", explode(":", $inputsString[$i])[0])[1];
-                    } else {
-                        $tipoInput = explode(":", $inputsString[$i])[0];
-                    }
-                    // nos fijamos que atributo es el del input.
-                    // si no lo tiene, entonces es el input de restricciones.
-                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
-                    } else {
-                        $atributoInput = explode(":", $inputsString[$i])[0];
-                    }
-                    // asignamos el valor
-                    $valor = explode(":", $inputsString[$i])[1];
-
-    //                var_dump($tipoInput);
-    //                var_dump($atributoInput);
-    //                var_dump($valor);
-
-                    // armamos el array con clave-valor.
-                    array_push($inputsArray, array($tipoInput, array($atributoInput => $valor)));
-                }
-            }
-            
-            $this->validarDatosMerManejador($nombreMer, $ci, $nombreEjercicio, 
-                    $inputsArray);
-            
-            var_dump($inputsArray);
-            
-//            // entidad 1
-//            $entidad1 = $inputsArray[1];
-//            $atributo1_entidad1 = $inputsArray[5];
-//           
-//            // VER DE DONDE SACAR LOS DATOS DE $tipoEntidad , $entidadSupertipo,
-//            // $atributoMultivaluado ,$agregacion , $tipoCategorizacion
-//            
-//            // // guardar entidades y atributos SE DEBE EJECUTAR TANTAS VECES COMO
-//            //  ATRIBUTOS TENGA LA ENTIDAD
-//            $this->guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-//                                             $entidadSupertipo ,
-//                                             $atributo1_entidad1 ,
-//                                             $atributoMultivaluado ,$agregacion ,
-//                                             $tipoCategorizacion ,  
-//                                             $nombreEjercicio, $ci);
-//            
-//            // entidad 2
-//            $entidad2 = $inputsArray[7];
-//            $atributo1_entidad2 = $inputsArray[11];
-//            $atributo2_entidad2 = $inputsArray[13];
-//            
-//            // relacion
-//            $relacion1 = $inputsArray[15];
-//            
-//            // guardar relaciones SE DEBE EJECUTAR UNA VEZ POR RELACION
-//            $this->guardarSolucionMerRelacion($relacion1, $entidad1, $entidad2,
-//                                              $nombreEjercicio, $ci);
-//            
-//            $reestricciones = $inputsArray[17];// NO HAY CAMPO EN LA BD PARA ESTE DATO
-            
-        }catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        }
-    }
-    
     public function guardarInputsEjercicio() {
         try {
             session_start();
@@ -1607,6 +1565,131 @@ class controlador_mvc extends manejador {
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
         } catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function validarEjercicio() {
+        try {
+            session_start();
+            
+            $nombreMer = $_SESSION["ejercicio"];
+            $ci = $_SESSION["ciUsuario"];
+            $nombreEjercicio = $_SESSION["ejercicio"];
+                       
+            $inputsString = explode(",", $_SESSION["inputs"]);
+            $inputsArray = [];
+            $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
+            $atributosInputs = ["nombre", "atributo", "restricciones"];
+            $objetosRecorridos = [];
+            
+            // armamos array principal con todos los inputs.
+            for ($i = 0; $i < sizeof($inputsString); $i++) {
+                // primero excluimos el atributo cardinalidad.
+                if (strpos($inputsString[$i], "cardinalidad") === false) {
+                    // nos fijamos si el nombre del input tiene el caracter separador.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $objeto = explode("_", explode(":", $inputsString[$i])[0])[1];
+                        // caso de una relacion. Hay que separar las entidades que la componen.
+                        if (strpos($objeto, "-")) {
+                            // Las entidades de la relacion.
+                            $entidadesRelacion = array(explode("-", $objeto)[1],
+                                explode("-", $objeto)[2]);
+                            // la relacion
+                            $objeto = explode("-", $objeto)[0];
+                        }
+                    } else {
+                        $objeto = explode(":", $inputsString[$i])[0];
+                    }
+                    // nos fijamos que atributo es el del input.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
+                    } else {
+                        $atributoInput = explode(":", $inputsString[$i])[0];
+                    }
+                    // asignamos el valor
+                    $valor = explode(":", $inputsString[$i])[1];
+                    
+                    // armamos el array del Mer
+                    if ($objeto === "restricciones" ) {
+                        $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
+                    }
+                    
+                    // armamos el array de las Entidades
+                    if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayEntidades[$objeto] = array($valor, "comun",
+                                    "null", "null", $nombreMer, $ci);
+                        }
+                    }
+                    
+                    // armamos el array de los Atributos
+                    if (strpos($atributoInput, "atributo") !== false) {
+                        if (strpos($atributoInput, "Comun")) {
+                            $arrayAtributos[$objeto."_".$i] = 
+                                    array($valor, "comun", $arrayEntidades[$objeto][0],
+                                        $nombreMer, $ci);
+                        }
+                    }
+                    
+                    // armamos el array de las Relaciones
+                    if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayRelaciones[$objeto] = 
+                                    array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
+                                        $arrayEntidades[$entidadesRelacion[1]][0], "null", 
+                                        $nombreMer, $ci);
+                        }
+                    }
+                }
+            }
+            
+            var_dump($inputsString);
+//            var_dump($arrayMer);
+//            var_dump($arrayEntidades);
+//            var_dump($arrayAtributos);
+//            var_dump($arrayRelaciones);
+            
+            // Percistimos sol_mer.
+            $nombre_mer = $arrayMer[0];
+            $ci_usuario = $arrayMer[2];
+            $nombre_ejercicio = $arrayMer[3];
+            $restriccion = ($arrayMer[4] === "") ? null : $arrayMer[4];
+            $this->guardarSolucionMer($nombre_mer, $ci_usuario, $nombre_ejercicio, $restriccion);
+            
+            // Percistimos sol_entidad.
+            foreach ($arrayEntidades as $key => $value) {
+                $nombre_entidad = $value[0];
+                $tipo_entidad = $value[1];
+                $entidad_supertipo = $value[2];
+                $tipo_categorizacion = "N/A";
+                $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
+                        $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
+                        $ci_usuario);
+            }
+            
+            // Percistimos sol_atributo.
+            foreach ($arrayAtributos as $key => $value) {
+                $nombre_atributo = $value[0];
+                $tipo_atributo = $value[1];
+                $this->guardarSolucionMerAtributo($nombre_atributo,
+                        $tipo_atributo, $nombre_entidad, $nombre_mer,
+                        $ci_usuario);
+            }
+
+            // Percistimos sol_relacion.
+            foreach ($arrayRelaciones as $key => $value) {
+                $nombre_relacion = $value[0];
+                $nombre_entidadA = $value[2];
+                $nombre_entidadB = $value[3];
+                $agregacion = null;
+                $this->guardarSolucionMerRelacion($nombre_relacion,
+                        $nombre_entidadA, $nombre_entidadB, $agregacion,
+                        $nombre_mer, $ci_usuario);
+            }
+        }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }

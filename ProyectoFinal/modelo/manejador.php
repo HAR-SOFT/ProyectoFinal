@@ -114,6 +114,32 @@ class manejador extends conexionDB {
             }
         }
     }
+    
+     public function ejecutarTransaccion($queryParametro, $msjParametro) {
+        $this->conectar();
+        $this->autocommit(FALSE);
+        $query = $this->consulta($queryParametro);
+        if ($query == true) {
+            $this->commit();
+        } else {
+            $this->rollback();    
+        }
+        $this->cerrarDB();
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false ))) {
+            $this->mensaje = $msjParametro;
+        } else {
+            if (!$this->cantidadRegistros($query) == 0) {
+                while ($array = $this->retornarRegistros($query)) {
+                    $datos[] = $array;
+                }
+
+                return $datos;
+            } else {
+                $this->mensaje = $msjParametro;
+            }
+        }
+    }
 
     public function listarCursos() {
         $this->query = "SELECT * FROM dim_curso;";
@@ -187,13 +213,11 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjcursoAsingadosProfesor);
     }
-
+/*
     public function editarCursoManejador($nombreCurso) {
         $this->query = "SELECT "
-                . " curso.id_curso as id_curso,"
                 . " c.nombre_curso as nombre_curso,"
                 . " dt.nombre as tema,"
-                . " asctse.nombre_subtema as nombre_subtema,"
                 . " asctse.nombre_ejercicio as ejercicio"
                 . " FROM"
                 . " asc_curso_usuario AS c,"
@@ -210,7 +234,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjeditarCurso);
     }
-
+   */     
     public function listarCursosActivos() {
         $this->query = "SELECT *"
                 . " FROM dim_curso AS C"
@@ -371,6 +395,33 @@ class manejador extends conexionDB {
         $msjListarTemasPorCurso = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
+    }
+    
+    public function listarTemasPorCursoSeleccionado($ciUsuario, $curso) {
+        $this->query = "select dt.nombre as nombre_tema "
+                . "from dim_tema dt  , "
+                . "asc_curso_tema_subtema_ejercicio actse,dim_usuario dm"
+                . " where dt.nombre =  actse.nombre_tema "
+                . "and actse.nombre_curso = '$curso' "
+                . "and dm.ci = '$ciUsuario';";
+        $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
+    }
+
+    public function listarTemasSinCursoProfesor() {
+        $this->query = "SELECT nombre as nombre_tema "
+                . "from dim_tema "
+                . "where nombre NOT IN "
+                . "(SELECT dt.nombre "
+                . "from dim_tema dt  ,"
+                . " asc_curso_tema_subtema_ejercicio actse,"
+                . "dim_usuario dm where dt.nombre =  actse.nombre_tema "
+                . "and actse.nombre_curso = 'ING2017'"
+                . " and dm.ci = '12345679');";
+        $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
     }
 
     public function listarSubTemasPorCursoYTema($nombreCurso, $tema) {
@@ -590,199 +641,83 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
     
-//    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
-//            $inputsCapturados) {
-//        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
-//        $atributosInputs = ["nombre", "atributo", "restriccion"];
-//        $arrayEntidades = [];
-//        $arrayRelaciones = [];
-//        $inputsRecorridos = [];
-//        $atributosRecorridos = [];
-//        $arrayRegistros = [];
-//        
-//        // hay que recorrer el array que se paso para ver de que son los datos
-//        // e ir armando objetos.
-//        
-//        // se recorre segun el largo del array.
-//        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
-//            $input = $inputsCapturados[$i][0];
-//            $atributo = $inputsCapturados[$i][1];
-//            $claveAtributo = key($atributo);
-//            $valorAtributo = implode(":", $atributo);
-//            
-//            // hacemos la recorrida segun la cantidad de tipo de inputs.
-//            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
-//                // si lo que estamos recorriendo es de uno de los tipos de inputs.
-//                if (strpos($input, $tiposInputs[$x]) !== false) {
-//                    $tipoInput = $tiposInputs[$x];
-//                    // si el input corresponde a una entidad, evaluamos que 
-//                    // tipo de entidad es.
-//                    if (strpos($tipoInput, "entidad") !== false ||
-//                            strpos($tipoInput, "relacion") !== false) {
-//                        if (strpos($tipoInput, "Comun") !== false) {
-//                            $tipo = "comun";
-//                        } else {
-//                            if (strpos($tipoInput, "SuperTipo") !== false) {
-//                                $tipo = "supertipo";
-//                            } else {
-//                                if (strpos($tipoInput, "SubTipo") !== false) {
-//                                    $tipo = "subtipo";
-//                                }
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//            // hacemos la recorrida segun la cantidad de tipo de atributos.
-//            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
-//                // si lo que estamos recorriendo es de uno de los tipos de atributos.
-//                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
-//                    $tipoAtributo = $atributosInputs[$z];
-//                    break;
-//                }
-//            }
-//            
-//            switch ($tipoInput) {
-//                case "entidadComun":
-//                    // si este nombre de objeto, todavia no lo recorri.
-//                    if (in_array($input, $inputsRecorridos) === false) {
-//                        // agrego el nombre del objeto al array de los ya recorridos.
-//                        array_push($inputsRecorridos, $input);
-//                        // nos fijamos si el atributo es el nombre.
-//                        if ($claveAtributo === "nombre") {
-//                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-//                        }
-//                    } else {
-//                        $arrayRegistros[$input] = $arrayRegistros[$input] . ", " . $valorAtributo;
-//                    }
-////                case "relacionComun":
-////                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-//            }
-//        }
-//        var_dump($arrayRegistros);
-//    }
-    
-    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
-            $inputsCapturados) {
-        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
-        $atributosInputs = ["nombre", "atributo", "restriccion"];
-        $arrayEntidades = [];
-        $arrayRelaciones = [];
-        $inputsRecorridos = [];
-        $atributosRecorridos = [];
-        $arrayRegistros = [];
-        
-        // hay que recorrer el array que se paso para ver de que son los datos
-        // e ir armando objetos.
-        
-        // se recorre segun el largo del array.
-        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
-            $input = $inputsCapturados[$i][0];
-            $atributo = $inputsCapturados[$i][1];
-            $claveAtributo = key($atributo);
-            $valorAtributo = implode(":", $atributo);
-            
-            // hacemos la recorrida segun la cantidad de tipo de inputs.
-            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
-                // si lo que estamos recorriendo es de uno de los tipos de inputs.
-                if (strpos($input, $tiposInputs[$x]) !== false) {
-                    $tipoInput = $tiposInputs[$x];
-                    // si el input corresponde a una entidad, evaluamos que 
-                    // tipo de entidad es.
-                    if (strpos($tipoInput, "entidad") !== false ||
-                            strpos($tipoInput, "relacion") !== false) {
-                        if (strpos($tipoInput, "Comun") !== false) {
-                            $tipo = "comun";
-                        } else {
-                            if (strpos($tipoInput, "SuperTipo") !== false) {
-                                $tipo = "supertipo";
-                            } else {
-                                if (strpos($tipoInput, "SubTipo") !== false) {
-                                    $tipo = "subtipo";
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            // hacemos la recorrida segun la cantidad de tipo de atributos.
-            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
-                // si lo que estamos recorriendo es de uno de los tipos de atributos.
-                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
-                    $tipoAtributo = $atributosInputs[$z];
-                    break;
-                }
-            }
-            
-            switch ($tipoInput) {
-                case "entidadComun":
-                    // si este nombre de objeto, todavia no lo recorri.
-                    if (in_array($input, $inputsRecorridos) === false) {
-                        // agrego el nombre del objeto al array de los ya recorridos.
-                        array_push($inputsRecorridos, $input);
-                        // nos fijamos si el atributo es el nombre.
-                        if ($claveAtributo === "nombre") {
-                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-                        }
-                    } else {
-                        $arrayRegistros[$input] = $arrayRegistros[$input] . " | " . $valorAtributo;
-                    }
-//                case "relacionComun":
-//                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-            }
-        } 
-        var_dump($arrayRegistros);
-    }
-    
     //SOLO SE DEBE EJECUTAR UNA VEZ
-    public function guardarSolucionMer($nombreMer , $ci ,$nombreEjercicio ){                                  
-        //$this->autocommit(FALSE);                      
+    public function guardarSolucionMer($nombre_mer , $ci ,$nombre_ejercicio,$restriccion ){                                                             
         $this->query = "INSERT INTO sol_mer "
-                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio)"
+                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio,restriccion)"
                 . " VALUE "
-                . "(null , '$nombreMer' , 'sol_alumno' , '$ci' , '$nombreEjercicio');";
+                . "(null , '$nombre_mer' , 'sol_alumno' , '$ci' , '$nombre_ejercicio','$restriccion');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
-        return $this->ejecutarQuery($this->query, $msjSolucionMer);                                 
+        return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
     }
 
-    // SE EJECUTA UNA VEZ POR CADA ATRIBUTO QUE TENGA LA ENTIDAD ( PUEDE TENER ATRIBUTOS MULTIVALUADOS )
-    public function guardarSolucionMerEntidad($entidad1, $tipoEntidad ,
-                                             $entidadSupertipo ,
-                                             $atributo1_entidad1 ,
-                                             $atributoMultivaluado ,$agregacion ,
-                                             $tipoCategorizacion ,  
-                                             $nombreEjercicio, $ci) {
-         $this->query = "INSERT INTO sol_entidad"
-                 . " (id_entidad , nombre , tipo_entidad ,"
-                 . " entidad_supertipo, atributo_simple ,"
-                 . " atributo_multivaluado , agregacion ,"
-                 . "tipo_categorizacion , nombre_mer , ci_usuario) "
-                 . "VALUE "
-                 . "(null , '$nombreEntidad' , '$tipoEntidad' , '$entidadSupertipo' ,"
-                 . "'$atributo1_entidad1' , '$atributoMultivaluado' , "
-                 . "'$agregacion' , '$tipoCategorizacion' , '$nombreEjercicio' , '$ci');";
+    public function guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad ,
+                                             $entidad_supertipo ,
+                                             $tipo_categorizacion ,
+                                             $nombre_mer ,$ci_usuario) {
+        $this->query = "INSERT INTO sol_entidad "
+                 . "(id_entidad , nombre ,tipo_entidad , entidad_supertipo ,"
+                 . " tipo_categorizacion , nombre_mer , ci_usuario)"
+                 . "VALUE"
+                . "(null , '$nombre_entidad' , '$tipo_entidad' , "
+                 . "'$entidad_supertipo' , '$tipo_categorizacion', "
+                 . "'$nombre_mer' , '$ci_usuario');";
         
-              $msjSolMerEntidad = "No se ha cargado la entidad.";
+        $msjSolMerEntidad = "No se ha cargado la entidad.";
               
-              return $this->ejecutarQuery($this->query, $msjSolMerEntidad);   ;
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
     }
-    //ANTES QUE SE EJECUTE ESTA QUERY DEBEN ESTAR TODAS LAS ENTIDADES EN LA BASE (nombre_entidadA , nombre_entidadB )
-    public function guardarSolucionMerRelacion($nombreRelacion,$nombreEntidadA,$nombreEntidadB,$nombreEjercicio,$ci) {
-        $this->query = " INSERT INTO sol_relacion (id_relacion , "
-                 . "nombre , nombre_entidadA ,nombre_entidadB , "
-                 . "cardinalidadA, cardinalidadB ,nombre_atributo_simple "
-                 . ", nombre_mer , ci_usuario) "
-                 . "VALUE "
-                 . "(null, '$nombreRelacion' , '$nombreEntidadA' , "
-                 . "'$nombreEntidadB' ,'1', '1' , "
-                 . "'nombre_atributo_simple' , '$nombreEjercicio' , '$ci');";
+    
+    public function guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo ,
+                                             $nombre_entidad ,
+                                             $nombre_mer ,
+                                             $ci_usuario) {
+        $this->query = "INSERT INTO sol_atributo "
+                . "(id_atributo , nombre_atributo ,tipo_atributo , "
+                . "nombre_entidad , nombre_mer , ci_usuario )"
+                . "VALUE"
+                . "(null , '$nombre_atributo' , '$tipo_atributo' ,"
+                . " '$nombre_entidad',"
+                . " '$nombre_mer' , '$ci_usuario');";
+        
+        $msjSolMerAtributo= "No se ha cargado la entidad.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAtributo);
+            
+    }
+    
+    public function guardarSolucionMerAgregacion($nombre_agregacion, 
+                                                   $nombre_entidad ,
+                                                   $nombre_mer ,
+                                                   $ci_usuario) {
+        $this->query = "INSERT INTO sol_agregacion "
+                . "(id_agregacion , nombre_atributo , nombre_entidad ,"
+                . " nombre_mer , ci_usuario)"
+                . "VALUE"
+                . "(null , '$nombre_agregacion' , '$nombre_entidad',"
+                . " '$nombre_mer' , '$ci_usuario');";
+        
+        $msjSolMerAgregacion = "No se ha cargado la entidad.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAgregacion);
+           
+    }
+
+    public function guardarSolucionMerRelacion($nombre_relacion,$nombre_entidadA,
+                                               $nombre_entidadB,$agregacion,
+                                               $nombre_mer , $ci_usuario) {
+        $this->query = "INSERT INTO sol_relacion "
+                . "(id_relacion , nombre , nombre_entidadA , nombre_entidadB , "
+                . "agregacion , nombre_mer , ci_usuario)"
+                . "VALUE"
+                . "(null , '$nombre_relacion' , '$nombre_entidadA' , "
+                . "'$nombre_entidadB' , '$agregacion' , '$nombre_mer' ,"
+                . " '$ci_usuario');";
                  
         $msjSolMerRelacion = "No se ha cargado la relacion.";
 
-        return $this->ejecutarQuery($this->query, $msjSolMerRelacion); 
+        return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
     }
     
 }

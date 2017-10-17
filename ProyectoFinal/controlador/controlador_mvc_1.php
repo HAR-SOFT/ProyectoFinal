@@ -862,8 +862,8 @@ class controlador_mvc extends manejador {
          echo "</table>";
          
          echo "<br>"                
-        ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg' type='reset'>"
-        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>Agregar Curso</a></button>"; 
+        ."<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
+        . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg' type='reset'>Agregar Curso</button></a>"; 
             
         }
         
