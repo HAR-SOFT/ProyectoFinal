@@ -26,11 +26,17 @@
     </style>
     <script type="text/javascript">
         function setTimer () {
-            sessionStorage.setItem("inicioEjercicio", new Date())
+            sessionStorage.setItem("inicioEjercicio", new Date().toISOString().slice(0, 19).replace('T', ' '))
             //var inicioEjercicio = new Date();
             //alert(sessionStorage.getItem("inicioEjercicio"));
         }
         window.onload = setTimer();
+        
+        function modal (mensaje) {
+            document.getElementById("mensajeModal").innerHTML = mensaje;
+            document.getElementById("source-modal").style.display = "block";
+            document.getElementById("modal-backdrop").style.display = "block";
+        }
         
         // Cada id que coloquemos en esta function se le va a asignar la propiedad draggable (movimiento)
         // Esto se define en el ID del "padre" o contenedor
@@ -143,8 +149,9 @@
 
                 if(arrayElements.length === elements.length) {
                     var inicioEjercicio = sessionStorage.getItem("inicioEjercicio");
-                    var finEjercicio = new Date();
-                    window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=guardarInputsEjercicio&inputs=" + arrayElements + "");
+                    var finEjercicio = new Date().toISOString().slice(0, 19).replace('T', ' ');;
+                    window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=guardarInputsEjercicio&inputs=" + arrayElements + 
+                            "&inicioEjercicio=" + inicioEjercicio + "&finEjercicio=" + finEjercicio + "");
                     //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio&inputs=" + arrayElements.toString() + "");
                     //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=inicio");
                     //document.write(" <?php $_SESSION['ciUsuario'] = " + arrayElements.toString() + " ?> ");
