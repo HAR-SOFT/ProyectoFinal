@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../css/bootstrap1.css">
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/formas.css">
-    <script src="../../js/jquery-1.12.4.js"></script>
-    <script src="../../js/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../../../css/bootstrap1.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/formas.css">
+    <script src="../../../js/jquery-1.12.4.js"></script>
+    <script src="../../../js/jquery-ui.js"></script>
     <!-- Estilos necesarios para funcion draggable de Jquery -->
     <style>
     .draggable { width: 90px; height: 80px; padding: 0px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
@@ -30,7 +30,7 @@
         $( "#entidad2" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#entidad3" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#entidad4" ).draggable({ containment: "#containment-wrapper", scroll: false });
-        $( "#entidad5" ).draggable({ containment: "#containment-wrapper", scroll: false });
+        $( "#entidadDebil" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#categorizacionDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#categorizacionDragTotalidad" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#categorizacionDisDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
@@ -204,7 +204,7 @@
             </li>
         </ul>
     </div>
-    <br><p></p>
+    <br><br><br>
     <!-- Contenedor -->
     <div class="col-lg-9">
         <!-- Respetar el orden de creacion para que no se pisen los divs -->
@@ -214,50 +214,55 @@
         <div id="containment-wrapper">
         <div id="snaptarget" class="ui-widget-header">
             <form>
-                <br><br><br>
-                <!-- Entidad con 1 atributo -->
+<br><br><br><br>
+
+			<!-- Entidad con 1 atributo -->
                 <!-- con funcion onmousemove=validarPosicionEntidad -->
                 <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-                    <div id="entidad" title=""><p></p><input id="inputEnt"  type="text" placeholder="Entidad" size="10" maxlength="15" required>
-                        <input id="inputEnt" type="tel" placeholder="1" disabled=""size="1" maxlength="6" required>
+                    <div id="entidad" title=""><p></p>
+                        <input id="inputEnt"  type="text" placeholder="Entidad" size="10" maxlength="15" required>
+                        <input id="inputEnt" type="tel" size="1" placeholder="1" disabled="">
                         <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
                         </div>
                     </div>
                 </div>
 
-                <!-- Entidad con 2 atributo -->
-                <!-- con funcion onmousemove=validarPosicionEntidad -->
-                <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-                    <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" size="10" maxlength="15" required>
-                        <input id="inputEnt" type="tel" placeholder="1" disabled="" size="1" maxlength="6" required>
-                        <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
-                        </div>
-                        <div id="lineaAtributo2"><input type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required>
+                <!-- Entidad con 1 atributo -->
+                    <!-- con funcion onmousemove=validarPosicionEntidad -->
+                    <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
+                        <div id="entidad" title=""><p></p>
+                            <input id="inputEnt"  type="text" placeholder="Entidad Debil" size="10" maxlength="15" required>
+                            <input id="inputEnt" type="tel" size="1" placeholder="1" disabled="">
+                            <div id="lineaAtributo1"><input type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
                 <!-- Relacion con 2 "relaciones" -->
                 <!-- con funcion onmousemove=validarPosicionRelacion -->
                 <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacion(this.id, ['entidad1','entidad2'])">
-                    <div id="relacion" title=""><br><input id="inputRel" type="text"  placeholder="Relacion" size="7" maxlength="15" required>
+                    <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" name="nombre" size="7" maxlength="15" required>
                         <div id="lineaEntidadDerecha"></div>
                         <div id="lineaEntidadIzquierda"></div>
                     </div>
                 </div>
+
             </div>
-                                <div class="" align="auto">
-                                    <form class="navbar-form navbar-center">
-                                    <input type="text" class="form-control" size="200" placeholder="Restricciones no estructurales" required>
-                                    <button type="submit"  class="btn btn-primary btn-lg">Validar</button>
-                                </form>
-                            </div>
-                        </form>
+            </div>
+            <br><br>
+
+                            <div class="" align="auto">
+                                <form class="navbar-form navbar-center">
+                                <input type="text" class="form-control" size="200" placeholder="Restricciones no estructurales" required>
+                                <button type="submit"  class="btn btn-primary btn-lg">Validar</button>
+                            </form>
+                        </div>
+                    </form>
 
             </div>
 
-        <script src="../../js/bootstrap.js"></script>
-        <script src="../../js/app.js"></script>
+        <script src="../../../js/bootstrap.js"></script>
+        <script src="../../../js/app.js"></script>
     </body>
     </html>

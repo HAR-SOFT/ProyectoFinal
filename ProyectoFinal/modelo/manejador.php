@@ -138,15 +138,23 @@ class manejador extends conexionDB {
      public function ejecutarTransaccion($queryParametro, $msjParametro) {
         $this->conectar();
         $this->autocommit(FALSE);
+        if (strpos($queryParametro, "DELETE") !== false) {
+            $this->checkConstraints(0);
+        }
         $query = $this->consulta($queryParametro);
+        if (strpos($queryParametro, "DELETE") !== false) {
+            $this->checkConstraints(1);
+        }
         if ($query == true) {
             $this->commit();
         } else {
             $this->rollback();    
         }
+        $this->autocommit(TRUE);
         $this->cerrarDB();
         if ( (strpos($queryParametro, "INSERT" ) !== false or 
-             (strpos($queryParametro, "UPDATE" ) !== false ))) {
+             (strpos($queryParametro, "UPDATE" ) !== false or 
+             (strpos($queryParametro, "DELETE" ) !== false )))) {
             $this->mensaje = $msjParametro;
         } else {
             if (!$this->cantidadRegistros($query) == 0) {
@@ -477,56 +485,114 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
     
+//    public function armarMerSolucionSistema($nombreEjercicio) {
+//        $this->query = "SELECT M.nombre "
+//                . " FROM sol_mer AS M"
+//                . " WHERE M.nombre_ejercicio = '$nombreEjercicio'"
+//                . " AND M.tipo = 'sol_sistema';";
+//        $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
+//
+//        $resutado = $this->ejecutarQuery($this->query, $msjArmarMer);
+//        $nombreMer = $resutado[0]["nombre"];
+//        
+//        if (isset($nombreMer)) {
+//            $this->query = "SELECT E.nombre, "
+//                    . " E.tipo_entidad, "
+//                    . " E.entidad_supertipo, "
+//                    . " E.atributo_simple, "
+//                    . " E.atributo_multivaluado, "
+//                    . " E.agregacion, "
+//                    . " E.nombre_mer, "
+//                    . " E.tipo_categorizacion "
+//                    . " FROM sol_entidad AS E"
+//                    . " WHERE E.nombre_mer = '$nombreMer'";
+//            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
+//
+//            $colEntidades = $this->ejecutarQuery($this->query, $msjArmarMer);
+//        }
+//        
+//        if (isset($colEntidades)) {
+//            $this->query = "SELECT R.nombre, "
+//                    . " R.nombre_entidadA, "
+//                    . " R.nombre_entidadB, "
+//                    . " R.cardinalidadA, "
+//                    . " R.cardinalidadB, "
+//                    . " R.nombre_atributo_simple, "
+//                    . " R.nombre_mer "
+//                    . " FROM sol_relacion AS R"
+//                    . " WHERE R.nombre_mer = '$nombreMer'";
+//            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
+//
+//            $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
+//        }
+//        
+//        if (!$this->mensaje) {
+//            $nombreMer = $nombreMer;
+//            $colEntidadesMer = $colEntidades;
+//            $colRelacionesMer = $colRelaciones;
+//
+//            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer);
+//
+//            return $mer;
+//        }
+//    }
+    
     public function armarMerSolucionSistema($nombreEjercicio) {
-        $this->query = "SELECT M.nombre "
+        // Consulta de MER
+        $this->query = "SELECT M.nombre, "
+                . " M.restriccion"
                 . " FROM sol_mer AS M"
                 . " WHERE M.nombre_ejercicio = '$nombreEjercicio'"
-                . " AND M.tipo = 'sol_sistema';";
+                . " AND M.ci_usuario = '00000000';";
         $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
 
-        $resutado = $this->ejecutarQuery($this->query, $msjArmarMer);
-        $nombreMer = $resutado[0]["nombre"];
+        $mer = $this->ejecutarQuery($this->query, $msjArmarMer);
+        $nombreMer = $mer[0]["nombre"];
         
+        // Consulta de Entidades del MER
         if (isset($nombreMer)) {
             $this->query = "SELECT E.nombre, "
                     . " E.tipo_entidad, "
                     . " E.entidad_supertipo, "
-                    . " E.atributo_simple, "
-                    . " E.atributo_multivaluado, "
-                    . " E.agregacion, "
-                    . " E.nombre_mer, "
                     . " E.tipo_categorizacion "
                     . " FROM sol_entidad AS E"
-                    . " WHERE E.nombre_mer = '$nombreMer'";
-            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
+                    . " WHERE E.nombre_mer = '$nombreMer'"
+                    . " AND E.ci_usuario = '00000000';";
+            $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
 
             $colEntidades = $this->ejecutarQuery($this->query, $msjArmarMer);
         }
         
+        // Consulta de Atributos de las Entidades del MER
         if (isset($colEntidades)) {
+            $this->query = "SELECT A.nombre_atributo, "
+                    . " A.tipo_atributo, "
+                    . " A.nombre_atributo_multivaluado, "
+                    . " A.nombre_entidad "
+                    . " FROM sol_atributo AS A"
+                    . " WHERE A.nombre_mer = '$nombreMer'"
+                    . " AND A.ci_usuario = '00000000';";
+            $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
+
+            $colAtributos = $this->ejecutarQuery($this->query, $msjArmarMer);
+        }
+        
+        // Consulta para las Relaciones del MER
+        if (isset($colAtributos)) {
             $this->query = "SELECT R.nombre, "
                     . " R.nombre_entidadA, "
                     . " R.nombre_entidadB, "
-                    . " R.cardinalidadA, "
-                    . " R.cardinalidadB, "
-                    . " R.nombre_atributo_simple, "
-                    . " R.nombre_mer "
+                    . " R.agregacion "
                     . " FROM sol_relacion AS R"
-                    . " WHERE R.nombre_mer = '$nombreMer'";
-            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
+                    . " WHERE R.nombre_mer = '$nombreMer'"
+                    . " AND R.ci_usuario = '00000000';";
+            $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
 
             $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
         }
         
-        if (!$this->mensaje) {
-            $nombreMer = $nombreMer;
-            $colEntidadesMer = $colEntidades;
-            $colRelacionesMer = $colRelaciones;
-
-            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer);
-
-            return $mer;
-        }
+        return ["MER" => $mer, "Entidades" => $colEntidades, 
+            "Atributos" => $colAtributos, "Relaciones" => $colRelaciones];
     }
     
     public function cambiarClaveManejador($ci, $claveNuevaParam) {
@@ -661,7 +727,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjejerciciostemaManejador);
     }
     
-     public function letraEjercicioTemaManejador($ejercicio) {
+    public function letraEjercicioTemaManejador($ejercicio) {
         
             $this->query = "SELECT"
                     . " de.letra"
@@ -673,161 +739,41 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjletraEjercicioTemaManejador);
     }
     
-//    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
-//            $inputsCapturados) {
-//        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
-//        $atributosInputs = ["nombre", "atributo", "restriccion"];
-//        $arrayEntidades = [];
-//        $arrayRelaciones = [];
-//        $inputsRecorridos = [];
-//        $atributosRecorridos = [];
-//        $arrayRegistros = [];
-//        
-//        // hay que recorrer el array que se paso para ver de que son los datos
-//        // e ir armando objetos.
-//        
-//        // se recorre segun el largo del array.
-//        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
-//            $input = $inputsCapturados[$i][0];
-//            $atributo = $inputsCapturados[$i][1];
-//            $claveAtributo = key($atributo);
-//            $valorAtributo = implode(":", $atributo);
-//            
-//            // hacemos la recorrida segun la cantidad de tipo de inputs.
-//            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
-//                // si lo que estamos recorriendo es de uno de los tipos de inputs.
-//                if (strpos($input, $tiposInputs[$x]) !== false) {
-//                    $tipoInput = $tiposInputs[$x];
-//                    // si el input corresponde a una entidad, evaluamos que 
-//                    // tipo de entidad es.
-//                    if (strpos($tipoInput, "entidad") !== false ||
-//                            strpos($tipoInput, "relacion") !== false) {
-//                        if (strpos($tipoInput, "Comun") !== false) {
-//                            $tipo = "comun";
-//                        } else {
-//                            if (strpos($tipoInput, "SuperTipo") !== false) {
-//                                $tipo = "supertipo";
-//                            } else {
-//                                if (strpos($tipoInput, "SubTipo") !== false) {
-//                                    $tipo = "subtipo";
-//                                }
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//            // hacemos la recorrida segun la cantidad de tipo de atributos.
-//            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
-//                // si lo que estamos recorriendo es de uno de los tipos de atributos.
-//                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
-//                    $tipoAtributo = $atributosInputs[$z];
-//                    break;
-//                }
-//            }
-//            
-//            switch ($tipoInput) {
-//                case "entidadComun":
-//                    // si este nombre de objeto, todavia no lo recorri.
-//                    if (in_array($input, $inputsRecorridos) === false) {
-//                        // agrego el nombre del objeto al array de los ya recorridos.
-//                        array_push($inputsRecorridos, $input);
-//                        // nos fijamos si el atributo es el nombre.
-//                        if ($claveAtributo === "nombre") {
-//                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-//                        }
-//                    } else {
-//                        $arrayRegistros[$input] = $arrayRegistros[$input] . ", " . $valorAtributo;
-//                    }
-////                case "relacionComun":
-////                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-//            }
-//        }
-//        var_dump($arrayRegistros);
-//    }
-    
-    public function validarDatosMerManejador($nombreMer, $ciUsuario, $nombreEjercicio, 
-            $inputsCapturados) {
-        $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restriccion"];
-        $atributosInputs = ["nombre", "atributo", "restriccion"];
-        $arrayEntidades = [];
-        $arrayRelaciones = [];
-        $inputsRecorridos = [];
-        $atributosRecorridos = [];
-        $arrayRegistros = [];
-        
-        // hay que recorrer el array que se paso para ver de que son los datos
-        // e ir armando objetos.
-        
-        // se recorre segun el largo del array.
-        for ($i = 0; $i < sizeof($inputsCapturados); $i++) {
-            $input = $inputsCapturados[$i][0];
-            $atributo = $inputsCapturados[$i][1];
-            $claveAtributo = key($atributo);
-            $valorAtributo = implode(":", $atributo);
-            
-            // hacemos la recorrida segun la cantidad de tipo de inputs.
-            for ($x = 0; $x < sizeof($tiposInputs); $x++) {
-                // si lo que estamos recorriendo es de uno de los tipos de inputs.
-                if (strpos($input, $tiposInputs[$x]) !== false) {
-                    $tipoInput = $tiposInputs[$x];
-                    // si el input corresponde a una entidad, evaluamos que 
-                    // tipo de entidad es.
-                    if (strpos($tipoInput, "entidad") !== false ||
-                            strpos($tipoInput, "relacion") !== false) {
-                        if (strpos($tipoInput, "Comun") !== false) {
-                            $tipo = "comun";
-                        } else {
-                            if (strpos($tipoInput, "SuperTipo") !== false) {
-                                $tipo = "supertipo";
-                            } else {
-                                if (strpos($tipoInput, "SubTipo") !== false) {
-                                    $tipo = "subtipo";
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            // hacemos la recorrida segun la cantidad de tipo de atributos.
-            for ($z = 0; $z < sizeof($atributosInputs); $z++) {
-                // si lo que estamos recorriendo es de uno de los tipos de atributos.
-                if (strpos($claveAtributo, $atributosInputs[$z]) !== false) {
-                    $tipoAtributo = $atributosInputs[$z];
-                    break;
-                }
-            }
-            
-            switch ($tipoInput) {
-                case "entidadComun":
-                    // si este nombre de objeto, todavia no lo recorri.
-                    if (in_array($input, $inputsRecorridos) === false) {
-                        // agrego el nombre del objeto al array de los ya recorridos.
-                        array_push($inputsRecorridos, $input);
-                        // nos fijamos si el atributo es el nombre.
-                        if ($claveAtributo === "nombre") {
-                            $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-                        }
-                    } else {
-                        $arrayRegistros[$input] = $arrayRegistros[$input] . " | " . $valorAtributo;
-                    }
-//                case "relacionComun":
-//                    $arrayRegistros[$input] = $valorAtributo . ", " . $tipo;
-            }
-        } 
-        var_dump($arrayRegistros);
+    public function buscarEjercicioAlumno ($ciUsuario, $ejercicio) {
+        $this->query = "SELECT *"
+                . " FROM sol_mer"
+                . " WHERE ci_usuario ="
+                . " '$ciUsuario'"
+                . " AND nombre_ejercicio ="
+                . " '$ejercicio'";
+        $msjBuscarEjercicioAlumno = "No se ha encontrado el ejercicio para ese usuario.";
+
+        return $this->ejecutarQuery($this->query, $msjBuscarEjercicioAlumno);
     }
     
     //SOLO SE DEBE EJECUTAR UNA VEZ
-    public function guardarSolucionMer($nombre_mer , $ci ,$nombre_ejercicio,$restriccion ){                                                             
+    public function guardarSolucionMer($nombre_mer, $ci, $nombre_ejercicio, 
+            $restriccion, $inicioEjercicio, $finEjercicio){                                                             
         $this->query = "INSERT INTO sol_mer "
-                . "(id_mer , nombre , tipo , ci_usuario , nombre_ejercicio,restriccion)"
+                . "(id_mer, nombre, tipo, ci_usuario, nombre_ejercicio, "
+                . "restriccion, inicioEjercicio, finEjercicio)"
                 . " VALUE "
-                . "(null , '$nombre_mer' , 'sol_alumno' , '$ci' , '$nombre_ejercicio','$restriccion');";
+                . "(null, '$nombre_mer', 'sol_alumno', '$ci', "
+                . "'$nombre_ejercicio', '$restriccion', "
+                . "'$inicioEjercicio', '$finEjercicio');";
         $msjSolucionMer = "No se ha cargado la solucion.";
 
-        return $this->ejecutarTransaccion($this->query, $msjSolucionMer);                                 
+        return $this->ejecutarTransaccion($this->query, $msjSolucionMer);
+    }
+    
+    public function deleteSolucionMer($ci_usuario, $nombre_mer) {
+        $this->query = "DELETE FROM sol_mer"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre = '$nombre_mer'";
+        
+        $msjSolMerEntidad = "No se ha podido borrar los registros.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
     }
 
     public function guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad ,
@@ -843,6 +789,33 @@ class manejador extends conexionDB {
                  . "'$nombre_mer' , '$ci_usuario');";
         
         $msjSolMerEntidad = "No se ha cargado la entidad.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
+    }
+    
+    public function deleteSolucionMerEntidad($ci_usuario, $nombre_mer) {
+        $this->query = "DELETE FROM sol_entidad"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer'";
+        
+        $msjSolMerEntidad = "No se ha podido borrar los registros.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
+    }
+    
+    public function updateSolucionMerEntidad($nombre_entidad, $tipo_entidad ,
+                                             $entidad_supertipo ,
+                                             $tipo_categorizacion ,
+                                             $nombre_mer ,$ci_usuario) {
+        $this->query = "UPDATE sol_entidad"
+                . " SET nombre = '$nombre_entidad',"
+                . " tipo_entidad = '$tipo_entidad',"
+                . " entidad_supertipo = '$entidad_supertipo',"
+                . " tipo_categorizacion = '$tipo_categorizacion'"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer';";
+        
+        $msjSolMerEntidad = "No se ha actualizado la entidad.";
               
         return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
     }
@@ -865,6 +838,33 @@ class manejador extends conexionDB {
             
     }
     
+    public function deleteSolucionMerAtributo($ci_usuario, $nombre_mer) {
+        $this->query = "DELETE FROM sol_atributo"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer'";
+        
+        $msjSolMerEntidad = "No se ha podido borrar los registros.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
+    }
+    
+    public function updateSolucionMerAtributo($nombre_atributo, $tipo_atributo ,
+                                             $nombre_entidad ,
+                                             $nombre_mer ,
+                                             $ci_usuario) {
+        $this->query = "UPDATE sol_atributo"
+                . " SET nombre_atributo = '$nombre_atributo',"
+                . " tipo_atributo = '$tipo_atributo',"
+                . " nombre_entidad = '$nombre_entidad'"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer';";
+        
+        $msjSolMerAtributo= "No se ha actualizado el atributo.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAtributo);
+            
+    }
+    
     public function guardarSolucionMerAgregacion($nombre_agregacion, 
                                                    $nombre_entidad ,
                                                    $nombre_mer ,
@@ -881,6 +881,32 @@ class manejador extends conexionDB {
         return $this->ejecutarTransaccion($this->query, $msjSolMerAgregacion);
            
     }
+    
+    public function deleteSolucionMerAgregacion($ci_usuario, $nombre_mer) {
+        $this->query = "DELETE FROM sol_agregacion"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer'";
+        
+        $msjSolMerEntidad = "No se ha podido borrar los registros.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
+    }
+    
+    public function updateSolucionMerAgregacion($nombre_agregacion, 
+                                                   $nombre_entidad ,
+                                                   $nombre_mer ,
+                                                   $ci_usuario) {
+        $this->query = "UPDATE sol_agregacion"
+                . " SET nombre_agregacion = '$nombre_agregacion',"
+                . " nombre_entidad = '$nombre_entidad'"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer';";
+        
+        $msjSolMerAgregacion = "No se ha actualizado la agregacion.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerAgregacion);
+           
+    }
 
     public function guardarSolucionMerRelacion($nombre_relacion,$nombre_entidadA,
                                                $nombre_entidadB,$agregacion,
@@ -890,7 +916,7 @@ class manejador extends conexionDB {
                 . "agregacion , nombre_mer , ci_usuario)"
                 . "VALUE"
                 . "(null , '$nombre_relacion' , '$nombre_entidadA' , "
-                . "'$nombre_entidadB' , '$agregacion' , '$nombre_mer' ,"
+                . "'$nombre_entidadB' , NULLIF('', '$agregacion') , '$nombre_mer' ,"
                 . " '$ci_usuario');";
                  
         $msjSolMerRelacion = "No se ha cargado la relacion.";
@@ -1069,6 +1095,32 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
     }
+    public function deleteSolucionMerRelacion($ci_usuario, $nombre_mer) {
+        $this->query = "DELETE FROM sol_relacion"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer'";
+        
+        $msjSolMerEntidad = "No se ha podido borrar los registros.";
+              
+        return $this->ejecutarTransaccion($this->query, $msjSolMerEntidad); 
+    }
+    
+    public function updateSolucionMerRelacion($nombre_relacion,$nombre_entidadA,
+                                               $nombre_entidadB,$agregacion,
+                                               $nombre_mer , $ci_usuario) {
+        $this->query = "UPDATE sol_relacion"
+                . " SET nombre = '$nombre_relacion',"
+                . " nombre_entidadA = '$nombre_entidadA',"
+                . " nombre_entidadB = '$nombre_entidadB',"
+                . " agregacion = '$agregacion'"
+                . " WHERE ci_usuario = '$ci_usuario'"
+                . " AND nombre_mer = '$nombre_mer';";
+                 
+        $msjSolMerRelacion = "No se ha actualizado la relacion.";
+
+        return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
+    }
+    
 }
 
 ?>

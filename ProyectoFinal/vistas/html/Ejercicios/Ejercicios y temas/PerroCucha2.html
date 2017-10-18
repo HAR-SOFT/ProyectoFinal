@@ -10,7 +10,7 @@
         <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
             <div id="entidad" title=""><p></p><input id="inputEnt" name="nombre_entidadComun1"  type="text" placeholder="Entidad" size="10" maxlength="15">
                 <input id="inputEnt" name="cardinalidad_entidadComun1" type="tel" size="1" placeholder="1...1" disabled>
-                <div id="lineaAtributo1"><input type="text" name="atributoComun1_entidadComun1" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                <div id="lineaAtributo1"><input type="text" name="atributo1_entidadComun1" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
                 </div>
             </div>
         </div>
@@ -20,9 +20,9 @@
         <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
             <div id="entidad" title=""><p></p><input id="inputEnt" name="nombre_entidadComun2" type="text" placeholder="Entidad" size="10" maxlength="15">
                 <input id="inputEnt" name="cardinalidad_entidadComun2" type="tel" size="1" placeholder="1...1" disabled>
-                <div id="lineaAtributo1"><input type="text" name="atributoComun1_entidadComun2" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                <div id="lineaAtributo1"><input type="text" name="atributo1_entidadComun2" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
                 </div>
-                <div id="lineaAtributo2"><input type="text" name="atributoComun2_entidadComun2" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required>
+                <div id="lineaAtributo2"><input type="text" name="atributo2_entidadComun2" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
         <!-- Relacion con 2 "relaciones" -->
         <!-- con funcion onmousemove=validarPosicionRelacion -->
         <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacion(this.id, ['entidad1', 'entidad2'])">
-            <div id="relacion" title=""><br><input id="inputRel" name="nombre_relacionComun1-entidadComun1-entidadComun2" type="text"  placeholder="Relacion" size="7" maxlength="15" required>
+            <div id="relacion" title=""><br><input id="inputRel" name="nombre_relacionComun1" type="text"  placeholder="Relacion" size="7" maxlength="15" required>
                 <div id="lineaEntidadDerecha"></div>
                 <div id="lineaEntidadIzquierda"></div>
             </div>

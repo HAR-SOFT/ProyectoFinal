@@ -1,5 +1,5 @@
 #agregacion {
-    width: 700px;
+    width: 650px;
     height: 250px;
     padding:5px;
     color:#053E15;
@@ -94,15 +94,12 @@
     transform : rotate(150deg);
     transform-origin: 70%;
 }
-
-
 #inputAtrRel{
     margin: 0px 0px 0px 0px;
     border:1px solid #053E15;
     transform : rotate(89deg);
     transform-origin: 70% 70%;
 }
-
 #lineaAtributo1 {
     height: 1px;
     width: 50px;
@@ -280,7 +277,7 @@
      transform: rotate(270deg);
 }
 #categorizacion{
-    margin: 10px 0px 0px -2px;
+    margin: -20px 0px 0px -2px;
     width: 10;
     height: 10;
     border-left: 50px solid #ddd;
@@ -319,7 +316,7 @@
 #totalidad{
      width: 20px;
      height: 20px;
-     margin: 45px 0px 0px 47px;
+     margin: 12px 0px 0px 47px;
      -moz-border-radius: 50%;
      -webkit-border-radius: 50%;
      border-radius: 50%;
