@@ -30,11 +30,20 @@ else {
         case "redireccionar":
             $mvc->redireccionar();
             break;
-        case "tema":
-            $mvc->verTema();
+        case "verTema":
+            $mvc->editarCursoTemaYLetra();
             break;
         case "editarCurso":
-            $mvc->editarCurso();
+            $mvc->editarCursoMenu();
+            break;
+        case "verEjercicio":
+            $mvc->editarCursoTemaYLetraEjercicio();
+            break;
+        case "asociarTema":
+            $mvc->asociarTema();
+            break;
+         case "desasociarTema":
+            $mvc->desasociarTema();
             break;
         case "alumnos":
             $mvc->alumnosBedelia();
@@ -86,6 +95,21 @@ else {
             break;
         case "guardarInputsEjercicio":
             $mvc->guardarInputsEjercicio();
+            break;
+        case "filtrarAlumno":
+            $mvc->filtrarAlumnos();
+            break;
+        case "filtrarProfesor":
+            $mvc->filtrarProfesores();
+            break;
+        case "filtrarAlumnoSinCurso":
+            $mvc->filtrarAlumnosSinCurso();
+            break;
+        case "filtrarProfesoresSinCurso":
+            $mvc->filtrarProfesoresSinCurso();
+            break;
+        case "filtrarCurso":
+            $mvc->filtrarCurso();
             break;
     }
 }
