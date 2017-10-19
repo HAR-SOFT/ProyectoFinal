@@ -115,12 +115,18 @@ class manejador extends conexionDB {
         }
     }
     
+    public function checkConstraints($estado) {
+        $sql = "SET FOREIGN_KEY_CHECKS=$estado;";
+        $this->consulta($sql);
+    }
+   
     public function ejecutarQueryDelete($queryParametro, $msjParametro) {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
 // var_dump(strpos($queryParametro, "UPDATE"));
-        if (strpos($queryParametro, "DELETE" ) !== false) {
+        if (strpos($queryParametro, "DELETE" ) !== false || 
+            strpos($queryParametro, "UPDATE" ) !== false){
             $this->mensaje = $msjParametro;
         } else {
             if (!$this->cantidadRegistros($query) == 0) {
@@ -590,7 +596,7 @@ class manejador extends conexionDB {
 
             $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
         }
-        
+      
         return ["MER" => $mer, "Entidades" => $colEntidades, 
             "Atributos" => $colAtributos, "Relaciones" => $colRelaciones];
     }
@@ -960,7 +966,7 @@ class manejador extends conexionDB {
     public function deleteCursoProfesor($curso, $tema) {       
         $this->query = "DELETE FROM asc_curso_tema_subtema_ejercicio"
                 . " WHERE nombre_curso = '$curso' "
-                . "and nombre_tema = '$tema' ;";
+                . " and nombre_tema = '$tema';";
                  
         $msjdeleteCursoProfesor = "Se elimino correctamente";
 

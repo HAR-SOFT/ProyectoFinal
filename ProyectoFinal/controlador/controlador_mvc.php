@@ -905,7 +905,6 @@ class controlador_mvc extends manejador {
                     $curso = $_REQUEST["curso"];               
 
                     $existe = $this->comprobarTema($curso, $tema);
-                    var_dump($existe);
                     if( ($existe[0]['nombre_tema']) == $tema ){
                        $this->modal("El Tema " .$tema. " ya se encuentra "
                                . "asociado al Curso " .$curso );  
@@ -1045,16 +1044,16 @@ class controlador_mvc extends manejador {
              $onclick = "document.getElementById('selectedFile').click();";
 
              echo "<br>"
-            ."<p align='left'>"
-            ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            ."</form>"        
+            . "<p align='left'>"
+            . "<form action='/ProyectoFinal/ProyectoFinal/vistas/importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+            . "<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+            . "</form>"        
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-            ."<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
-            ."<br>"
-            ."</p>"
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "<br>"
+            . "</p>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
          } catch (Exception $ex) {
@@ -1133,18 +1132,18 @@ class controlador_mvc extends manejador {
             $onclick = "document.getElementById('selectedFile').click();";
 
             echo "<br>"
-            ."<p align='left'>"
-            ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            ."</form>"
+            . "<p align='left'>"
+            . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+            . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            . "<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+            . "</form>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-            ."<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
-            ."<br>"
-            ."</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "<br>"
+            . "</p>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
 
             }
         } catch (Exception $ex) {
@@ -1225,7 +1224,7 @@ class controlador_mvc extends manejador {
 
              echo "<br>"
              . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
-             . "<button type='submit' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar Curso</button></a>"
+             . "<button type='button' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar Curso</button></a>"
              . "&nbsp" 
              . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
              . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
@@ -1319,17 +1318,19 @@ class controlador_mvc extends manejador {
             }
 
             echo"</select>"
-            ."<br>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<div class='col-lg-10 col-lg-offset-2'>"
-            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
-            ."<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"
-            ."</div>"
-            ."</div>"
-            ."</fieldset>"
-            ."</form>";
+            . "<br>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<div class='col-lg-10 col-lg-offset-2'>"
+            . "<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
+            . "<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "</div>"
+            . "</div>"
+            . "</fieldset>"
+            . "</form>";
 
             echo "</table>";
 
@@ -1591,26 +1592,272 @@ class controlador_mvc extends manejador {
             $this->view_page($pagina);
 
             echo""
-            ."<br>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<div class='col-lg-10 col-lg-offset-2'>"
-            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
-            ."<button type='submit' name = 'aceptar' class='btn btn-primary' type=reset' >Aceptar</button>"
-            ."</form>"
+            . "<br>"
+            . "</div>"
+            . "</div>"
+            . "<div>"
+            . "<div class='col-lg-30 col-lg-offset-2'>"
+            . "<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
+            . "<button type='submit' name = 'aceptar' class='btn btn-primary' >Aceptar</button>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
-            ."</div>"
-            ."</div>"
-            ."</fieldset>"
-            ."</table>";
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "</form>"             
+            . "</div>"
+            . "</div>"
+            . "</fieldset>"
+            . "</table>";
 
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
 
+     public function validarEjercicio() {
+        try {
+            session_start();
+            
+            $nombreMer = $_SESSION["ejercicio"];
+            $ci = $_SESSION["ciUsuario"];
+            $nombreEjercicio = $_SESSION["ejercicio"];
+                       
+            $inputsString = explode(",", $_SESSION["inputs"]);
+            $inputsArray = [];
+            $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
+            $atributosInputs = ["nombre", "atributo", "restricciones"];
+            $objetosRecorridos = [];
+            
+            // armamos array principal con todos los inputs.
+            for ($i = 0; $i < sizeof($inputsString); $i++) {
+                // primero excluimos el atributo cardinalidad.
+                if (strpos($inputsString[$i], "cardinalidad") === false) {
+                    // nos fijamos si el nombre del input tiene el caracter separador.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $objeto = explode("_", explode(":", $inputsString[$i])[0])[1];
+                        // caso de una relacion. Hay que separar las entidades que la componen.
+                        if (strpos($objeto, "-")) {
+                            // Las entidades de la relacion.
+                            $entidadesRelacion = array(explode("-", $objeto)[1],
+                                explode("-", $objeto)[2]);
+                            // la relacion
+                            $objeto = explode("-", $objeto)[0];
+                        }
+                    } else {
+                        $objeto = explode(":", $inputsString[$i])[0];
+                    }
+                    // nos fijamos que atributo es el del input.
+                    // si no lo tiene, entonces es el input de restricciones.
+                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
+                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
+                    } else {
+                        $atributoInput = explode(":", $inputsString[$i])[0];
+                    }
+                    // asignamos el valor
+                    $valor = explode(":", $inputsString[$i])[1];
+                    
+                    // armamos el array del Mer
+                    if ($objeto === "restricciones" ) {
+                        $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
+                    }
+                    
+                    // armamos el array de las Entidades
+                    if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayEntidades[$objeto] = array($valor, "comun",
+                                    "null", "null", $nombreMer, $ci);
+                        }
+                    }
+                    
+                    // armamos el array de los Atributos
+                    if (strpos($atributoInput, "atributo") !== false) {
+                        if (strpos($atributoInput, "Comun")) {
+                            $arrayAtributos[$objeto."_".$i] = 
+                                    array($valor, "comun", $arrayEntidades[$objeto][0],
+                                        $nombreMer, $ci);
+                        }
+                    }
+                    
+                    // armamos el array de las Relaciones
+                    if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
+                        if (strpos($objeto, "Comun")) {
+                            $arrayRelaciones[$objeto] = 
+                                    array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
+                                        $arrayEntidades[$entidadesRelacion[1]][0], "null", 
+                                        $nombreMer, $ci);
+                        }
+                    }
+                }
+            }
+            
+//            var_dump($inputsString);
+//            var_dump($arrayMer);
+//            var_dump($arrayEntidades);
+//            var_dump($arrayAtributos);
+//            var_dump($arrayRelaciones);
+            
+            $nombre_mer = $arrayMer[0];
+            $ci_usuario = $arrayMer[2];
+            $nombre_ejercicio = $arrayMer[3];
+            $restriccion = ($arrayMer[4] === "") ? null : $arrayMer[4];
+            $inicioEjercicio = $_SESSION["inicioEjercicio"];
+            $finEjercicio = $_SESSION["finEjercicio"];
+            
+            // Verificar si el alumno ya tiene una solucion para el ejercicio
+            $buscarEjercicioAlumno = $this->buscarEjercicioAlumno($ci_usuario, $nombre_ejercicio);
+            
+            // Si el alumno todavia no tiene solucion hecha para este ejercicio
+            if ($this->getMensajeManejador() === "No se ha encontrado el ejercicio para ese usuario.") {
+                // Percistimos sol_mer.
+                $this->guardarSolucionMer($nombre_mer, $ci_usuario, 
+                        $nombre_ejercicio, $restriccion, $inicioEjercicio,
+                        $finEjercicio);
+
+                // Percistimos sol_entidad.
+                foreach ($arrayEntidades as $key => $value) {
+                    $nombre_entidad = $value[0];
+                    $tipo_entidad = $value[1];
+                    $entidad_supertipo = $value[2];
+                    $tipo_categorizacion = "N/A";
+                    $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
+                            $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
+                            $ci_usuario);
+                }
+
+                // Percistimos sol_atributo.
+                foreach ($arrayAtributos as $key => $value) {
+                    $nombre_atributo = $value[0];
+                    $tipo_atributo = $value[1];
+                    $nombre_entidad = $value[2];
+                    $this->guardarSolucionMerAtributo($nombre_atributo,
+                            $tipo_atributo, $nombre_entidad, $nombre_mer,
+                            $ci_usuario);
+                }
+
+                // Percistimos sol_relacion.
+                foreach ($arrayRelaciones as $key => $value) {
+                    $nombre_relacion = $value[0];
+                    $nombre_entidadA = $value[2];
+                    $nombre_entidadB = $value[3];
+                    $agregacion = "";
+                    $this->guardarSolucionMerRelacion($nombre_relacion,
+                            $nombre_entidadA, $nombre_entidadB, $agregacion,
+                            $nombre_mer, $ci_usuario);
+                }
+            } else {
+                // Eliminamos el MER anterior del alumno.
+                $this->deleteSolucionMerAtributo($ci_usuario, $nombre_mer);
+                $this->deleteSolucionMerAgregacion($ci_usuario, $nombre_mer);
+                $this->deleteSolucionMerRelacion($ci_usuario, $nombre_mer);
+                $this->deleteSolucionMerEntidad($ci_usuario, $nombre_mer);
+                $this->deleteSolucionMer($ci_usuario, $nombre_mer);
+                
+                // Percistimos sol_mer.
+                $this->guardarSolucionMer($nombre_mer, $ci_usuario, 
+                        $nombre_ejercicio, $restriccion, $inicioEjercicio,
+                        $finEjercicio);
+
+                // Percistimos sol_entidad.
+                foreach ($arrayEntidades as $key => $value) {
+                    $nombre_entidad = $value[0];
+                    $tipo_entidad = $value[1];
+                    $entidad_supertipo = $value[2];
+                    $tipo_categorizacion = "N/A";
+                    $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
+                            $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
+                            $ci_usuario);
+                }
+
+                // Percistimos sol_atributo.
+                foreach ($arrayAtributos as $key => $value) {
+                    $nombre_atributo = $value[0];
+                    $tipo_atributo = $value[1];
+                    $nombre_entidad = $value[2];
+                    $this->guardarSolucionMerAtributo($nombre_atributo,
+                            $tipo_atributo, $nombre_entidad, $nombre_mer,
+                            $ci_usuario);
+                }
+
+                // Percistimos sol_relacion.
+                foreach ($arrayRelaciones as $key => $value) {
+                    $nombre_relacion = $value[0];
+                    $nombre_entidadA = $value[2];
+                    $nombre_entidadB = $value[3];
+                    $agregacion = "";
+                    $this->guardarSolucionMerRelacion($nombre_relacion,
+                            $nombre_entidadA, $nombre_entidadB, $agregacion,
+                            $nombre_mer, $ci_usuario);
+                }
+            }
+            
+            // Solucion del sistema para el ejercicio
+            $solucionSistema = $this->armarMerSolucionSistema($nombreEjercicio);
+            $solucionSistemaMer = $solucionSistema["MER"];
+            $solucionSistemaEntidades = $solucionSistema["Entidades"];
+            $solucionSistemaAtributos = $solucionSistema["Atributos"];
+            $solucionSistemaRelaciones = $solucionSistema["Relaciones"];
+            
+            // Del MER no hay nada para validar.
+            // Validar Entidades
+            foreach ($arrayEntidades as $key => $value) {
+                $entidadAlumno = trim(strtolower($value[0]));
+                foreach ($solucionSistemaEntidades as $key => $value) {
+                    $entidadSistema = trim(strtolower($value[0]));
+                    if ($entidadAlumno === $entidadSistema) {
+                        $entidadValidada = true;
+                        break;
+                    } else {
+                        $entidadValidada = false;
+                    }
+                }
+            }
+            if ($entidadValidada === false) {
+                $mensajeValidacion = "Debe corregir lo siguiente: " . $entidadAlumno;
+            } else {
+                // Validar Atributos
+                foreach ($arrayAtributos as $key => $value) {
+                    $atributoAlumno = trim(strtolower($value[0]));
+                    foreach ($solucionSistemaAtributos as $key => $value) {
+                        $atributoSistema = trim(strtolower($value[0]));
+                        if ($atributoAlumno === $atributoSistema) {
+                            $atributoValidado = true;
+                            break;
+                        } else {
+                            $atributoValidado = false;
+                        }
+                    }
+                }
+                if ($atributoValidado === false) {
+                    $mensajeValidacion = "Debe corregir lo siguiente: " . $atributoAlumno;
+                } else {
+                    // Validar Relaciones
+                    foreach ($arrayRelaciones as $key => $value) {
+                        $relacionAlumno = trim(strtolower($value[0]));
+                        foreach ($solucionSistemaRelaciones as $key => $value) {
+                            $relacionSistema = trim(strtolower($value[0]));
+                            if ($relacionAlumno === $relacionSistema) {
+                                $relacionValidada = true;
+                                break;
+                            } else {
+                                $relacionValidada = false;
+                            }
+                        }
+                    }
+                    if ($relacionValidada === false) {
+                        $mensajeValidacion = "Debe corregir lo siguiente: " . $relacionAlumno;
+                    } else {
+                        $mensajeValidacion = "Felicitaciones, MER realizado correctamente!";
+                    }
+                }
+            }
+            
+            $_SESSION["mensajeValidacion"] = $mensajeValidacion;
+            
+            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=" . $_SESSION["ejercicio"] . "");
+        }catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+                   
     public function agregoCurso(){
         try {
             if (isset($_REQUEST['aceptar'])){
@@ -1972,252 +2219,7 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-    
-    public function validarEjercicio() {
-        try {
-            session_start();
-            
-            $nombreMer = $_SESSION["ejercicio"];
-            $ci = $_SESSION["ciUsuario"];
-            $nombreEjercicio = $_SESSION["ejercicio"];
-                       
-            $inputsString = explode(",", $_SESSION["inputs"]);
-            $inputsArray = [];
-            $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
-            $atributosInputs = ["nombre", "atributo", "restricciones"];
-            $objetosRecorridos = [];
-            
-            // armamos array principal con todos los inputs.
-            for ($i = 0; $i < sizeof($inputsString); $i++) {
-                // primero excluimos el atributo cardinalidad.
-                if (strpos($inputsString[$i], "cardinalidad") === false) {
-                    // nos fijamos si el nombre del input tiene el caracter separador.
-                    // si no lo tiene, entonces es el input de restricciones.
-                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                        $objeto = explode("_", explode(":", $inputsString[$i])[0])[1];
-                        // caso de una relacion. Hay que separar las entidades que la componen.
-                        if (strpos($objeto, "-")) {
-                            // Las entidades de la relacion.
-                            $entidadesRelacion = array(explode("-", $objeto)[1],
-                                explode("-", $objeto)[2]);
-                            // la relacion
-                            $objeto = explode("-", $objeto)[0];
-                        }
-                    } else {
-                        $objeto = explode(":", $inputsString[$i])[0];
-                    }
-                    // nos fijamos que atributo es el del input.
-                    // si no lo tiene, entonces es el input de restricciones.
-                    if (strpos(explode(":", $inputsString[$i])[0], "_" ) !== false) {
-                        $atributoInput = explode("_", explode(":", $inputsString[$i])[0])[0];
-                    } else {
-                        $atributoInput = explode(":", $inputsString[$i])[0];
-                    }
-                    // asignamos el valor
-                    $valor = explode(":", $inputsString[$i])[1];
-                    
-                    // armamos el array del Mer
-                    if ($objeto === "restricciones" ) {
-                        $arrayMer = array($nombreMer, "sol_alumno", $ci, $nombreEjercicio, $valor);
-                    }
-                    
-                    // armamos el array de las Entidades
-                    if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
-                        if (strpos($objeto, "Comun")) {
-                            $arrayEntidades[$objeto] = array($valor, "comun",
-                                    "null", "null", $nombreMer, $ci);
-                        }
-                    }
-                    
-                    // armamos el array de los Atributos
-                    if (strpos($atributoInput, "atributo") !== false) {
-                        if (strpos($atributoInput, "Comun")) {
-                            $arrayAtributos[$objeto."_".$i] = 
-                                    array($valor, "comun", $arrayEntidades[$objeto][0],
-                                        $nombreMer, $ci);
-                        }
-                    }
-                    
-                    // armamos el array de las Relaciones
-                    if (strpos($objeto, "relacion") !== false && $atributoInput === "nombre") {
-                        if (strpos($objeto, "Comun")) {
-                            $arrayRelaciones[$objeto] = 
-                                    array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
-                                        $arrayEntidades[$entidadesRelacion[1]][0], "null", 
-                                        $nombreMer, $ci);
-                        }
-                    }
-                }
-            }
-            
-//            var_dump($inputsString);
-//            var_dump($arrayMer);
-//            var_dump($arrayEntidades);
-//            var_dump($arrayAtributos);
-//            var_dump($arrayRelaciones);
-            
-            $nombre_mer = $arrayMer[0];
-            $ci_usuario = $arrayMer[2];
-            $nombre_ejercicio = $arrayMer[3];
-            $restriccion = ($arrayMer[4] === "") ? null : $arrayMer[4];
-            $inicioEjercicio = $_SESSION["inicioEjercicio"];
-            $finEjercicio = $_SESSION["finEjercicio"];
-            
-            // Verificar si el alumno ya tiene una solucion para el ejercicio
-            $buscarEjercicioAlumno = $this->buscarEjercicioAlumno($ci_usuario, $nombre_ejercicio);
-            
-            // Si el alumno todavia no tiene solucion hecha para este ejercicio
-            if ($this->getMensajeManejador() === "No se ha encontrado el ejercicio para ese usuario.") {
-                // Percistimos sol_mer.
-                $this->guardarSolucionMer($nombre_mer, $ci_usuario, 
-                        $nombre_ejercicio, $restriccion, $inicioEjercicio,
-                        $finEjercicio);
-
-                // Percistimos sol_entidad.
-                foreach ($arrayEntidades as $key => $value) {
-                    $nombre_entidad = $value[0];
-                    $tipo_entidad = $value[1];
-                    $entidad_supertipo = $value[2];
-                    $tipo_categorizacion = "N/A";
-                    $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
-                            $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
-                            $ci_usuario);
-                }
-
-                // Percistimos sol_atributo.
-                foreach ($arrayAtributos as $key => $value) {
-                    $nombre_atributo = $value[0];
-                    $tipo_atributo = $value[1];
-                    $nombre_entidad = $value[2];
-                    $this->guardarSolucionMerAtributo($nombre_atributo,
-                            $tipo_atributo, $nombre_entidad, $nombre_mer,
-                            $ci_usuario);
-                }
-
-                // Percistimos sol_relacion.
-                foreach ($arrayRelaciones as $key => $value) {
-                    $nombre_relacion = $value[0];
-                    $nombre_entidadA = $value[2];
-                    $nombre_entidadB = $value[3];
-                    $agregacion = "";
-                    $this->guardarSolucionMerRelacion($nombre_relacion,
-                            $nombre_entidadA, $nombre_entidadB, $agregacion,
-                            $nombre_mer, $ci_usuario);
-                }
-            } else {
-                // Eliminamos el MER anterior del alumno.
-                $this->deleteSolucionMerAtributo($ci_usuario, $nombre_mer);
-                $this->deleteSolucionMerAgregacion($ci_usuario, $nombre_mer);
-                $this->deleteSolucionMerRelacion($ci_usuario, $nombre_mer);
-                $this->deleteSolucionMerEntidad($ci_usuario, $nombre_mer);
-                $this->deleteSolucionMer($ci_usuario, $nombre_mer);
-                
-                // Percistimos sol_mer.
-                $this->guardarSolucionMer($nombre_mer, $ci_usuario, 
-                        $nombre_ejercicio, $restriccion, $inicioEjercicio,
-                        $finEjercicio);
-
-                // Percistimos sol_entidad.
-                foreach ($arrayEntidades as $key => $value) {
-                    $nombre_entidad = $value[0];
-                    $tipo_entidad = $value[1];
-                    $entidad_supertipo = $value[2];
-                    $tipo_categorizacion = "N/A";
-                    $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
-                            $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
-                            $ci_usuario);
-                }
-
-                // Percistimos sol_atributo.
-                foreach ($arrayAtributos as $key => $value) {
-                    $nombre_atributo = $value[0];
-                    $tipo_atributo = $value[1];
-                    $nombre_entidad = $value[2];
-                    $this->guardarSolucionMerAtributo($nombre_atributo,
-                            $tipo_atributo, $nombre_entidad, $nombre_mer,
-                            $ci_usuario);
-                }
-
-                // Percistimos sol_relacion.
-                foreach ($arrayRelaciones as $key => $value) {
-                    $nombre_relacion = $value[0];
-                    $nombre_entidadA = $value[2];
-                    $nombre_entidadB = $value[3];
-                    $agregacion = "";
-                    $this->guardarSolucionMerRelacion($nombre_relacion,
-                            $nombre_entidadA, $nombre_entidadB, $agregacion,
-                            $nombre_mer, $ci_usuario);
-                }
-            }
-            
-            // Solucion del sistema para el ejercicio
-            $solucionSistema = $this->armarMerSolucionSistema($nombreEjercicio);
-            $solucionSistemaMer = $solucionSistema["MER"];
-            $solucionSistemaEntidades = $solucionSistema["Entidades"];
-            $solucionSistemaAtributos = $solucionSistema["Atributos"];
-            $solucionSistemaRelaciones = $solucionSistema["Relaciones"];
-            
-            // Del MER no hay nada para validar.
-            // Validar Entidades
-            foreach ($arrayEntidades as $key => $value) {
-                $entidadAlumno = trim(strtolower($value[0]));
-                foreach ($solucionSistemaEntidades as $key => $value) {
-                    $entidadSistema = trim(strtolower($value[0]));
-                    if ($entidadAlumno === $entidadSistema) {
-                        $entidadValidada = true;
-                        break;
-                    } else {
-                        $entidadValidada = false;
-                    }
-                }
-            }
-            if ($entidadValidada === false) {
-                $mensajeValidacion = "Debe corregir lo siguiente: " . $entidadAlumno;
-            } else {
-                // Validar Atributos
-                foreach ($arrayAtributos as $key => $value) {
-                    $atributoAlumno = trim(strtolower($value[0]));
-                    foreach ($solucionSistemaAtributos as $key => $value) {
-                        $atributoSistema = trim(strtolower($value[0]));
-                        if ($atributoAlumno === $atributoSistema) {
-                            $atributoValidado = true;
-                            break;
-                        } else {
-                            $atributoValidado = false;
-                        }
-                    }
-                }
-                if ($atributoValidado === false) {
-                    $mensajeValidacion = "Debe corregir lo siguiente: " . $atributoAlumno;
-                } else {
-                    // Validar Relaciones
-                    foreach ($arrayRelaciones as $key => $value) {
-                        $relacionAlumno = trim(strtolower($value[0]));
-                        foreach ($solucionSistemaRelaciones as $key => $value) {
-                            $relacionSistema = trim(strtolower($value[0]));
-                            if ($relacionAlumno === $relacionSistema) {
-                                $relacionValidada = true;
-                                break;
-                            } else {
-                                $relacionValidada = false;
-                            }
-                        }
-                    }
-                    if ($relacionValidada === false) {
-                        $mensajeValidacion = "Debe corregir lo siguiente: " . $relacionAlumno;
-                    } else {
-                        $mensajeValidacion = "Felicitaciones, MER realizado correctamente!";
-                    }
-                }
-            }
-            
-            $_SESSION["mensajeValidacion"] = $mensajeValidacion;
-            
-            header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=" . $_SESSION["ejercicio"] . "");
-        }catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        }
-    }
+  
     
     public function filtrarAlumnos() {
         try {
