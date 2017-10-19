@@ -513,6 +513,14 @@ class controlador_mvc extends manejador {
             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+            
+//            var_dump($_SESSION["mensajeValidacion"]);
+            if (isset($_SESSION["mensajeValidacion"]) && 
+                    $_SESSION["mensajeValidacion"] === "Felicitaciones, MER realizado correctamente!") {
+                $this->modal($_SESSION["mensajeValidacion"]);
+                $pagina = $this->replace_content("/none/", "block", $pagina);
+                unset($_SESSION["mensajeValidacion"]);
+            }
 
             $this->view_page($pagina);
         }
@@ -1561,11 +1569,15 @@ class controlador_mvc extends manejador {
             $contenido = $contenido . $this->load_page("vistas/html/ejercicios/" . $ejercicio . ".html");
             
             if (isset($_SESSION["mensajeValidacion"])) {
-//                var_dump($_SESSION["mensajeValidacion"]);
-                $contenido = $contenido . "<script type='text/javascript'>"
-//                            . "alert('" . $_SESSION['mensajeValidacion'] . "');"
-                            . "modal('" . $_SESSION["mensajeValidacion"] . "');"
-                            . "</script>";
+                if ($_SESSION["mensajeValidacion"] === "Felicitaciones, MER realizado correctamente!") {
+                    header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=Introduccion");
+                } else {
+    //                var_dump($_SESSION["mensajeValidacion"]);
+                    $contenido = $contenido . "<script type='text/javascript'>"
+    //                            . "alert('" . $_SESSION['mensajeValidacion'] . "');"
+                                . "modal('" . $_SESSION["mensajeValidacion"] . "');"
+                                . "</script>";
+                }
             }
             
             $pagina = $this->load_template("inicio");
@@ -1579,7 +1591,7 @@ class controlador_mvc extends manejador {
 
             $this->view_page($pagina);
             
-            unset($_SESSION["mensajeValidacion"]);
+//            unset($_SESSION["mensajeValidacion"]);
             unset($_SESSION["inputs"]);
             unset($_SESSION["inicioEjercicio"]);
             unset($_SESSION["finEjercicio"]);
@@ -1802,6 +1814,9 @@ class controlador_mvc extends manejador {
                         $entidadValidada = false;
                     }
                 }
+                if ($entidadValidada === false) {
+                    break;
+                }
             }
             if ($entidadValidada === false) {
                 $mensajeValidacion = "Debe corregir lo siguiente: " . $entidadAlumno;
@@ -1818,6 +1833,9 @@ class controlador_mvc extends manejador {
                             $atributoValidado = false;
                         }
                     }
+                    if ($atributoValidado === false) {
+                        break;
+                    }
                 }
                 if ($atributoValidado === false) {
                     $mensajeValidacion = "Debe corregir lo siguiente: " . $atributoAlumno;
@@ -1833,6 +1851,9 @@ class controlador_mvc extends manejador {
                             } else {
                                 $relacionValidada = false;
                             }
+                        }
+                        if ($relacionValidada === false) {
+                            break;
                         }
                     }
                     if ($relacionValidada === false) {
