@@ -319,7 +319,7 @@ class controlador_mvc extends manejador {
                         $this->modal("Clave actual incorrecta.");
                     } else {
                         if ($claveNueva <> $claveNuevaRep) {
-                            $this->modal("La clave nueva no coincide con la validación.");
+                            $this->modal("La clave nueva no coincide con la validaciÃ³n.");
                         } else {
                             $this->cambiarClaveManejador($_SESSION["ciUsuario"], $claveNueva);
                         }
@@ -2214,7 +2214,6 @@ class controlador_mvc extends manejador {
     }
     
     public function filtrarAlumnos() {
-        //chota
         try {
             session_start();            
             if (!isset($_POST["filtrar"])) {
