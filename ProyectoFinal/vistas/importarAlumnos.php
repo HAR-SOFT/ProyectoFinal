@@ -4,13 +4,13 @@ require_once '../lib/excel/Classes/PHPExcel/IOFactory.php';
 
 require_once '../modelo/conexionDB.php';
 
-require '../controlador/controlador_mvc.php';;
+//require '../controlador/controlador_mvc.php';;
 
 $DB = new conexionDB();
 
 $DB->conectar();
 
-$controler = new controlador_mvc();
+//$controler = new controlador_mvc();
 
 
 if (isset($_POST['submit'])) {
@@ -43,13 +43,13 @@ if (isset($_POST['submit'])) {
         $sql = "INSERT INTO `dim_usuario`(`id_usuario`, `ci`, `nombre`, `apellido`, `sexo`, `email`, `clave`, `telefono`, `celular`, `categoria_usuario`)"
                 . "values(null,'$ci','$nombre','$apellido','$sexo','$email','$pass','$telefono','$celular', 'alumno')";
 
-        //var_dump($sql);
+        var_dump($sql);
         $msjParametro = '';
-        $controler->ejecutarQuery($sql, $msjParametro);//$resultado = $DB->consulta($sql);
+        //$controler->ejecutarQuery($sql, $msjParametro);//$resultado = $DB->consulta($sql);
      
         if ($resultado == false){
             
-            $controler->modal("No se han podido Importar el alumno $ci");
+            //$controler->modal("No se han podido Importar el alumno $ci");
         }
     
         

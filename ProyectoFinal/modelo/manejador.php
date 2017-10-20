@@ -1036,7 +1036,7 @@ class manejador extends conexionDB {
             $this->query = "SELECT du.ci as ci ,"
                     . "concat(du.nombre,' ',du.apellido) as profesor,"
                     . "acu.nombre_curso as curso "
-                    . "FROM dim_usuario du , asc_curso_usuario acu ,dim_curso dc"
+                    . "FROM dim_usuario du , asc_curso_usuario acu ,dim_curso dc "
                     . "where du.categoria_usuario = 'Profesor'  "
                     . "and du.ci = acu.ci_usuario  "
                     . "and dc.estado = 1 "
@@ -1079,7 +1079,7 @@ class manejador extends conexionDB {
                 . "FROM dim_usuario "
                 . "WHERE categoria_usuario = 'Alumno' "
                 . "and ci NOT IN (select ci_usuario from asc_curso_usuario) "
-                . "and nombre like'%$nombre%'"
+                . "and (nombre like'%$nombre%' or apellido like'%$apellido%')" 
                 . "and ci like '%$cedula%';";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
 

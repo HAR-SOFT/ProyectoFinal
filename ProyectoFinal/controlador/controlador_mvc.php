@@ -521,9 +521,10 @@ class controlador_mvc extends manejador {
 
     public function cursosProfesor() {
         try {
-            echo "<div class='item'>"
-            . "<table class='table table-striped table-hover'>"
-            . "<thead>"
+            echo "<div class='item'>"                         
+            . "<table class='table table-striped table-hover'>"                   
+            . "<div class = 'container'>"
+            . "<tbody>"                
             . "<tr class='danger'>"
             . "<th>"
             . "<div class='form'>"
@@ -550,8 +551,9 @@ class controlador_mvc extends manejador {
             . "<label class='control-label'>Editar Curso</label>"
             . "</div>"
             . "</th>"
-            . "</tr>"
-            . "</thead>";
+            . "</tr>"            
+            . "</div>"
+            . "</div>";
 
             $ciUsuario = $_SESSION["ciUsuario"];
             $resultado = $this->cursoAsingadosProfesor($ciUsuario);
@@ -573,7 +575,9 @@ class controlador_mvc extends manejador {
                 . "<td>" . $fila['estado'] . "</td>" 
                 . "<td><a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso&curso=$cursoSeleccionado'>editar</a></td>"
                 . "</tr>"
+                       
                 . "</tbody>";
+                         
             }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -981,7 +985,7 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            $contenido = "<div>"
+            $contenido = "<div class = 'container'>"
             . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumno'>"
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Alumnos</h1>"
@@ -1047,15 +1051,14 @@ class controlador_mvc extends manejador {
             . "<p align='left'>"
             . "<form action='/ProyectoFinal/ProyectoFinal/vistas/importarAlumnos.php' method='post' enctype='multipart/form-data'>"
             . "<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"
             . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            . "</form>"        
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
             . "<br>"
             . "</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>";
          } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
            }
@@ -1066,7 +1069,7 @@ class controlador_mvc extends manejador {
          try {
              session_start();
 
-             $contenido = "<div>"
+             $contenido = "<div class = 'container'>"
              . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesor'>"        
              . "<div class='page-header' id='tables'>"
              . "<h1 style='color:#d3d3d3;' align='center'>Profesores</h1>"
@@ -1135,15 +1138,15 @@ class controlador_mvc extends manejador {
             . "<p align='left'>"
             . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
             . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            . "<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"
             . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             . "</form>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
             . "<br>"
             . "</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>";
 
             }
         } catch (Exception $ex) {
@@ -1156,8 +1159,8 @@ class controlador_mvc extends manejador {
         try {
              session_start();
 
-            $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarCurso'>"
-            . "<div>"
+            $contenido = "<div class = 'container'>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarCurso'>"
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
             . "</div>"
@@ -1239,7 +1242,8 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            $contenido = "<div class='page-header' id='tables'>"
+            $contenido = "<div class='container'>"
+            ."<div class='page-header' id='tables'>"
             ."<h1 style='color:#d3d3d3;' align='center'>Agregar Alumno</h1>"
             ."</div>"
             ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoAlumno'>"
@@ -1323,8 +1327,8 @@ class controlador_mvc extends manejador {
             . "</div>"
             . "<div class='form-group'>"
             . "<div class='col-lg-10 col-lg-offset-2'>"
-            . "<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
-            . "<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"
+            . "<button type='reset' class='btn btn-default btn-lg' name='btnCancel'>Cancelar</button>&nbsp"
+            . "<button type='submit' name = 'aceptar' class='btn btn-primary btn-lg'>Aceptar</button>&nbsp"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
             . "</div>"
@@ -1392,7 +1396,8 @@ class controlador_mvc extends manejador {
          try {
             session_start();
 
-            $contenido = "<div class='page-header' id='tables'>"
+            $contenido = "<div class='container'>"
+            ."<div class='page-header' id='tables'>"
             ."<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
             ."</div>"
             ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
@@ -1476,8 +1481,8 @@ class controlador_mvc extends manejador {
             ."</div>"
             ."<div class='form-group'>"
             ."<div class='col-lg-10 col-lg-offset-2'>"
-            ."<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
-            ."<button type='submit' name = 'aceptar' class='btn btn-primary'>Aceptar</button>"
+            ."<button type='reset' class='btn btn-default  btn-lg' name='btnCancel'>Cancelar</button>&nbsp"
+            ."<button type='submit' name = 'aceptar' class='btn btn-primary btn-lg' >Aceptar</button>&nbsp"
             ."</form>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"         
@@ -1544,7 +1549,8 @@ class controlador_mvc extends manejador {
         try {
             session_start();
 
-            $contenido = "<div class='page-header' id='tables'>"
+            $contenido = "<div class='container'>"
+            . "<div class = 'page-header' id='tables'>"        
             ."<h1 style='color:#d3d3d3;' align='center'>Agregar Curso</h1>"
             ."</div>"
             ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoCurso'>"
@@ -1597,8 +1603,8 @@ class controlador_mvc extends manejador {
             . "</div>"
             . "<div>"
             . "<div class='col-lg-30 col-lg-offset-2'>"
-            . "<button type='reset' class='btn btn-default' name='btnCancel'>Cancelar</button>"
-            . "<button type='submit' name = 'aceptar' class='btn btn-primary' >Aceptar</button>"
+            . "<button type='reset' class='btn btn-default btn-lg' name='btnCancel'>Cancelar</button>&nbsp"
+            . "<button type='submit' name = 'aceptar' class='btn btn-primary btn-lg' >Aceptar</button>&nbsp"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
             . "</form>"             
@@ -1892,7 +1898,7 @@ class controlador_mvc extends manejador {
             session_start();
 
             $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumnoSinCurso'>"
-            . "<div>"            
+            . "<div class = 'container'>"            
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Alumnos sin Curso </h1>"
             . "</div>"
@@ -1968,7 +1974,7 @@ class controlador_mvc extends manejador {
             echo "</table>"
             . "<br>"
             ."<p align='left'>"
-            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
             ."</form>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
@@ -1988,7 +1994,7 @@ class controlador_mvc extends manejador {
             session_start();
 
              $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesoresSinCurso'>"
-            . "<div>"            
+            . "<div class = 'container' >"            
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Profesores sin Curso </h1>"
             . "</div>"
@@ -2006,7 +2012,7 @@ class controlador_mvc extends manejador {
             . "<div>"
             . "<label class='control-label'>Cedula</label>"
             . "<div class='input'>"
-            . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
+            . "<input type='text' name = 'numero' class='form-control' placeholder='Filtrar por nombre'>"
             . "</div>"
             . "</th>"
             . "<th>"
@@ -2068,7 +2074,7 @@ class controlador_mvc extends manejador {
                 echo "</table>"
                 . "<br>"
                 ."<p align='left'>"
-                ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+                ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
                 ."</form>"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
                 . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
@@ -2230,7 +2236,7 @@ class controlador_mvc extends manejador {
                  $ci = $_REQUEST["numero"];
                  $curso = $_REQUEST["filtCur"];
  
-                $contenido = "<div>"
+                $contenido = "<div class='container'>"
                 . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumno'>"
                 . "<div class='page-header' id='tables'>"
                 . "<h1 style='color:#d3d3d3;' align='center'>Alumnos</h1>"
@@ -2294,15 +2300,15 @@ class controlador_mvc extends manejador {
                 . "<p align='left'>"
                 . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
                 . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-                . "<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                . "<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />&nbsp"
                 . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
                 . "</form>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
                 . "<br>"
                 . "</p>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumnos' class='btn btn-primary btn-lg'>Agregar alumnos</button></a>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'AlumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumnos' class='btn btn-primary btn-lg'>Agregar alumnos</button></a>&nbsp"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'AlumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>&nbsp"
+                                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>";
                 }
                 else{
                 
@@ -2313,15 +2319,15 @@ class controlador_mvc extends manejador {
                     . "<p align='left'>"
                     . "<form action='../importarAumnos.php' method='post' enctype='multipart/form-data'>"
                     . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-                    . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                    . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />&nbsp"
                     . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
                     . "</form>"
-                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"        
                     . "<br>"
                     . "</p>"
-                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumnos'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
-                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumnos'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>&nbsp"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>&nbsp"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
                 
                 }                  
             }
@@ -2340,8 +2346,8 @@ class controlador_mvc extends manejador {
                  $apellido = $_REQUEST["filtNom"];
                  $ci = $_REQUEST["numero"];
                  $curso = $_REQUEST["filtCur"];
-
-                $contenido = "<div>"
+ 
+                $contenido = "<div class='container'>"
                 . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesor'>"
                 . "<div class='page-header' id='tables'>"
                 . "<h1 style='color:#d3d3d3;' align='center'>Profesores</h1>"
@@ -2356,7 +2362,7 @@ class controlador_mvc extends manejador {
                 . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
                 . "</div>"
                 . "</th>"
-                . "<th><div>"                        
+                . "<th><div>"
                 . "<label class='control-label'>Cedula</label>"
                 . "<div class='input'>"
                 . "<input type='number' name = 'numero' value='' maxlength='8' class='form-control' placeholder='Filtrar por cedula'>"
@@ -2365,7 +2371,7 @@ class controlador_mvc extends manejador {
                 . "<th><div>"
                 . "<label class='control-label'>Curso</label>"
                 . "<div class='input'>"
-                . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
+                . "<input type='text' name = 'filtCur' value=''class='form-control' placeholder='Filtrar por curso'>"
                 . "</div>"
                 . "</th>"
                 . "<th>"
@@ -2386,7 +2392,7 @@ class controlador_mvc extends manejador {
                 $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
 
                 $this->view_page($pagina);
-                $resultado = $this->filtrarManejadorProfesores($nombre ,$apellido, $ci , $curso);
+                $resultado = $this->filtrarManejadorProfesores($nombre,$apellido,$ci,$curso);
                 if($resultado == !NULL){
                     foreach ($resultado as $fila) {
                         echo "<tbody>"
@@ -2405,15 +2411,15 @@ class controlador_mvc extends manejador {
                 . "<p align='left'>"
                 . "<form action='../importarProfesores.php' method='post' enctype='multipart/form-data'>"
                 . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-                . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />&nbsp"
                 . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
                 . "</form>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
-                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
                 . "<br>"
                 . "</p>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>"
-                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'profesoresSinCurso' class='btn btn-primary btn-lg'>Pofesores sin Curso</button></a>";
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesores' class='btn btn-primary btn-lg'>Agregar profesor</button></a>&nbsp"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'ProfesoresSinCurso' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>&nbsp"
+                                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>";
                 }
                 else{
                 
@@ -2431,8 +2437,8 @@ class controlador_mvc extends manejador {
                     . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"        
                     . "<br>"
                     . "</p>"
-                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>"
-                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'profesoresSinCurso' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesores'><button type='button' name = 'agregarPofesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'profesoresSinCurso' class='btn btn-primary btn-lg'>Pofesores sin Curso</button></a>";
                 
                 }                  
             }
@@ -2442,6 +2448,7 @@ class controlador_mvc extends manejador {
            }
 
     }
+    
     
     public function filtrarAlumnosSinCurso(){
         try {
@@ -2453,7 +2460,7 @@ class controlador_mvc extends manejador {
                  $curso =''; 
 
             $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumnoSinCurso'>"
-            . "<div>"            
+             ."<div class='container'>"            
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Alumnos sin Curso </h1>"
             . "</div>"
@@ -2530,7 +2537,7 @@ class controlador_mvc extends manejador {
             echo "</table>"
             . "<br>"
             ."<p align='left'>"
-            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
             ."</form>"
@@ -2557,7 +2564,7 @@ class controlador_mvc extends manejador {
                  $curso =''; 
 
             $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesoresSinCurso'>"
-            . "<div>"            
+            . "<div class = 'container'>"            
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Profesores sin Curso </h1>"
             . "</div>"
@@ -2634,7 +2641,7 @@ class controlador_mvc extends manejador {
             echo "</table>"
             . "<br>"
             ."<p align='left'>"
-            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
             ."</form>"
@@ -2662,7 +2669,7 @@ class controlador_mvc extends manejador {
                  $curso = $_REQUEST["filtCur"];; 
 
             $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarCurso'>"
-            . "<div>"
+            . "<div class = 'container'>" 
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
             . "</div>"
