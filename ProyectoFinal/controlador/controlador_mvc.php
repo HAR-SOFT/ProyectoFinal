@@ -107,7 +107,7 @@ class controlador_mvc extends manejador {
             $pagina = $this->replace_content("/Titulo/", "Bienvenido", $pagina);
             $this->view_page($pagina);
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -119,7 +119,7 @@ class controlador_mvc extends manejador {
             . "<div class='modal-content'>"
             . "<div class='modal-header'>"
             . "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='closeModal()'>&times;</button>"
-            . "<h4 class='modal-title'>Atención:</h4>"
+            . "<h4 class='modal-title'>AtenciÃ³n:</h4>"
             . "</div>"
             . "<div class='modal-body'>"
             . "<p>$msjModal</p>"
@@ -133,7 +133,7 @@ class controlador_mvc extends manejador {
 
             echo $modal;
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -175,7 +175,7 @@ class controlador_mvc extends manejador {
                             $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
-                            $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+                            $pagina = $this->replace_content("/Titulo/", "TeÃ³rico curso", $pagina);
                             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                             break;
                         case("profesor");
@@ -196,7 +196,7 @@ class controlador_mvc extends manejador {
                             $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                             $pagina = $this->replace_content("/Header/", $header, $pagina);
                             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                            $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
+                            $pagina = $this->replace_content("/Titulo/", "MenÃº de Administrativo", $pagina);
                             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                             break;
                     }
@@ -205,7 +205,7 @@ class controlador_mvc extends manejador {
                 $this->view_page($pagina);
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -224,7 +224,7 @@ class controlador_mvc extends manejador {
                         $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
-                        $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+                        $pagina = $this->replace_content("/Titulo/", "TeÃ³rico curso", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                     case("profesor");
@@ -243,7 +243,7 @@ class controlador_mvc extends manejador {
                         $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
                         $pagina = $this->replace_content("/Header/", $header, $pagina);
                         $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-                        $pagina = $this->replace_content("/Titulo/", "Menú de Administrativo", $pagina);
+                        $pagina = $this->replace_content("/Titulo/", "MenÃº de Administrativo", $pagina);
                         $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                         break;
                 }
@@ -251,7 +251,7 @@ class controlador_mvc extends manejador {
                 $this->view_page($pagina);
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -276,7 +276,7 @@ class controlador_mvc extends manejador {
 
             $this->inicio();
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -299,7 +299,7 @@ class controlador_mvc extends manejador {
                 $this->view_page($pagina);
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -319,7 +319,7 @@ class controlador_mvc extends manejador {
                         $this->modal("Clave actual incorrecta.");
                     } else {
                         if ($claveNueva <> $claveNuevaRep) {
-                            $this->modal("La clave nueva no coincide con la validación.");
+                            $this->modal("La clave nueva no coincide con la validaciÃ³n.");
                         } else {
                             $this->cambiarClaveManejador($_SESSION["ciUsuario"], $claveNueva);
                         }
@@ -343,7 +343,7 @@ class controlador_mvc extends manejador {
                 $this->view_page($pagina);
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -382,7 +382,7 @@ class controlador_mvc extends manejador {
                 $this->view_page($pagina);
 //            }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -390,7 +390,7 @@ class controlador_mvc extends manejador {
         try {
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -443,7 +443,7 @@ class controlador_mvc extends manejador {
 
             return $contenido;
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -495,7 +495,7 @@ class controlador_mvc extends manejador {
 
             return $contenido;
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -511,7 +511,7 @@ class controlador_mvc extends manejador {
             $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $this->menuTemasCursoYLetra(), $pagina);
-            $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
+            $pagina = $this->replace_content("/Titulo/", "TeÃ³rico curso", $pagina);
             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
             
 //            var_dump($_SESSION["mensajeValidacion"]);
@@ -583,7 +583,7 @@ class controlador_mvc extends manejador {
                 . "</tbody>";
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -901,7 +901,7 @@ class controlador_mvc extends manejador {
             }            
            
         } catch (Exception $ex) {
-            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃƒÂ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
     
@@ -1178,9 +1178,9 @@ class controlador_mvc extends manejador {
             . "</div>"
             . "</th>"
             . "<th><div>"
-            . "<label class='control-label'>Año</label>"
+            . "<label class='control-label'>AÃ±o</label>"
             . "<div class='input'>"
-            . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por año'>"
+            . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por aÃ±o'>"
             . "</div>"
             . "</th>"
             . "<th><div>"
@@ -1235,7 +1235,7 @@ class controlador_mvc extends manejador {
              . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
              . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
         } catch (Exception $ex) {
-            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃƒÂ³n capturada: ", $ex->getMessage(), "\n";
         }
 
     }
@@ -1338,7 +1338,7 @@ class controlador_mvc extends manejador {
             echo "</table>";
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
 
     }
@@ -1387,7 +1387,7 @@ class controlador_mvc extends manejador {
                 }
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1488,7 +1488,7 @@ class controlador_mvc extends manejador {
 
             echo "</table>";
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
 
     }
@@ -1536,7 +1536,7 @@ class controlador_mvc extends manejador {
             }
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1556,7 +1556,7 @@ class controlador_mvc extends manejador {
             ."</div>"
             ."</div>"
             ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Año</label>"
+            ."<label for='text' class='col-lg-2 control-label'>AÃ±o</label>"
             ."<div class='col-lg-8'>"
             ."<input type='text' class='form-control' id='inputAnio' name='inputAnio' placeholder='2017' required>"
             ."</div>"
@@ -1606,7 +1606,7 @@ class controlador_mvc extends manejador {
             ."</table>";
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1635,7 +1635,7 @@ class controlador_mvc extends manejador {
             }
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1723,7 +1723,7 @@ class controlador_mvc extends manejador {
             }
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1787,7 +1787,7 @@ class controlador_mvc extends manejador {
             if (!$resultado){
                 $this->modal("No existen Profesores sin Curso asginado");
                 echo"<button type='submit' name = 'submit' class='btn btn-default btn-lg'>"
-                . "<a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>";
+                . "<a onclick='javascript:window.history.back();'>&laquo; Volver atrÃ¡s</a></button>";
             } else{
                 foreach ($resultado as $fila) {
                     echo "<tbody>"
@@ -1805,7 +1805,7 @@ class controlador_mvc extends manejador {
                 . "<br>"
                 ."<p align='left'>"
                 ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>"
-                ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
+                ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrÃ¡s</a></button>"
                 ."<br>"
                 ."</p>"
                 ."<br>"
@@ -1814,7 +1814,7 @@ class controlador_mvc extends manejador {
 
                }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1838,7 +1838,7 @@ class controlador_mvc extends manejador {
 
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1861,7 +1861,7 @@ class controlador_mvc extends manejador {
                 $this->asignarCursoProfesores();
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
 
@@ -1895,7 +1895,7 @@ class controlador_mvc extends manejador {
             . "<div class='modal-content'>"
             . "<div class='modal-header'>"
             . "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='closeModal()'>&times;</button>"
-            . "<h4 class='modal-title'>Atención:</h4>"
+            . "<h4 class='modal-title'>AtenciÃ³n:</h4>"
             . "</div>"
             . "<div class='modal-body'>"
             . "<p id='mensajeModal'></p>"
@@ -1938,7 +1938,7 @@ class controlador_mvc extends manejador {
             unset($_SESSION["finEjercicio"]);
 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
     
@@ -1954,7 +1954,7 @@ class controlador_mvc extends manejador {
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio");
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
     
@@ -2209,7 +2209,7 @@ class controlador_mvc extends manejador {
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=" . $_SESSION["ejercicio"] . "");
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
     }
     
@@ -2668,9 +2668,9 @@ class controlador_mvc extends manejador {
                 . "</div>"
                 . "</th>"
                 . "<th><div>"
-                . "<label class='control-label'>Año</label>"
+                . "<label class='control-label'>AÃ±o</label>"
                 . "<div class='input'>"
-                . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por año'>"
+                . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por aÃ±o'>"
                 . "</div>"
                 . "</th>"
                 . "<th><div>"
