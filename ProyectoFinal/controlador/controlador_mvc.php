@@ -2228,6 +2228,7 @@ class controlador_mvc extends manejador {
   
     
     public function filtrarAlumnos() {
+        //chota
         try {
             session_start();            
             if (!isset($_POST["filtrar"])) {
