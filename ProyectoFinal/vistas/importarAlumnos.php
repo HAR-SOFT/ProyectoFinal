@@ -4,13 +4,18 @@ require_once '../lib/excel/Classes/PHPExcel/IOFactory.php';
 
 require_once '../modelo/conexionDB.php';
 
+require '../controlador/controlador_mvc.php';;
+
 $DB = new conexionDB();
 
 $DB->conectar();
 
+$controler = new controlador_mvc();
+
 
 if (isset($_POST['submit'])) {
 
+    echo 'hola';
     $archivo = $_FILES['archivos-excel']['name'];
 
     $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
@@ -39,30 +44,19 @@ if (isset($_POST['submit'])) {
                 . "values(null,'$ci','$nombre','$apellido','$sexo','$email','$pass','$telefono','$celular', 'alumno')";
 
         //var_dump($sql);
-        
-        $resultado = $DB->consulta($sql);
-
- 
-        
-        if ($resultado == false) 
-         {
+        $msjParametro = '';
+        $controler->ejecutarQuery($sql, $msjParametro);//$resultado = $DB->consulta($sql);
+     
+        if ($resultado == false){
             
-            echo "No se han podido Importar el alumno $ci <br> ";
-
-          /*  $sql_nombre = "select * from dim_usuarios where nombre = $ci ";
-
-                if ($sql_nombre) 
-            {
-
-
-                echo "el almumno con CI $ci ya existe en el sistema <br> ";
-            }
-        */
+            $controler->modal("No se han podido Importar el alumno $ci");
         }
     
         
-       
         }
+    }else{
+        
+        echo "else";
     }
 
 

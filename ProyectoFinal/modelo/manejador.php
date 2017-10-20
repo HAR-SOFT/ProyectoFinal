@@ -120,8 +120,29 @@ class manejador extends conexionDB {
         $sql = "SET FOREIGN_KEY_CHECKS=$estado;";
         $this->consulta($sql);
     }
+   
+    public function ejecutarQueryDelete($queryParametro, $msjParametro) {
+        $this->conectar();
+        $query = $this->consulta($queryParametro);
+        $this->cerrarDB();
+// var_dump(strpos($queryParametro, "UPDATE"));
+        if (strpos($queryParametro, "DELETE" ) !== false || 
+            strpos($queryParametro, "UPDATE" ) !== false){
+            $this->mensaje = $msjParametro;
+        } else {
+            if (!$this->cantidadRegistros($query) == 0) {
+                while ($array = $this->retornarRegistros($query)) {
+                    $datos[] = $array;
+                }
+
+                return $datos;
+            } else {
+                $this->mensaje = $msjParametro;
+            }
+        }
+    }
     
-    public function ejecutarTransaccion($queryParametro, $msjParametro) {
+     public function ejecutarTransaccion($queryParametro, $msjParametro) {
         $this->conectar();
         $this->autocommit(FALSE);
         if (strpos($queryParametro, "DELETE") !== false) {
@@ -412,7 +433,7 @@ class manejador extends conexionDB {
     }
     
     public function listarTemasPorCursoSeleccionado($ciUsuario, $curso) {
-        $this->query = "select dt.nombre as nombre_tema "
+        $this->query = "select DISTINCT dt.nombre as nombre_tema "
                 . "from dim_tema dt  , "
                 . "asc_curso_tema_subtema_ejercicio actse,dim_usuario dm"
                 . " where dt.nombre =  actse.nombre_tema "
@@ -423,16 +444,17 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
     }
 
-    public function listarTemasSinCursoProfesor() {
-        $this->query = "SELECT nombre as nombre_tema "
-                . "from dim_tema "
-                . "where nombre NOT IN "
+    public function listarTemasSinCursoProfesor($ciUsuario ,$curso ) {
+        $this->query = "SELECT DISTINCT actse.nombre_tema as nombre_tema "
+                . "from asc_curso_tema_subtema_ejercicio actse "
+                . "where actse.nombre_tema NOT like '%Introduccion%'"
+                . "and actse.nombre_tema NOT IN "
                 . "(SELECT dt.nombre "
                 . "from dim_tema dt  ,"
                 . " asc_curso_tema_subtema_ejercicio actse,"
                 . "dim_usuario dm where dt.nombre =  actse.nombre_tema "
-                . "and actse.nombre_curso = 'ING2017'"
-                . " and dm.ci = '12345679');";
+                . "and actse.nombre_curso = '$curso'"
+                . " and dm.ci = '$ciUsuario');";
         $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
@@ -575,7 +597,7 @@ class manejador extends conexionDB {
 
             $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
         }
-        
+      
         return ["MER" => $mer, "Entidades" => $colEntidades, 
             "Atributos" => $colAtributos, "Relaciones" => $colRelaciones];
     }
@@ -674,6 +696,17 @@ class manejador extends conexionDB {
         $msjtemaManejador = "No hay letra para ese tema";
         
         return $this->ejecutarQuery($this->query, $msjtemaManejador);
+    }
+    
+        public function ejercicioManejador($ejercicio) {
+        
+            $this->query = "SELECT de.letra "
+                    . "FROM dim_ejercicio de "
+                    . "WHERE de.nombre = '$ejercicio';";
+        
+        $msjejercicioManejador = "No hay letra para ese tema";
+        
+        return $this->ejecutarQuery($this->query, $msjejercicioManejador);
     }
     
     public function ejerciciosTemaManejador($tema, $subtema , $nombreCurso) {
@@ -897,7 +930,178 @@ class manejador extends conexionDB {
 
         return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
     }
+ 
+    public function comprobarTema($curso,$tema ) {      
+        $this->query = "SELECT DISTINCT actse.nombre_tema "
+                . "from asc_curso_tema_subtema_ejercicio actse "
+                . "where actse.nombre_curso = '$curso' "
+                . "and actse.nombre_tema = '$tema' ";
+                 
+        $msjcomprobarTema = "No se ha cargado la relacion.";
+ 
+        return $this->ejecutarTransaccion($this->query, $msjcomprobarTema); 
+    } 
     
+    public function verTemaSeleccionadoProfesor($tema ) {      
+        $this->query = "SELECT DISTINCT asctse.nombre_tema as tema ,"
+                . " asctse.nombre_subtema as subtema ,"
+                . " asctse.nombre_ejercicio"
+                . " FROM asc_curso_tema_subtema_ejercicio asctse"
+                . " WHERE asctse.nombre_tema = '$tema';";
+                 
+        $msjverTemaSeleccionadoProfesor = "No se ha cargado la relacion.";
+
+        return $this->ejecutarTransaccion($this->query, $msjverTemaSeleccionadoProfesor); 
+    }   
+    //FUNCION PARA ASOCIAR EL TEMA SELECCIONADO AL CURSO   
+    public function insertCursoProfesor($curso, $tema ,$subtema,$nombre_ejercicio) {       
+        $this->query = "INSERT INTO asc_curso_tema_subtema_ejercicio"
+                . " (nombre_curso , nombre_tema , nombre_subtema , nombre_ejercicio)"
+                . "VALUE ('$curso' ,'$tema' , '$subtema' , '$nombre_ejercicio');";
+                 
+        $msjinsertCursoProfesor = "Se agrego correctamente";
+
+        return $this->ejecutarTransaccion($this->query, $msjinsertCursoProfesor); 
+    }
+    //FUNCION PARA DESASOCIAR EL TEMA SELECCIONADO DEL CURSO
+    public function deleteCursoProfesor($curso, $tema) {       
+        $this->query = "DELETE FROM asc_curso_tema_subtema_ejercicio"
+                . " WHERE nombre_curso = '$curso' "
+                . " and nombre_tema = '$tema';";
+                 
+        $msjdeleteCursoProfesor = "Se elimino correctamente";
+
+        return $this->ejecutarQueryDelete($this->query, $msjdeleteCursoProfesor); 
+    }
+ 
+    public function ejerciciosEditarCurso($tema, $subtema , $nombreCurso) {
+        
+        if($subtema == true) {
+            $this->query = "SELECT
+                    acts.nombre_ejercicio as ejercicio 
+                    FROM
+                    asc_curso_tema_subtema_ejercicio acts
+                    WHERE
+                    acts.nombre_subtema = '$tema'
+                    and acts.nombre_curso = '$nombreCurso'";
+
+        } else {
+            $this->query = "SELECT
+                    acts.nombre_ejercicio as ejercicio
+                    FROM
+                    asc_curso_tema_subtema_ejercicio acts
+                    WHERE
+                    acts.nombre_tema = '$tema'
+                    and acts.nombre_curso = '$nombreCurso'";
+        }
+        $msjejerciciosEditarCursor = "No hay ejercicio para ese tema";
+        
+        return $this->ejecutarQuery($this->query, $msjejerciciosEditarCursor);
+    }
+    
+    public function ejerciciosEditarCursoSinAsociar($tema) {
+        
+            $this->query = "SELECT acts.nombre_ejercicio as ejercicio "
+                    . "FROM asc_curso_tema_subtema_ejercicio acts "
+                    . "WHERE acts.nombre_tema = '$tema' "
+                    . "and acts.nombre_curso = '' "
+                    . "OR acts.nombre_curso = null";
+
+        $msjejerciciosEditarCursoSinAsociar = "No hay ejercicio para ese tema";
+        
+        return $this->ejecutarQuery($this->query, $msjejerciciosEditarCursoSinAsociar);
+    }
+    
+    public function filtrarManejadorAlumnos($nombre ,$apellido ,$cedula ,$curso ) {
+        
+            $this->query = "SELECT du.ci as ci ,"
+                    . "concat(du.nombre,' ',du.apellido) as alumno,"
+                    . "acu.nombre_curso as curso "
+                    . "FROM dim_usuario du , asc_curso_usuario acu ,dim_curso dc "
+                    . "where du.categoria_usuario = 'Alumno'"
+                    . "and du.ci = acu.ci_usuario  "
+                    . "and dc.estado = 1 "
+                    . "and acu.nombre_curso = dc.nombre "
+                    . "and (du.nombre like'%$nombre%' or du.apellido like'%$apellido%' )"
+                    . "and du.ci like '%$cedula%' "
+                    . "and acu.nombre_curso like '%$curso%';";
+
+        $msjfiltrarManejadorAlumnos = "No hay registros";
+  
+        return $this->ejecutarQuery($this->query, $msjfiltrarManejadorAlumnos);
+  
+    }
+    
+    public function filtrarManejadorProfesores($nombre ,$apellido ,$cedula ,$curso ) {
+        
+            $this->query = "SELECT du.ci as ci ,"
+                    . "concat(du.nombre,' ',du.apellido) as profesor,"
+                    . "acu.nombre_curso as curso "
+                    . "FROM dim_usuario du , asc_curso_usuario acu ,dim_curso dc"
+                    . "where du.categoria_usuario = 'Profesor'  "
+                    . "and du.ci = acu.ci_usuario  "
+                    . "and dc.estado = 1 "
+                    . "and acu.nombre_curso = dc.nombre "
+                    . "and (du.nombre like'%$nombre%' or du.apellido like'%$apellido%' )"
+                    . "and du.ci like '%$cedula%' "
+                    . "and acu.nombre_curso like '%$curso%';";
+
+        $msjfiltrarManejadorProfesores = "No hay registros";
+        
+        return $this->ejecutarQuery($this->query, $msjfiltrarManejadorProfesores);
+    }
+    
+    public function filtrarManejadorCursos($nombre ,$apellido , $anio ,$horario ,$curso ) {
+        
+            $this->query = "SELECT dc.nombre as curso, "                      
+                . " dc.anio as anio,"
+                . " dc.horario as horario,"
+                . " CONCAT(du.nombre,' ',du.apellido) as profesor" 
+                . " from dim_curso dc,"  
+                . " asc_curso_usuario ascu,"
+                . " dim_usuario du"
+                . " where dc.nombre = ascu.nombre_curso" 
+                . " and du.ci = ascu.ci_usuario"
+                . " and du.categoria_usuario = 'Profesor'"
+                . " and dc.estado = 1"
+                . " and dc.nombre like '%$curso%'"
+                . " and dc.horario like '%$horario%'"
+                . " and (du.nombre like'%$nombre%' or du.apellido like'%$apellido%')" 
+                . " and dc.anio like '%$anio%'";
+        $msjfiltrarManejadorCursos = "No hay registros";
+        
+        return $this->ejecutarQuery($this->query, $msjfiltrarManejadorCursos);
+    }
+    
+    public function filtrarAlumnosSinCursoManejador($nombre ,$apellido , $cedula) {
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno ,"
+                . "ci as ci ,"
+                . "'Sin Curso Asignado' as curso "
+                . "FROM dim_usuario "
+                . "WHERE categoria_usuario = 'Alumno' "
+                . "and ci NOT IN (select ci_usuario from asc_curso_usuario) "
+                . "and nombre like'%$nombre%'"
+                . "and ci like '%$cedula%';";
+        $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
+    }
+    
+    
+    
+    public function filtrarProfesoresSinCursoManejador($nombre ,$apellido , $cedula) {
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
+                . "ci as ci ,"
+                . "'Sin Curso Asignado' as curso "
+                . "FROM dim_usuario "
+                . "WHERE categoria_usuario = 'Profesor' "
+                . "and ci NOT IN (select ci_usuario from asc_curso_usuario) "
+                . "and nombre like'%$nombre%'"
+                . "and ci like '%$cedula%';";
+        $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
+    }
     public function deleteSolucionMerRelacion($ci_usuario, $nombre_mer) {
         $this->query = "DELETE FROM sol_relacion"
                 . " WHERE ci_usuario = '$ci_usuario'"

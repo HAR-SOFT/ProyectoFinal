@@ -315,7 +315,7 @@ class controlador_mvc extends manejador {
                     $claveNueva = md5($_REQUEST["claveNueva"]);
                     $claveNuevaRep = md5($_REQUEST["claveNuevaRep"]);
 
-                    if ($claveActual <> $_SESSION["claveUsuario"]) {
+                    if ($claveActual <> $_SESSION["claveActualUsuario"]) {
                         $this->modal("Clave actual incorrecta.");
                     } else {
                         if ($claveNueva <> $claveNuevaRep) {
@@ -587,69 +587,401 @@ class controlador_mvc extends manejador {
         }
     }
 
-    public function editarCurso() {
+    public function editarCursoMenu() {
         try{ 
             session_start();
             if (isset($_REQUEST["curso"])) {
                 $curso = $_REQUEST["curso"];
-                
                 $ciUsuario = $_SESSION["ciUsuario"];
-                
-            $contenido = "<div class='col-lg-2' style='margin-left:10px;'>";
-            
-            $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);            
-            //itera sobre los temas que tiene el curso seleccionado
-            foreach($temas as $item) {   
-               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"                    
-               . "<button type='button' class='btn btn-primary btn-lg' ; text-align:left;'>".$item['nombre_tema']."<input type='checkbox' class='btn-primary' checked /></button>"
-                       ." </div>";           
-            }
-            
-            $temasSeleccionar = $this->listarTemasSinCursoProfesor();
-            //itera sobre los temas que no tiene el curso seleccionado
-            foreach($temasSeleccionar as $item2) {   
-               $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
-               . "<button type='button' class='btn btn-primary btn-lg'; text-align:left;'>".$item2['nombre_tema']."<input type='checkbox' /></button>"
-                     
-               ." </div>";           
-            }
+                $tema = "Introduccion";
+                $subtema = false;
+                              
+                $contenido =
+                "<br><div class='col-lg-2'>"
+                . "<div class=container'>"                               
+                . "<button  class='btn btn-default btn-lg' style='width: 180px; text-align:left;'>Introduccion</button>"
+                . "</div>";
+                //lista los temas que hay en e curso $curso         
+                $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);
+                if($temas == NULL){
+                    ;
+                }
+                else{
+                    //itera sobre los temas que tiene el curso seleccionado
+                    foreach($temas as $item) {   
+                        $nombreTema = $item['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>" 
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"                   
+                        . "<button type='button' class='btn btn-default btn-lg'style='width: 180px ; text-align:left;'>".
+                           $item['nombre_tema']."</button></a>"
+                        ." </div>";           
+                    }
+                }
+                $temasSeleccionar = $this->listarTemasSinCursoProfesor($ciUsuario, $curso);
+                //var_dump($temasSeleccionar);
+                if($temasSeleccionar == NULL){
+                    
+                }
+                else{
+                    //itera sobre los temas que no tiene el curso seleccionado
+                    foreach($temasSeleccionar as $item2) { 
+                        $nombreTema = $item2['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"         
+                        . "<button type='button' class='btn btn-primary btn-lg' style='width: 180px ; text-align:left;'>"
+                           .$item2['nombre_tema']."</button></a>"                     
+                        ." </div>";                      
+                    }              
+                }              
+                $contenido = $contenido. "</div>"
+                . "<div class='col-lg-2'>"
+                . "<div class='container'>"
+                . "<div class='item'>"
+                . "<div class='jumbotron'>"
+                . "<h2>";
                         
-            $contenido = $contenido." </div>"
-            . " <div class='col-lg-2'>"
-            . "<div class='container'>"
-            . "<div class='item'>"
-            . "<div class='jumbotron'>"
-            . "<h1>Introduccion</h1>"
-            ."<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                in voluptate velit esse cillum dolore eu fugiat nulla pariatur. t anim id est laborum.</p>"
-            . "</div>"       
-            . "</div>"   
-            . "<h4>Seleccione los ejercicios</h4>"                    
-            . "<div class=''>"
-            . "<button type='button' style='position: relative;' class='btn-primary btn' data-color='success'>Perro Cucha <input type='checkbox' class='btn-primary' checked /></button>"
-            . "<button type='submit' style='position: relative; align: right; margin-left: 800px;' class='btn btn-primary btn-lg' name='aceptar'>Aceptar</button>"
-            . "</div>"
-            . "</div>"
-            . "</div>";
+                $contenido = $contenido. $tema ."</h2>"
+                . "<p>";
+
+                $letra = $this->temaManejador($tema,$subtema);
+                $contenido = $contenido. utf8_encode($letra[0][0]) 
+                . "</div>"
+                . "</div>";
+
             
+                $contenido = $contenido. "</div>"
+                . "<div class='container'>"        
+                //. "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 950px'name='guardar'>Aceptar</button>&nbsp;"                           
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
+                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px' name='volver'>Volver</button></a>"   
+                . "</div>"
+                . "</div>"
+                . "</div>";
+                          
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Editar curso", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
             
+            }                                                           
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }             
+    }
+       
+    public function editarCursoTemaYLetra() {
+        try {
+            session_start();
+            if (isset($_REQUEST["tema"]) and isset($_REQUEST["curso"])) {
+                $curso = $_REQUEST["curso"];
+                $tema = $_REQUEST["tema"];
+                $subtema = false;
+                $nombreTema = 'Introduccion';
+                               
+                $ciUsuario = $_SESSION["ciUsuario"];
+                              
+                $contenido = 
+                "<br><div class='col-lg-2'>"
+                . "<div class=container'>"                
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=editarCurso&curso=$curso'>"
+                . "<button type='button' class='btn btn-default btn-lg' style='width: 180px; text-align:left;'>Introduccion</button>"
+                . "</a></div>";
+                           
+                $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);
+                if($temas == NULL){
+                    ;
+                }
+                else{
+                    //itera sobre los temas que tiene el curso seleccionado
+                    foreach($temas as $item) {   
+                        $nombreTema = $item['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>" 
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"                   
+                        . "<button type='button' class='btn btn-default btn-lg' style='width: 180px ; text-align:left;'>".
+                           $item['nombre_tema']."</button></a>"
+                        ." </div>";           
+                    }
+                }    
+                $temasSeleccionar = $this->listarTemasSinCursoProfesor($ciUsuario, $curso);
+                if($temasSeleccionar == NULL){
+                    ;
+                }
+                else{
+                    //itera sobre los temas que no tiene el curso seleccionado
+                    foreach($temasSeleccionar as $item2) { 
+                        $nombreTema = $item2['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"         
+                        . "<button type='button' class='btn btn-primary btn-lg' style='width: 180px ; text-align:left;'>"
+                           .$item2['nombre_tema']."</button></a>"                     
+                        ." </div>";                    
+                    }  
+                }             
+                $contenido = $contenido. "</div>"
+                . "<div class='col-lg-2'>"
+                . "<div class='container'>"
+                . "<div class='item'>"
+                . "<div class='jumbotron'>"
+                . "<h2>";
+                $contenido = $contenido. $tema ."</h2>"
+                . "<p>";
+                $letra = $this->temaManejador($tema,$subtema);
+
+                $contenido = $contenido. utf8_encode($letra[0][0]). "</p>"."</div>";
+
+                $ejercicio = $this->ejerciciosEditarCurso($tema,$subtema,$curso);
+
+                if($ejercicio == !NULL){
+                    foreach ($ejercicio as $ej){
+                          $contenido = $contenido. "<div class='col-lg-3'>"
+                          . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verEjercicio&tema=$tema&curso=$curso&ejercicio=$ej[0]'>"
+                          . "<button type='button' class='btn btn-default-lg btn-lg' name='ejercicio'>Ejercicio $ej[0]</button></a>"
+                          . "</div>";
+                    }
+                } 
+                else {
+                    $ejercicio = $this->ejerciciosEditarCursoSinAsociar($tema);
+                    if($ejercicio == !NULL)
+                        foreach ($ejercicio as $ej){
+                          $contenido = $contenido. "<div class='col-lg-3'>"
+                          . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verEjercicio&tema=$tema&curso=$curso&ejercicio=$ej[0]'>"
+                          . "<button type='button' class='btn btn-default-lg btn-lg' name='ejercicio'>Ejercicio $ej[0]</button></a>"
+                          . "</div>";
+                        }
+                        else {
+                            ;
+                        }
+                }
+                $contenido = $contenido. "<br><br><br>"
+                . "<div class='container'>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asociarTema&curso=$curso&tema=$tema' >"
+                . "<button type='submit' style='position: relative; align: right; margin-left: 838px' class='btn btn-primary btn-lg' name='guardar'>Agregar</button></a>&nbsp;"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=desasociarTema&curso=$curso&tema=$tema'>"
+                . "<button type='submit' class='btn btn-primary btn-lg' name='guardar'>Eliminar</button></a>&nbsp;"
+                . "</form>"        
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
+                . "<button type='button' class='btn btn-primary btn-lg' name='volver'>Volver</button></a>"                            
+                . "</div>"
+                . "</div>";
+                               
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Editar curso", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+            
+                $this->view_page($pagina);
+                       
+           }      
+           
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+     
+    public function editarCursoTemaYLetraEjercicio() {
+        try {
+            session_start();
+            if (isset($_REQUEST["ejercicio"]) and isset($_REQUEST["curso"]) and  
+                isset($_REQUEST["tema"])) {
+                $tema = $_REQUEST["tema"];
+                $subtema = false;
+                $nombreTema = 'Introduccion';
+                $curso = $_REQUEST["curso"];
+                $ejercicioSeleccionado = $_REQUEST["ejercicio"];
+                                
+                $ciUsuario = $_SESSION["ciUsuario"];
+                              
+                $contenido =
+                "<br><div class='col-lg-2'>"
+                . "<div class=container'>"                
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"
+                . "<button type='button' class='btn btn-default btn-lg' style='width: 180px; text-align:left;'>Introduccion</button>"
+                . "</a></div>";
+                           
+                $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);
+                if($temas == NULL){
+                    ;
+                }
+                else{
+                    //itera sobre los temas que tiene el curso seleccionado
+                    foreach($temas as $item) {   
+                        $nombreTema = $item['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>" 
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"                   
+                        . "<button type='button' class='btn btn-default btn-lg' style='width: 180px ; text-align:left;'>".
+                           $item['nombre_tema']."</button></a>"
+                        ." </div>";           
+                    }
+                }
+                $temasSeleccionar = $this->listarTemasSinCursoProfesor($ciUsuario, $curso);
+                if($temasSeleccionar == NULL){
+                    ;
+                }
+                else{
+                    //itera sobre los temas que no tiene el curso seleccionado
+                    foreach($temasSeleccionar as $item2) { 
+                        $nombreTema = $item2['nombre_tema'];
+                        $contenido = $contenido."<div class=container' style='padding-top: 1em;'>"
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verTema&curso=$curso&tema=$nombreTema'>"         
+                        . "<button type='button' class='btn btn-primary btn-lg' style='width: 180px ; text-align:left;'>"
+                           .$item2['nombre_tema']."</button></a>"                     
+                        ." </div>";                    
+                    }  
+                }                 
+                $contenido = $contenido. "</div>"
+                . "<div class='col-lg-2'>"
+                . "<div class='container'>"
+                . "<div class='item'>"
+                . "<div class='jumbotron'>"
+                . "<h2>";
+                $contenido = $contenido. $ejercicioSeleccionado ."</h2>"
+                . "<p>";
+                $letra = $this->ejercicioManejador($ejercicioSeleccionado);
+
+                $contenido = $contenido. utf8_encode($letra[0][0]) ;
+
+                $contenido = $contenido. "</p>"
+                . "</div>"
+                . "</div>";
+                
+                $ejercicio = $this->ejerciciosEditarCurso($tema,$subtema,$curso);
+
+                if($ejercicio == !NULL){
+                    foreach ($ejercicio as $ej){
+                        $contenido = $contenido. "<div class='col-lg-3'>"
+                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verEjercicio&tema=$tema&curso=$curso&ejercicio=$ej[0]'>"
+                        . "<button type='button' class='btn btn-default-lg btn-lg' name=$ej[0]>Ejercicio $ej[0]</button></a>"
+                        . "</div>";
+                    }              
+                }
+                else{
+                    $ejercicio = $this->ejerciciosEditarCursoSinAsociar($tema);
+                    foreach ($ejercicio as $ej){
+                          $contenido = $contenido. "<div class='col-lg-3'>"
+                          . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verEjercicio&tema=$tema&curso=$curso&ejercicio=$ej[0]'>"
+                          . "<button type='button' class='btn btn-default-lg btn-lg' name='ejercicio'>Ejercicio $ej[0]</button></a>"
+                          . "</div>";
+                    }
+                    
+                }
+                
+                $contenido = $contenido. "<br><br><br>"
+                . "<div class='container'>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asociarTema&curso=$curso&tema=$tema'>"
+                . "<button type='submit' style='position: relative; align: right; margin-left: 838px' class='btn btn-primary btn-lg' name='guardar'>Agregar</button></a>&nbsp;"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=desasociarTema&curso=$curso&tema=$tema'>"
+                . "<button type='submit'class='btn btn-primary btn-lg' name='guardar'>Eliminar</button></a>&nbsp;"         
+                . "</form>"                            
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
+                . "<button type='button' class='btn btn-primary btn-lg' name='volver'>Volver</button></a>"   
+                . "</div>"
+                . "</div>";
+                                 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
             $header = $this->load_page("vistas/html/headerLogueado.html");
             $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
             $pagina = $this->replace_content("/Header/", $header, $pagina);
             $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
-            $pagina = $this->replace_content("/Titulo/", "Editar Curso", $pagina);
+            $pagina = $this->replace_content("/Titulo/", "Editar curso", $pagina);
             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
-
+            
             $this->view_page($pagina);
+            
+            }            
+           
+        } catch (Exception $ex) {
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function asociarTema() {
+        try {
+            //session_start();
+            if(isset($_REQUEST["tema"])){
+                    $tema  = $_REQUEST["tema"];                
+                    $curso = $_REQUEST["curso"];               
+
+                    $existe = $this->comprobarTema($curso, $tema);
+                    if( ($existe[0]['nombre_tema']) == $tema ){
+                       $this->modal("El Tema " .$tema. " ya se encuentra "
+                               . "asociado al Curso " .$curso );  
+                       $this->editarCursoMenu();   
+                    }
+                    else{
+                    $resultado = $this->verTemaSeleccionadoProfesor($tema);
+                        if($resultado == !NULL){
+                            for($i = 0 ; $i < sizeof($resultado) ; $i++){                   
+                                $tema = $resultado[$i]['tema'];
+                                $subtema = $resultado[$i]['subtema'];
+                                $nombre_ejercicio = $resultado[$i]['nombre_ejercicio'];               
+                                $resultadoInsert = $this->insertCursoProfesor($curso,
+                                                                      $tema,
+                                                                      $subtema, 
+                                                                      $nombre_ejercicio);                         
+                                }
+                            $this->modal("Se ha agregado el Tema " .$tema. " al Curso " .$curso );  
+                            $this->editarCursoMenu();  
+                        }                                                                  
+                        else {                                              
+                            $this->modal("No se ha podido agregar el Tema " .$tema. " al Curso " .$curso );  
+                            $this->editarCursoMenu();                   
+                        }                                  
+                    }   
             }
-                     
-            } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-         }
-             
+            
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+
+    }
+    
+    public function desasociarTema() {
+        try {
+            //session_start();
+            if(isset($_REQUEST["tema"])){
+                    $tema  = $_REQUEST["tema"];                
+                    $curso = $_REQUEST["curso"];               
+                    
+                    $existe = $this->comprobarTema($curso, $tema);
+                    //var_dump($existe[0]['nombre_tema']);
+                        if( ($existe[0]['nombre_tema']) == $tema  ){   
+                            $resultado = $this->verTemaSeleccionadoProfesor($tema);
+                            if($resultado == !NULL){
+                                for($i = 0 ; $i < sizeof($resultado) ; $i++){                   
+                                    $tema = $resultado[$i]['tema'];              
+                                    $resultadoDelete = $this->deleteCursoProfesor($curso,
+                                                                      $tema);                     
+                                }
+                                $this->modal("Se ha eliminado el Tema " .$tema. " del Curso " .$curso );  
+                                $this->editarCursoMenu();                       
+                            }
+                        }
+                        else {                   
+                            $this->modal("El Tema " .$tema. " no se puede borrar "
+                               . "porque no se encuentra asociado al Curso " .$curso );  
+                            $this->editarCursoMenu();              
+                        }
+            }
+            else {                                              
+                    $this->modal("No se ha podido eliminar el Tema " .$tema. " al Curso " .$curso );  
+                    $this->editarCursoMenu();                       
+            }
+    
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+
     }
     
     public function alumnosBedelia() {
@@ -657,6 +989,7 @@ class controlador_mvc extends manejador {
             session_start();
 
             $contenido = "<div>"
+            . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumno'>"
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Alumnos</h1>"
             . "</div>"
@@ -664,30 +997,31 @@ class controlador_mvc extends manejador {
             . "<table class='table table-striped table-hover'>"
             . "<thead>"
             . "<tr class='danger'>"
-            . "<th><div class='form'>"
+            . "<th><div>"            
             . "<label class='control-label'>Nombre</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por nombre'>"
+            . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
             . "</div>"
             . "</th>"
-            . "<th><div class='form'>"
+            . "<th><div>"
             . "<label class='control-label'>Cedula</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por cedula'>"
+            . "<input type='number' name = 'numero' value='' maxlength='8' class='form-control' placeholder='Filtrar por Cedula'>"
             . "</div>"
             . "</th>"
-            . "<th><div class='form'>"
+            . "<th><div>"
             . "<label class='control-label'>Curso</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
+            . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
             . "</div>"
             . "</th>"
             . "<th>"
-            . "<div class='form'>"
-            . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+            . "<div>"
+            . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
             . "</div>"
             . "</th>"
-            . "</thead>";
+            . "</thead>"
+            . "</form>" ;
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -717,20 +1051,21 @@ class controlador_mvc extends manejador {
              $onclick = "document.getElementById('selectedFile').click();";
 
              echo "<br>"
-            ."<p align='left'>"
-            ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'>Volver</button>"
-            ."</form>"
-            ."<br>"
-            ."</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='submit' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='submit' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+            . "<p align='left'>"
+            . "<form action='/ProyectoFinal/ProyectoFinal/vistas/importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+            . "<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+            . "</form>"        
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "<br>"
+            . "</p>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
          } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-         }
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+           }
 
     }
 
@@ -739,6 +1074,7 @@ class controlador_mvc extends manejador {
              session_start();
 
              $contenido = "<div>"
+             . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesor'>"        
              . "<div class='page-header' id='tables'>"
              . "<h1 style='color:#d3d3d3;' align='center'>Profesores</h1>"
              . "</div>"
@@ -749,27 +1085,28 @@ class controlador_mvc extends manejador {
              . "<th><div class='form'>"
              . "<label class='control-label'>Nombre</label>"
              . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por nombre'>"
+             . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
              . "</div>"
              . "</th>"
              . "<th><div class='form'>"
              . "<label class='control-label'>Cedula</label>"
              . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por cedula'>"
+             . "<input type='number' name = 'numero' value='' maxlength='8' class='form-control' placeholder='Filtrar por cedula'>"
              . "</div>"
              . "</th>"
              . "<th><div class='form'>"
              . "<label class='control-label'>Curso</label>"
              . "<div class='input'>"
-             . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
+             . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
              . "</div>"
              . "</th>"
              . "<th>"
              . "<div class='form'>"
-             . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
              . "</div>"
              . "</th>"
-             . "</thead>";
+             . "</thead>"
+             . "</form>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -802,30 +1139,31 @@ class controlador_mvc extends manejador {
             $onclick = "document.getElementById('selectedFile').click();";
 
             echo "<br>"
-            ."<p align='left'>"
-            ."<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
-            ."<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            ."<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
-            ."<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
-            ."<button type='submit' name = 'submit' class='btn btn-default btn-lg'><a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>"
-            ."</form>"
-            ."<br>"
-            ."</p>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
-            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
+            . "<p align='left'>"
+            . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+            . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            . "<input type='button'  value='Importar grupo Profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />"
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+            . "</form>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "<br>"
+            . "</p>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Profesor</button></a>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
 
             }
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
         }
     }
-
 
     public function cursosBedelia() {
         try {
              session_start();
 
-            $contenido = "<div>"
+            $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarCurso'>"
+            . "<div>"
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
             . "</div>"
@@ -836,32 +1174,33 @@ class controlador_mvc extends manejador {
             . "<th><div class='form'>"
             . "<label class='control-label'>Curso</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por curso'>"
+            . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
             . "</div>"
             . "</th>"
-            . "<th><div class='form'>"
+            . "<th><div>"
             . "<label class='control-label'>Año</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por año'>"
+            . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por año'>"
             . "</div>"
             . "</th>"
-            . "<th><div class='form'>"
+            . "<th><div>"
             . "<label class='control-label'>Horario</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por horario'>"
+            . "<input type='text' name = 'filtHor' class='form-control' placeholder='Filtrar por horario'>"
             . "</div>"
-            . "</th>". "<th><div class='form'>"
+            . "</th>". "<th><div>"
             . "<label class='control-label'>Profesor</label>"
             . "<div class='input'>"
-            . "<input type='text' class='form-control' placeholder='Filtrar por profesor'>"
+            . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por profesor'>"
             . "</div>"
             . "</th>"
             . "<th>"
-            . "<div class='form'>"
-            . "<button type='submit' class='btn btn-primary'>Filtrar</button>"
+            . "<div>"
+             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
             . "</div>"
             . "</th>"
-            . "</thead>";
+            . "</thead>"
+            . "</form>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -890,14 +1229,16 @@ class controlador_mvc extends manejador {
             echo "</table>";
 
              echo "<br>"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar Curso</button></a>";
-
+             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
+             . "<button type='button' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar Curso</button></a>"
+             . "&nbsp" 
+             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
         } catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+            echo "ExcepciÃ³n capturada: ", $ex->getMessage(), "\n";
         }
 
     }
-
 
     public function agregarAlumno(){
         try {
@@ -1867,9 +2208,538 @@ class controlador_mvc extends manejador {
             $_SESSION["mensajeValidacion"] = $mensajeValidacion;
             
             header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=" . $_SESSION["ejercicio"] . "");
-        }catch (Exception $ex) {
+        } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
+    }
+    
+    public function filtrarAlumnos() {
+        try {
+            session_start();            
+            if (!isset($_POST["filtrar"])) {
+                 $nombre = $_REQUEST["filtNom"];
+                 $apellido = $_REQUEST["filtNom"];
+                 $ci = $_REQUEST["numero"];
+                 $curso = $_REQUEST["filtCur"];
+ 
+                $contenido = "<div>"
+                . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumno'>"
+                . "<div class='page-header' id='tables'>"
+                . "<h1 style='color:#d3d3d3;' align='center'>Alumnos</h1>"
+                . "</div>"
+                . "<div>"
+                . "<table class='table table-striped table-hover'>"
+                . "<thead>"
+                . "<tr class='danger'>"
+                . "<th><div>"            
+                . "<label class='control-label'>Nombre</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"
+                . "<label class='control-label'>Cedula</label>"
+                . "<div class='input'>"
+                . "<input type='number' name = 'numero' value='' maxlength='8' class='form-control' placeholder='Filtrar por cedula'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"
+                . "<label class='control-label'>Curso</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtCur' value=''class='form-control' placeholder='Filtrar por curso'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
+                . "</div>"
+                . "</th>"
+                . "</thead>"
+                . "</form>" ;
+
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
+                $resultado = $this->filtrarManejadorAlumnos($nombre,$apellido,$ci,$curso);
+                if($resultado == !NULL){
+                    foreach ($resultado as $fila) {
+                        echo "<tbody>"
+                        . "<tr class='active'>"
+                        . "<td>" . $fila['alumno'] . "</td>"
+                        . "<td>" . $fila['ci'] . "</td>"
+                        . "<td>" . $fila['curso'] . "</td>"
+                        . "<td></td>"
+                        . "</tr>"
+                        . "</tbody>";
+                }
+            
+                echo "</table>";
+
+                echo "<br>"
+                . "<p align='left'>"
+                . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+                . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+                . "<input type='button'  value='Importar grupo alumnos' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+                . "</form>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+                . "<br>"
+                . "</p>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumno'><button type='button' name = 'agregarAlumnos' class='btn btn-primary btn-lg'>Agregar alumnos</button></a>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'AlumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+                }
+                else{
+                
+                    $this->modal("No existen registros para la busqueda seleccionada");
+                    echo "</table>";
+
+                    echo "<br>"
+                    . "<p align='left'>"
+                    . "<form action='../importarAumnos.php' method='post' enctype='multipart/form-data'>"
+                    . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+                    . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                    . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+                    . "</form>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"        
+                    . "<br>"
+                    . "</p>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarAlumnos'><button type='button' name = 'agregarAlumno' class='btn btn-primary btn-lg'>Agregar alumno</button></a>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoAlumno'><button type='button' name = 'alumnosSinCurso' class='btn btn-primary btn-lg'>Alumnos sin Curso</button></a>";
+                
+                }                  
+            }
+ 
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+
+    }
+    
+    public function filtrarProfesores() {
+        try {
+            session_start();            
+            if (!isset($_POST["filtrar"])) {
+                 $nombre = $_REQUEST["filtNom"];
+                 $apellido = $_REQUEST["filtNom"];
+                 $ci = $_REQUEST["numero"];
+                 $curso = $_REQUEST["filtCur"];
+
+                $contenido = "<div>"
+                . "<form method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesor'>"
+                . "<div class='page-header' id='tables'>"
+                . "<h1 style='color:#d3d3d3;' align='center'>Profesores</h1>"
+                . "</div>"
+                . "<div>"
+                . "<table class='table table-striped table-hover'>"
+                . "<thead>"
+                . "<tr class='danger'>"
+                . "<th><div>"            
+                . "<label class='control-label'>Nombre</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"                        
+                . "<label class='control-label'>Cedula</label>"
+                . "<div class='input'>"
+                . "<input type='number' name = 'numero' value='' maxlength='8' class='form-control' placeholder='Filtrar por cedula'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"
+                . "<label class='control-label'>Curso</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<input type='submit' name='filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
+                . "</div>"
+                . "</th>"
+                . "</thead>"
+                . "</form>" ;
+
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Profesores", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
+                $resultado = $this->filtrarManejadorProfesores($nombre ,$apellido, $ci , $curso);
+                if($resultado == !NULL){
+                    foreach ($resultado as $fila) {
+                        echo "<tbody>"
+                        . "<tr class='active'>"
+                        . "<td>" . $fila['profesor'] . "</td>"
+                        . "<td>" . $fila['ci'] . "</td>"
+                        . "<td>" . $fila['curso'] . "</td>"
+                        . "<td></td>"
+                        . "</tr>"
+                        . "</tbody>";
+                }
+            
+                echo "</table>";
+
+                echo "<br>"
+                . "<p align='left'>"
+                . "<form action='../importarProfesores.php' method='post' enctype='multipart/form-data'>"
+                . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+                . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+                . "</form>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+                . "<br>"
+                . "</p>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='submit' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'profesoresSinCurso' class='btn btn-primary btn-lg'>Pofesores sin Curso</button></a>";
+                }
+                else{
+                
+                    $this->modal("No existen registros para la busqueda seleccionada");
+                    echo "</table>";
+
+                    echo "<br>"
+                    . "<p align='left'>"
+                    . "<form action='../importarProfesores.php' method='post' enctype='multipart/form-data'>"
+                    . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+                    . "<input type='button'  value='Importar grupo profesores' onclick='document.getElementById('selectedFile').click();' class='btn btn-primary btn-lg' />"
+                    . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+                    . "</form>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"        
+                    . "<br>"
+                    . "</p>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'profesoresSinCurso' class='btn btn-primary btn-lg'>Profesores sin Curso</button></a>";
+                
+                }                  
+            }
+ 
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function filtrarAlumnosSinCurso(){
+        try {
+            session_start();
+            if (!isset($_POST["filtrar"])) {
+                 $nombre = $_REQUEST["filtNom"];
+                 $apellido = $_REQUEST["filtNom"];
+                 $ci = $_REQUEST["numero"];
+                 $curso =''; 
+
+                $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarAlumnoSinCurso'>"
+                . "<div>"            
+                . "<div class='page-header' id='tables'>"
+                . "<h1 style='color:#d3d3d3;' align='center'>Alumnos sin Curso </h1>"
+                . "</div>"
+                . "<div>"
+                . "<table class='table table-striped table-hover'>"
+                . "<thead>"
+                . "<tr class='danger'>"
+                . "<th><div>"
+                . "<label class='control-label'>Nombre</label>"
+                . "<div>"
+                . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<label class='control-label'>Cedula</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'numero' class='form-control' placeholder='Filtrar por cedula'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
+                . "</div>"
+                . "</th>"        
+                . "</form>"        
+                . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoAlumnos'>"        
+                . "<th><div>"
+                . "<label for='select' class='control-label'>Seleccionar curso</label>"
+                . "<label for='select' class='col-lg-2 control-label'></label>"
+                . "<div class='col-lg-8'>"
+                . "<select class='form-control' id='select' name='asignarCurso'>";
+
+
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Alumnos Sin Curso", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
+
+                $cursos = $this->listarCursosActivos();
+
+                foreach ($cursos as $filaCurso ) {
+                   echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
+                }
+                 echo"</select>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "</th>"
+                . "</thead>";
+
+                $resultado = $this->filtrarAlumnosSinCursoManejador($nombre , $apellido , $ci);
+                if(!$resultado){
+                    $this->modal("No existen Alumnos sin Curso asignado");
+                } else {
+                    foreach ($resultado as $fila) {
+                        echo "<tbody>"
+                        . "<tr class='active'>"
+                        . "<td>" . $fila['alumno'] . "</td>"
+                        . "<td>" . $fila['ci'] . "</td>"
+                        . "<td>" . $fila['curso'] ."</td>"
+                        . "<td><input type='checkbox' name='curso[]' value = ". $fila['ci'] ." </td>"
+                        . "<td></td>"
+                        . "</tr>"
+                        . "</tbody>";
+                    }
+
+                    echo "</table>"
+                    . "<br>"
+                    ."<p align='left'>"
+                    ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
+                    ."</form>"
+                    ."<br>"
+                    ."</p>"
+                    . "<br>"
+                    ."</div>";
+
+                    }
+
+                }
+                
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function filtrarProfesoresSinCurso(){
+        try {
+            session_start();
+            if (!isset($_POST["filtrar"])) {
+                 $nombre = $_REQUEST["filtNom"];
+                 $apellido = $_REQUEST["filtNom"];
+                 $ci = $_REQUEST["numero"];
+                 $curso =''; 
+
+                $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarProfesoresSinCurso'>"
+                . "<div>"            
+                . "<div class='page-header' id='tables'>"
+                . "<h1 style='color:#d3d3d3;' align='center'>Profesores sin Curso </h1>"
+                . "</div>"
+                . "<div>"
+                . "<table class='table table-striped table-hover'>"
+                . "<thead>"
+                . "<tr class='danger'>"
+                . "<th><div>"
+                . "<label class='control-label'>Nombre</label>"
+                . "<div>"
+                . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por nombre'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<label class='control-label'>Cedula</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'numero' class='form-control' placeholder='Filtrar por cedula'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
+                . "</div>"
+                . "</th>"        
+                . "</form>"        
+                . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoAlumnos'>"        
+                . "<th><div>"
+                . "<label for='select' class='control-label'>Seleccionar curso</label>"
+                . "<label for='select' class='col-lg-2 control-label'></label>"
+                . "<div class='col-lg-8'>"
+                . "<select class='form-control' id='select' name='asignarCurso'>";
+
+
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Alumnos Sin Curso", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
+
+                $cursos = $this->listarCursosActivos();
+
+                foreach ($cursos as $filaCurso ) {
+                   echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
+                }
+                 echo"</select>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "</th>"
+                . "</thead>";
+
+                $resultado = $this->filtrarProfesoresSinCursoManejador($nombre , $apellido , $ci);
+                if(!$resultado){
+                    $this->modal("No existen Profesores sin Curso asignado");
+                } else {
+                    foreach ($resultado as $fila) {
+                        echo "<tbody>"
+                        . "<tr class='active'>"
+                        . "<td>" . $fila['profesor'] . "</td>"
+                        . "<td>" . $fila['ci'] . "</td>"
+                        . "<td>" . $fila['curso'] ."</td>"
+                        . "<td><input type='checkbox' name='curso[]' value = ". $fila['ci'] ." </td>"
+                        . "<td></td>"
+                        . "</tr>"
+                        . "</tbody>";
+                    }
+
+                echo "</table>"
+                . "<br>"
+                ."<p align='left'>"
+                ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
+                ."</form>"
+                ."<br>"
+                ."</p>"
+                . "<br>"
+                ."</div>";
+
+                }
+
+            }
+        } catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    public function filtrarCurso() {
+        try {
+            session_start();
+                $nombre = $_REQUEST["filtNom"];
+                $apellido = $_REQUEST["filtNom"];
+                $anio = $_REQUEST["filtAno"];
+                $horario = $_REQUEST["filtHor"];
+                $curso = $_REQUEST["filtCur"];
+
+                $contenido = "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=filtrarCurso'>"
+                . "<div>"
+                . "<div class='page-header' id='tables'>"
+                . "<h1 style='color:#d3d3d3;' align='center'>Cursos</h1>"
+                . "</div>"
+                . "<div class='item'>"
+                . "<table class='table table-striped table-hover'>"
+                . "<thead>"
+                . "<tr class='danger'>"
+                . "<th><div class='form'>"
+                . "<label class='control-label'>Curso</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtCur' class='form-control' placeholder='Filtrar por curso'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"
+                . "<label class='control-label'>Año</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtAno' class='form-control' placeholder='Filtrar por año'>"
+                . "</div>"
+                . "</th>"
+                . "<th><div>"
+                . "<label class='control-label'>Horario</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtHor' class='form-control' placeholder='Filtrar por horario'>"
+                . "</div>"
+                . "</th>". "<th><div>"
+                . "<label class='control-label'>Profesor</label>"
+                . "<div class='input'>"
+                . "<input type='text' name = 'filtNom' class='form-control' placeholder='Filtrar por profesor'>"
+                . "</div>"
+                . "</th>"
+                . "<th>"
+                . "<div>"
+                 . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
+                . "</div>"
+                . "</th>"
+                . "</thead>"
+                . "</form>";
+
+                $pagina = $this->load_template("inicio");
+                $head = $this->load_page("vistas/html/headPrincipal.html");
+                $header = $this->load_page("vistas/html/headerLogueado.html");
+                $pagina = $this->replace_content("/HeadHTML/", $head, $pagina);
+                $pagina = $this->replace_content("/Header/", $header, $pagina);
+                $pagina = $this->replace_content("/Contenido/", $contenido, $pagina);
+                $pagina = $this->replace_content("/Titulo/", "Cursos", $pagina);
+                $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
+
+                $this->view_page($pagina);
+
+                $resultado = $this->filtrarManejadorCursos($nombre ,$apellido , $anio ,$horario ,$curso);
+                if(!$resultado == NULL){
+                    foreach ($resultado as $fila) {
+                        echo "<tbody>"
+                        . "<tr class='active'>"
+                        . "<td>" . $fila['curso'] . "</td>"
+                        . "<td>" . $fila['anio'] . "</td>"
+                        . "<td>" . $fila['horario'] . "</td>"
+                        . "<td>" . $fila['profesor'] . "</td>"
+                        . "<td></td>"
+                        . "</tr>"
+                        . "</tbody>";
+                    }
+                    echo "</table>";
+
+                    echo "<br>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
+                    . "<button type='submit' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar Curso</button></a> &nbsp"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"          
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
+
+                } else {
+                    $this->modal("No existen registros para la busqueda seleccionada");
+                    echo "</table>";
+
+                    echo "<br>"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
+                    . "<button type='submit' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar Curso</button></a> &nbsp"
+                    . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"          
+                    . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
+
+                }
+            }
+         catch (Exception $ex) {
+            echo "Excepcion capturada: ", $ex->getMessage(), "\n";
+        }
+
     }
 }
 ?>
