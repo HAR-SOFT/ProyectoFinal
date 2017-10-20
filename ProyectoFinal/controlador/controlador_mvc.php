@@ -119,7 +119,7 @@ class controlador_mvc extends manejador {
             . "<div class='modal-content'>"
             . "<div class='modal-header'>"
             . "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='closeModal()'>&times;</button>"
-            . "<h4 class='modal-title'>AtenciÃ³n:</h4>"
+            . "<h4 class='modal-title'>Atención:</h4>"
             . "</div>"
             . "<div class='modal-body'>"
             . "<p>$msjModal</p>"
@@ -319,7 +319,7 @@ class controlador_mvc extends manejador {
                         $this->modal("Clave actual incorrecta.");
                     } else {
                         if ($claveNueva <> $claveNuevaRep) {
-                            $this->modal("La clave nueva no coincide con la validaciÃ³n.");
+                            $this->modal("La clave nueva no coincide con la validación.");
                         } else {
                             $this->cambiarClaveManejador($_SESSION["ciUsuario"], $claveNueva);
                         }
@@ -1895,7 +1895,7 @@ class controlador_mvc extends manejador {
             . "<div class='modal-content'>"
             . "<div class='modal-header'>"
             . "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='closeModal()'>&times;</button>"
-            . "<h4 class='modal-title'>AtenciÃ³n:</h4>"
+            . "<h4 class='modal-title'>Atención:</h4>"
             . "</div>"
             . "<div class='modal-body'>"
             . "<p id='mensajeModal'></p>"
