@@ -1284,7 +1284,7 @@ class controlador_mvc extends manejador {
             ."<div class='form-group'>"
             ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
             ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            ."<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
             ."</div>"
             ."</div>"
             ."<div class='form-group'>"
@@ -1438,7 +1438,7 @@ class controlador_mvc extends manejador {
             ."<div class='form-group'>"
             ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
             ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            ."<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
             ."</div>"
             ."</div>"
             ."<div class='form-group'>"
@@ -2065,7 +2065,7 @@ class controlador_mvc extends manejador {
                     . "<td>" . $fila['profesor'] . "</td>"
                     . "<td>" . $fila['ci'] . "</td>"
                     . "<td>" . $fila['curso'] ."</td>"
-                    . "<td><input type='checkbox' name='curso[]' value = ". $fila['ci'] ." </td>"
+                    . "<td><input type='radio' name='curso[]' value = ". $fila['ci'] ." </td>"
                     . "<td></td>"
                     . "</tr>"
                     . "</tbody>";
@@ -2093,21 +2093,24 @@ class controlador_mvc extends manejador {
     public function asignoCursoAlumnos(){
         try {
             if (isset($_REQUEST['asignarCursoAlumno'])){
+                 
+                if (isset($_REQUEST['curso'])){
+                    $curso = $_REQUEST['asignarCurso'];
+                    $check[] = $_REQUEST['curso'] ? $_REQUEST['curso']:NULL;
+                    foreach ($check as $check1 => $check2){
+                        $longitud = count($check2);             
+                        for($i=0 ;$i<$longitud ;$i++ ){
+                            $valores = "'" .$curso."' ," .$check2[$i];
+                            $this->asignarCursoUsuarios($valores);
+                        }
+                    }
+                    $this->asignarCursoAlumnos();
 
-            $check[] = '';
-            $curso = $_REQUEST['asignarCurso'];
-            $check[] = $_REQUEST['curso'] ? $_REQUEST['curso']: NULL;
-
-            foreach ($check as $check1 => $check2){
-                $longitud = count($check2);
-             
-                for($i=0 ;$i<$longitud ;$i++ ){
-                    $valores = "'" .$curso."' ," .$check2[$i];
-                    $this->asignarCursoUsuarios($valores);
                 }
-            }
-            $this->asignarCursoAlumnos();
-
+                else{                
+                    $this->modal("Debe seleccionar al menos un alumno"); 
+                     $this->asignarCursoAlumnos();
+                }                     
             }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -2117,21 +2120,26 @@ class controlador_mvc extends manejador {
     public function asignoCursoProfesores(){
         try {
             if (isset($_REQUEST['asignarCursoProfesor'])){
+                 if (isset($_REQUEST['curso'])){               
+                    $curso = $_REQUEST['asignarCurso'];
+                    $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
 
-            $curso = $_REQUEST['asignarCurso'];
-            $check[] = $_REQUEST['curso']? $_REQUEST['curso']: NULL;
+                    foreach ($check as $check1 => $check2){
+                        $longitud = count($check2);
 
-                foreach ($check as $check1 => $check2){
-                    $longitud = count($check2);
-
-                    for($i=0 ;$i<$longitud ;$i++ ){
-                        $valores = "'" .$curso."' ," .$check2[$i];
-                        $this->asignarCursoUsuarios($valores);
+                        for($i=0 ;$i<$longitud ;$i++ ){
+                            $valores = "'" .$curso."' ," .$check2[$i];
+                            $this->asignarCursoUsuarios($valores);
+                        }
                     }
-                }
 
-                $this->asignarCursoProfesores();
-            }
+                    $this->asignarCursoProfesores();
+                }            
+                else{                
+                    $this->modal("Debe seleccionar al menos un profesor"); 
+                    $this->asignarCursoProfesores();
+                }   
+            }                  
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
