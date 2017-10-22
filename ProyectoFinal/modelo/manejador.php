@@ -100,7 +100,8 @@ class manejador extends conexionDB {
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
 // var_dump(strpos($queryParametro, "UPDATE"));
-        if (strpos($queryParametro, "INSERT" ) !== false) {
+        if (strpos($queryParametro, "INSERT" ) !== false ||
+                strpos($queryParametro, "UPDATE" ) !== false) {
             $this->mensaje = $msjParametro;
         } else {
             if (!$this->cantidadRegistros($query) == 0) {
@@ -973,7 +974,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQueryDelete($this->query, $msjdeleteCursoProfesor); 
     }
  
-        public function ejerciciosEditarCurso($tema, $subtema , $nombreCurso) {
+    public function ejerciciosEditarCurso($tema, $subtema , $nombreCurso) {
         
         if($subtema == true) {
             $this->query = "SELECT
