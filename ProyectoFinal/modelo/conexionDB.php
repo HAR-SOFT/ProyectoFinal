@@ -10,6 +10,7 @@ class conexionDB {
     public function conectar() {
         try {
             $this->conexion = mysqli_connect("localhost", "root", "", "e-mer");
+            $this->conexion->set_charset("utf8");
         } catch (Exception $ex) {
             echo "Excepción capturada: ",  $ex->getMessage(), "\n";
         }

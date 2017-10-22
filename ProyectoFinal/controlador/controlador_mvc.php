@@ -485,7 +485,7 @@ class controlador_mvc extends manejador {
 
             if($ejercicio){
                foreach ($ejercicio as $ej){
-                       $contenido = $contenido. "<div class='col-lg-3'>"
+                       $contenido = $contenido. "<div class='col-lg-4'>"
                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-default-lg btn-lg' name='practica'>Ejercicio $ej[0]</button></a>"
                        . "</div>";
                };
@@ -1880,7 +1880,7 @@ class controlador_mvc extends manejador {
             //var_dump($letraEjercicio[0][0]);
             $verLetra = $letraEjercicio[0][0];
 
-            $contenido = "<div class='col-lg-2'>"
+            $contenido = "<div class='col-lg-3'>"
             . "<br><p></p><ul class='nav nav-pills nav-stacked'>"
             . "<li class='btn btn-default btn-lg '>$ejercicio</li>"
             . "<li>"
@@ -1968,7 +1968,7 @@ class controlador_mvc extends manejador {
                        
             $inputsString = explode(",", $_SESSION["inputs"]);
             $inputsArray = [];
-            $tiposInputs = ["entidadComun", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
+            $tiposInputs = ["entidadComun", "entidadDebil", "entidadSuperTipo", "entidadSubTipo", "relacionComun", "restricciones"];
             $atributosInputs = ["nombre", "atributo", "restricciones"];
             $objetosRecorridos = [];
             
@@ -2011,6 +2011,11 @@ class controlador_mvc extends manejador {
                         if (strpos($objeto, "Comun")) {
                             $arrayEntidades[$objeto] = array($valor, "comun",
                                     "null", "null", $nombreMer, $ci);
+                        } else {
+                            if (strpos($objeto, "Debil")) {
+                                $arrayEntidades[$objeto] = array($valor, "debil",
+                                        "null", "null", $nombreMer, $ci);
+                            }
                         }
                     }
                     
@@ -2030,6 +2035,13 @@ class controlador_mvc extends manejador {
                                     array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
                                         $arrayEntidades[$entidadesRelacion[1]][0], "null", 
                                         $nombreMer, $ci);
+                        } else {
+                            if (strpos($objeto, "Auto")) {
+                                $arrayRelaciones[$objeto] = 
+                                        array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
+                                            $arrayEntidades[$entidadesRelacion[1]][0], "null", 
+                                            $nombreMer, $ci);
+                            }
                         }
                     }
                 }
@@ -2146,9 +2158,12 @@ class controlador_mvc extends manejador {
             // Validar Entidades
             foreach ($arrayEntidades as $key => $value) {
                 $entidadAlumno = trim(strtolower($value[0]));
+                $tipoEntidadAlumno = $value[1];
                 foreach ($solucionSistemaEntidades as $key => $value) {
                     $entidadSistema = trim(strtolower($value[0]));
-                    if ($entidadAlumno === $entidadSistema) {
+                    $tipoEntidadSistema = $value[1];
+                    if ($entidadAlumno === $entidadSistema && 
+                            $tipoEntidadAlumno === $tipoEntidadSistema) {
                         $entidadValidada = true;
                         break;
                     } else {

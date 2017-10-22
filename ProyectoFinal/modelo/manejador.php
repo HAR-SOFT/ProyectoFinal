@@ -613,7 +613,7 @@ class manejador extends conexionDB {
     }
     
     public function altaCursoManejador($nombreCurso,$anioCurso,$horarioCurso,
-                                      $inicioCurso,$finCurso) {        
+                                      $inicioCurso,$finCurso) {
         $this->query = "INSERT INTO dim_Curso"
                 . " (id_curso,nombre,anio,horario,fecha_inicio,fecha_fin,"
                 . " estado)"
