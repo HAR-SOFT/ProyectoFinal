@@ -1398,6 +1398,7 @@ class controlador_mvc extends manejador {
 
                 if(!$resultado){
                     $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
+                    var_dump($asignar);
                         if(!$asignar) {
                           $this->modal("Se agrego el Alumno $nombreUsuario "
                                     . "$apellidoUsuario y se asocio al Curso "
@@ -3732,7 +3733,7 @@ class controlador_mvc extends manejador {
 $pdf = new FPDF();
 $pdf->AddPage();
 $pdf->SetFont('Arial', '', 10);
-$pdf->Image('imagenes/logo.png', 10, 8, 18, 15, 'PNG');
+$pdf->Image('vistas/img/Logo.png', 10, 8, 18, 15, 'PNG');
 $pdf->Cell(18, 10, '', 0);
 $pdf->Cell(150, 10, '   ', 0);
 $pdf->SetFont('Arial', '', 9);
