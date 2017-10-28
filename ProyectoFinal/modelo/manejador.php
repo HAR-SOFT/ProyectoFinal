@@ -680,13 +680,14 @@ class manejador extends conexionDB {
     }
 
      public function asignarCursoUsuario($curso,$ci) {
-       $cedula = $ci[0];
+       //$cedula = $ci[0];
          
         $this->query = "INSERT INTO asc_curso_usuario "
                 . "(nombre_curso , ci_usuario) VALUE "
-                . "('$curso',$cedula);";
+                . "('$curso',$ci);";
+        
         $msjasignarCursoUsuario = "No se pudo ingresar al curso seleccionado.";
-
+        var_dump($this->query);
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuario);
     }
        

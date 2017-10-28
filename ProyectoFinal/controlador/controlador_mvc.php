@@ -1229,7 +1229,7 @@ class controlador_mvc extends manejador {
             $resultado = $this->listarCursosBedelia();
             
              if(!$resultado){
-                $this->modal("No existen cursos asginado");
+                $this->modal("No existen registros");
             } 
             else {
 
@@ -3730,52 +3730,41 @@ class controlador_mvc extends manejador {
         
         $ci = $_REQUEST["ci"];
         $curso = $_REQUEST["curso"];
-$pdf = new FPDF();
-$pdf->AddPage();
-$pdf->SetFont('Arial', '', 10);
-$pdf->Image('vistas/img/Logo.png', 10, 8, 18, 15, 'PNG');
-$pdf->Cell(18, 10, '', 0);
-$pdf->Cell(150, 10, '   ', 0);
-$pdf->SetFont('Arial', '', 9);
-$pdf->Cell(50, 10, 'Fecha: ' . date('d-m-Y') . '', 0);
-$pdf->Ln(15);
-$pdf->SetFont('Arial', 'B', 11);
-$pdf->Cell(70, 8, '', 0);
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Image('vistas/img/Logo.png', 8, 8, 16, 15, 'PNG');
+        $pdf->Cell(0, 35, 'e-MER', 0);
+        $pdf->Cell(18, 10, '', 0);
+        $pdf->Cell(150, 10, '   ', 0);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(70, 8, '', 0);
+        $pdf->Cell(100, 8, 'EJERCICIOS POR ALUMNO', 0);
+        $pdf->Ln(23);
+        $pdf->Line(0, 47, 260-50, 47); 
+        $pdf->SetFont('Arial','B', 9);
+        $pdf->Cell(38, 8, 'ALUMNO', 0);
+        $pdf->Cell(58, 8, 'TEMA', 0);
+        $pdf->Cell(45, 8, 'FECHA', 0);
+        $pdf->Cell(0, 8, 'DEDICACION EN MINUTOS', 0);
+        $pdf->Ln(8);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Line(0, 56, 260-50, 56);
 
-$pdf->Cell(100, 8, 'EJERCICIOS POR ALUMNO', 0);
-
-$pdf->Ln(23);
-
-$pdf->Line(0, 47, 260-50, 47); 
-
-$pdf->SetFont('Arial','B', 8);
-$pdf->Cell(38, 8, 'ALUMNO', 0);
-$pdf->Cell(58, 8, 'TEMA', 0);
-$pdf->Cell(58, 8, 'FECHA', 0);
-$pdf->Cell(38, 8, 'DEDICACION EN MINUTOS', 0);
-
-$pdf->Ln(8);
-$pdf->SetFont('Arial', '', 8);
-
-$pdf->Line(0, 56, 260-50, 56);
-//CONSULTA
-
-$resultado = $this->verReporteManejador($ci, $curso);
-
-
+        $resultado = $this->verReporteManejador($ci, $curso);
         foreach ($resultado as $datos) {
- 
-    $pdf->Cell(38, 8, $datos['alumno'], 0);
-    $pdf->Cell(58, 8, $datos['tema'], 0);
-    $pdf->Cell(67, 8, $datos['fecha'], 0);
-    $pdf->Cell(30, 8, $datos['dedicacion_en_minutos'], 0);
-
-    $pdf->Ln(8);
-}
-$pdf->SetFont('Arial', 'B', 8);
-$pdf->Cell(114, 8, '', 0);
-
-$pdf->Output();
+            $pdf->Cell(38, 8, $datos['alumno'], 0);
+            $pdf->Cell(58, 8, $datos['tema'], 0);
+            $pdf->Cell(67, 8, $datos['fecha'], 0);
+            $pdf->Cell(30, 8, $datos['dedicacion_en_minutos'], 0);
+            $pdf->Ln(8);
+        }
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(114, 8, '', 0);
+        //$pdf->Cell(100, -190, 'Fecha: ' . date('d-m-Y') . '', 0);
+        $pdf->Output();
         
     }
 
