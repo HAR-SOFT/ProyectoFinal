@@ -290,6 +290,17 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
     }
+    
+    public function listarCursosActivosSinProfesor() {
+        $this->query = "SELECT *"
+                . " FROM dim_curso AS C"
+                . " WHERE C.estado = 1"
+                . " AND ;";
+        $msjListarCursosActivos = "No hay cursos activos.";
+
+        return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
+    }
+    
 
     public function listarCursosInactivos() {
         $this->query = "SELECT *"
@@ -1457,6 +1468,27 @@ class manejador extends conexionDB {
         $msjimportarAlumnos = "No se han podido importar los datos.";
 
         return $this->ejecutarQuery($this->query, $msjimportarAlumnos);
+    }
+    
+    public function verReporteManejador($ci ,$curso) {        
+         
+        $this->query = "SELECT CONCAT(dua.nombre ,' ', dua.apellido ) as alumno ,"
+                . " sm.nombre  as tema , sm.inicioEjercicio , sm.finEjercicio ,"
+                . "DATE_FORMAT(sm.inicioEjercicio , '%d/%m/%y ')as fecha , "
+                . " FORMAT(SUM(sm.finEjercicio - sm.inicioEjercicio)/(60),2)  AS dedicacion_en_minutos "
+                . " from sol_mer sm , dim_usuario dua ,"
+                . " dim_usuario dup "
+                . " where dua.ci = sm.ci_usuario "
+                . " and dup.ci = $ci "
+                . " and dua.ci IN (SELECT ci_usuario 
+                                   FROM asc_curso_usuario 
+                                   where nombre_curso = '$curso' 
+                                   and ci_usuario <> $ci ) "
+                . " group by alumno ,tema, inicioEjercicio , sm.finEjercicio;";
+        
+        $msjverReporteManejador = "No se han podido importar los datos.";
+
+        return $this->ejecutarQuery($this->query, $msjverReporteManejador);
     }
 }
 

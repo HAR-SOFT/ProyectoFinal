@@ -138,6 +138,9 @@ else {
         case "modificoRegistroCurso":
             $mvc->modificoRegistroCurso();
             break;
+        case "verReporte":
+            $mvc->verReporte();
+            break; 
     }
 }
 

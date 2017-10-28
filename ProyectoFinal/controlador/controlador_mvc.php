@@ -2,7 +2,7 @@
 
 require_once "modelo/manejador.php";
 require_once 'lib/excel/Classes/PHPExcel/IOFactory.php';
-
+require('lib/fpdf/fpdf.php');
 class controlador_mvc extends manejador {
 
     private $mensaje;
@@ -645,16 +645,17 @@ class controlador_mvc extends manejador {
                 . "<p>";
 
                 $letra = $this->temaManejador($tema,$subtema);
-                $contenido = $contenido. $letra[0][0] 
+                $contenido = $contenido. $letra[0][0]. "<br>"
                 . "</div>"
-                . "</div>";
-
+                . "</div>";        
+    
             
                 $contenido = $contenido. "</div>"
-                . "<div class='container'>"        
-                //. "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 950px'name='guardar'>Aceptar</button>&nbsp;"                           
+                . "<div class='container'>"
+                . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verReporte&ci=$ciUsuario&curso=$curso'>"
+                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px'name='reporte'>Ver reporte</button>&nbsp;"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
-                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px' name='volver'>Volver</button></a>"   
+                . "<button type='bitton' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px' name='volver'>Volver</button></a>"   
                 . "</div>"
                 . "</div>"
                 . "</div>";
@@ -1226,6 +1227,11 @@ class controlador_mvc extends manejador {
                         $resultado = $this->listarCursosActivos();
 
             $resultado = $this->listarCursosBedelia();
+            
+             if(!$resultado){
+                $this->modal("No existen cursos asginado");
+            } 
+            else {
 
             foreach ($resultado as $fila) {
                 echo "<tbody>"
@@ -1242,6 +1248,7 @@ class controlador_mvc extends manejador {
                 <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"               
                 . "</tr>"
                 . "</tbody>";
+            }
             }
             echo "</table>";
 
@@ -1262,66 +1269,66 @@ class controlador_mvc extends manejador {
             session_start();
 
             $contenido = "<div class='container'>"
-            ."<div class='page-header' id='tables'>"
-            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Alumno</h1>"
-            ."</div>"
-            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoAlumno'>"
-            ."<fieldset>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label class='col-lg-2 control-label'>Sexo</label>"
-            ."<div class='col-lg-10'>"
-            ."<div class='radio'>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
-            ."Masculino"
-            ."</label>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='F'>"
-            ."Femenino"
-            ."</label>"
-            ."</div>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
-            ."<div class='col-lg-8'>"
-            ."<select class='form-control' id='select' name='asignarCurso'>";
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Agregar Alumno</h1>"
+            . "</div>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoAlumno'>"
+            . "<fieldset>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label class='col-lg-2 control-label'>Sexo</label>"
+            . "<div class='col-lg-10'>"
+            . "<div class='radio'>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
+            . "Masculino"
+            . "</label>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='F'>"
+            . "Femenino"
+            . "</label>"
+            . "</div>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            . "<div class='col-lg-8'>"
+            . "<select class='form-control' id='select' name='asignarCurso'>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -1425,66 +1432,66 @@ class controlador_mvc extends manejador {
             session_start();
 
             $contenido = "<div class='container'>"
-            ."<div class='page-header' id='tables'>"
-            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
-            ."</div>"
-            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
-            ."<fieldset>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label class='col-lg-2 control-label'>Sexo</label>"
-            ."<div class='col-lg-10'>"
-            ."<div class='radio'>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
-            ."Masculino"
-            ."</label>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='F'>"
-            ."Femenino"
-            ."</label>"
-            ."</div>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
-            ."<div class='col-lg-8'>"
-            ."<select class='form-control' id='select' name='asignarCurso'>";
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Agregar Profesor</h1>"
+            . "</div>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoProfesor'>"
+            . "<fieldset>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputApellido' name='inputApellido' placeholder='Apellido' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label class='col-lg-2 control-label'>Sexo</label>"
+            . "<div class='col-lg-10'>"
+            . "<div class='radio'>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='M' checked=''>"
+            . "Masculino"
+            . "</label>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='F'>"
+            . "Femenino"
+            . "</label>"
+            . "</div>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='email' class='form-control' id='inputMail' name='inputMail' placeholder='ejemplo@ejemplo.com'>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputTelefono' name='inputTelefono' placeholder='12345678' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputCelular' name='inputCelular' placeholder='091234567' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            . "<div class='col-lg-8'>"
+            . "<select class='form-control' id='select' name='asignarCurso'>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -1504,19 +1511,19 @@ class controlador_mvc extends manejador {
             }
 
             echo"</select>"
-            ."<br>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<div class='col-lg-10 col-lg-offset-2'>"
-            ."<button type='reset' class='btn btn-default  btn-lg' name='btnCancel'>Cancelar</button>&nbsp"
-            ."<button type='submit' name = 'aceptar' class='btn btn-primary btn-lg' >Aceptar</button>&nbsp"
-            ."</form>"
+            . "<br>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<div class='col-lg-10 col-lg-offset-2'>"
+            . "<button type='reset' class='btn btn-default  btn-lg' name='btnCancel'>Cancelar</button>&nbsp"
+            . "<button type='submit' name = 'aceptar' class='btn btn-primary btn-lg' >Aceptar</button>&nbsp"
+            . "</form>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"         
-            ."</div>"
-            ."</div>"
-            ."</fieldset>";
+            . "</div>"
+            . "</div>"
+            . "</fieldset>";
 
 
             echo "</table>";
@@ -1590,44 +1597,44 @@ class controlador_mvc extends manejador {
              
             $contenido = "<div class='container'>"
             . "<div class = 'page-header' id='tables'>"        
-            ."<h1 style='color:#d3d3d3;' align='center'>Agregar Curso</h1>"
-            ."</div>"
-            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoCurso'>"
-            ."<fieldset>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Año</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' min='2017' max = '2030' class='form-control' id='inputAnio' name='inputAnio' placeholder='2017' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Horario</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='time' class='form-control' id='inputHorario' name='inputHorario' placeholder='20-22' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Fecha de Inicio</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='date' min='2017-01-01' class='form-control' id='inputFechaIni' name='inputFechaIni' placeholder='aaaa-mm-dd' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Fecha de Fin</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='date' class='form-control' id='inputFechaFin' name='inputFechaFin' placeholder='aaaa-mm-dd' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='select' class='col-lg-2 control-label'>Asignar Profesor</label>"
-            ."<div class='col-lg-8'>"
-            ."<select class='form-control' id='select' name='asignarProfesor'>"        ;
+            . "<h1 style='color:#d3d3d3;' align='center'>Agregar Curso</h1>"
+            . "</div>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregoCurso'>"
+            . "<fieldset>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' name='inputNombre' placeholder='Nombre' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Año</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' min='2017' max = '2030' class='form-control' id='inputAnio' name='inputAnio' placeholder='2017' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Horario</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='time' class='form-control' id='inputHorario' name='inputHorario' placeholder='20-22' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Fecha de Inicio</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='date' min='2017-01-01' class='form-control' id='inputFechaIni' name='inputFechaIni' placeholder='aaaa-mm-dd' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Fecha de Fin</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='date' class='form-control' id='inputFechaFin' name='inputFechaFin' placeholder='aaaa-mm-dd' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='select' class='col-lg-2 control-label'>Asignar Profesor</label>"
+            . "<div class='col-lg-8'>"
+            . "<select class='form-control' id='select' name='asignarProfesor'>"        ;
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -1778,14 +1785,14 @@ class controlador_mvc extends manejador {
                 $this->modal("No existen Profesores sin Curso asginado");
                                 echo "</table>"
             . "<br>"
-            ."<p align='left'>"
-            ."</form>"
+            . "<p align='left'>"
+            . "</form>"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
-            ."<br>"
-            ."</p>"
             . "<br>"
-            ."</div>";
+            . "</p>"
+            . "<br>"
+            . "</div>";
               
             } else{
                 foreach ($resultado as $fila) {
@@ -1802,16 +1809,15 @@ class controlador_mvc extends manejador {
 
                 echo "</table>"
                 . "<br>"
-                ."<p align='left'>"
-                ."<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
-                ."</form>"
+                . "<p align='left'>"
+                . "<button type='submit' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
+                . "</form>"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
                 . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
-                ."<br>"
-                ."</p>"
-                ."<br>"
-
-                ."</div>";
+                . "<br>"
+                . "</p>"
+                . "<br>"
+                . "</div>";
 
                }
         } catch (Exception $ex) {
@@ -2423,7 +2429,7 @@ class controlador_mvc extends manejador {
                  . "<td>" . $fila['ci'] . "</td>"
                  . "<td>" . $fila['curso'] . "</td>"
                  . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=eliminarRegistro&curso=$fila[curso]&ci=$fila[ci]'>
-                  <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
+                   <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
                  . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificarRegistroAlumno&curso=$fila[curso]&ci=$fila[ci]'>
                   <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"                    
                  . "</tr>"
@@ -2663,7 +2669,7 @@ class controlador_mvc extends manejador {
                 $this->modal("No existen Alumnos sin Curso asignado");
                 echo "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
                 .  "<tbody>"
-                . "</table>"
+                . "</table><br>"
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
             } else {
                 foreach ($resultado as $fila) {
@@ -2771,8 +2777,8 @@ class controlador_mvc extends manejador {
                 $this->modal("No existen Profesores sin Curso asignado");
                 echo "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
                 . "<tbody>"
-                . "</table>"
-            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
+                . "</table><br>"
+                . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
                 
             } else {
                 foreach ($resultado as $fila) {
@@ -2787,15 +2793,15 @@ class controlador_mvc extends manejador {
                     . "</tbody>";
                                 echo "</table>"
             . "<br>"
-            ."<p align='left'>"
-            ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
+            . "<p align='left'>"
+            . "<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
-            ."</form>"
-            ."<br>"
-            ."</p>"
+            . "</form>"
             . "<br>"
-            ."</div>";
+            . "</p>"
+            . "<br>"
+            . "</div>";
                 }
 
             }
@@ -2850,7 +2856,7 @@ class controlador_mvc extends manejador {
             . "</th>"
             . "<th>"
             . "<div>"
-             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
+            . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
             . "</div>"
             . "</th>"
             . "</thead>"
@@ -3199,78 +3205,78 @@ class controlador_mvc extends manejador {
             $resultado = $this->recuperarDatos($ci_usuario); 
             
             $contenido = "<div class='container'>"
-            ."<div class='page-header' id='tables'>"
-            ."<h1 style='color:#d3d3d3;' align='center'>Modificar Datos Alumno</h1>"
-              ."</div>"
-            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroProfesor'>"
-            ."<fieldset>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputCi' readonly='readonly'  value = ". $ci_usuario ." name='inputCI'  required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' value = ". $resultado[0]['nombre'] ."  name='inputNombre'  required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputApellido' value = ". $resultado[0]['apellido']  ."  name='inputApellido' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label class='col-lg-2 control-label'>Sexo</label>"
-            ."<div class='col-lg-10'>"
-            ."<div class='radio'>"
-            ."<label>";
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Modificar Datos Alumno</h1>"
+            . "</div>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroProfesor'>"
+            . "<fieldset>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputCi' readonly='readonly'  value = ". $ci_usuario ." name='inputCI'  required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' value = ". $resultado[0]['nombre'] ."  name='inputNombre'  required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputApellido' value = ". $resultado[0]['apellido']  ."  name='inputApellido' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label class='col-lg-2 control-label'>Sexo</label>"
+            . "<div class='col-lg-10'>"
+            . "<div class='radio'>"
+            . "<label>";
                  if($resultado[0]['sexo'] == 'M'){
                     $contenido = $contenido ."<input type='radio' name='sexo'  id='sexo' value='M' checked=''>"
-                    ."Masculino"
-                    ."</label>"
+                    . "Masculino"
+                    . "</label>"
                     . "<label>"
-                    ."<input type='radio' name='sexo' id='sexo' value='F'>"
-                    ."Femenino"
-                    ."</label>";
+                    . "<input type='radio' name='sexo' id='sexo' value='F'>"
+                    . "Femenino"
+                    . "</label>";
                }
                 else {
-                        $contenido = $contenido ."<input type='radio' name='sexo'  id='sexo' value='M' >"
-            ."Masculino"
-            ."</label>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='F' checked=''>"
-            ."Femenino"
-            ."</label>";
+                        $contenido = $contenido . "<input type='radio' name='sexo'  id='sexo' value='M' >"
+            . "Masculino"
+            . "</label>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='F' checked=''>"
+            . "Femenino"
+            . "</label>";
                                                
                }   
             $contenido = $contenido ."</div>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='email' class='form-control' id='inputMail' value = ". $resultado[0]['email']  ."  name='inputMail' >"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputTelefono' value = ". $resultado[0]['telefono']  ." name='inputTelefono' >"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputCelular' value = ".$resultado[0]['celular']  ." name='inputCelular'>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
-            ."<div class='col-lg-8'>"
-            ."<select class='form-control' id='select' name='asignarCurso'>";
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='email' class='form-control' id='inputMail' value = ". $resultado[0]['email']  ."  name='inputMail' >"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputTelefono' value = ". $resultado[0]['telefono']  ." name='inputTelefono' >"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputCelular' value = ".$resultado[0]['celular']  ." name='inputCelular'>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            . "<div class='col-lg-8'>"
+            . "<select class='form-control' id='select' name='asignarCurso'>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -3328,78 +3334,78 @@ class controlador_mvc extends manejador {
             $resultado = $this->recuperarDatos($ci_usuario); 
             
             $contenido = "<div class='container'>"
-            ."<div class='page-header' id='tables'>"
-            ."<h1 style='color:#d3d3d3;' align='center'>Modificar Datos Profesor</h1>"
-            ."</div>"
-            ."<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroProfesor'>"
-            ."<fieldset>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Cedula</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputCi' readonly='readonly'  value = ". $ci_usuario ." name='inputCI'  required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Nombre</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputNombre' value = ". $resultado[0]['nombre'] ."  name='inputNombre'  required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Apellido</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='text' class='form-control' id='inputApellido' value = ". $resultado[0]['apellido']  ."  name='inputApellido' required>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label class='col-lg-2 control-label'>Sexo</label>"
-            ."<div class='col-lg-10'>"
-            ."<div class='radio'>"
-            ."<label>";
+            . "<div class='page-header' id='tables'>"
+            . "<h1 style='color:#d3d3d3;' align='center'>Modificar Datos Profesor</h1>"
+            . "</div>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroProfesor'>"
+            . "<fieldset>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputCi' readonly='readonly'  value = ". $ci_usuario ." name='inputCI'  required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Nombre</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputNombre' value = ". $resultado[0]['nombre'] ."  name='inputNombre'  required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Apellido</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='text' class='form-control' id='inputApellido' value = ". $resultado[0]['apellido']  ."  name='inputApellido' required>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label class='col-lg-2 control-label'>Sexo</label>"
+            . "<div class='col-lg-10'>"
+            . "<div class='radio'>"
+            . "<label>";
                  if($resultado[0]['sexo'] == 'M'){
-                    $contenido = $contenido ."<input type='radio' name='sexo'  id='sexo' value='M' checked=''>"
-                    ."Masculino"
-                    ."</label>"
+                    $contenido = $contenido . "<input type='radio' name='sexo'  id='sexo' value='M' checked=''>"
+                    . "Masculino"
+                    . "</label>"
                     . "<label>"
-                    ."<input type='radio' name='sexo' id='sexo' value='F'>"
-                    ."Femenino"
-                    ."</label>";
+                    . "<input type='radio' name='sexo' id='sexo' value='F'>"
+                    . "Femenino"
+                    . "</label>";
                }
                 else {
-                        $contenido = $contenido ."<input type='radio' name='sexo'  id='sexo' value='M' >"
-            ."Masculino"
-            ."</label>"
-            ."<label>"
-            ."<input type='radio' name='sexo' id='sexo' value='F' checked=''>"
-            ."Femenino"
-            ."</label>";
+                        $contenido = $contenido . "<input type='radio' name='sexo'  id='sexo' value='M' >"
+            . "Masculino"
+            . "</label>"
+            . "<label>"
+            . "<input type='radio' name='sexo' id='sexo' value='F' checked=''>"
+            . "Femenino"
+            . "</label>";
                                                
                }   
             $contenido = $contenido ."</div>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='email' class='col-lg-2 control-label'>e-mail</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='email' class='form-control' id='inputMail' value = ". $resultado[0]['email']  ."  name='inputMail' >"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Telefono</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputTelefono' value = ". $resultado[0]['telefono']  ." name='inputTelefono' >"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='text' class='col-lg-2 control-label'>Celular</label>"
-            ."<div class='col-lg-8'>"
-            ."<input type='number' class='form-control' id='inputCelular' value = ".$resultado[0]['celular']  ." name='inputCelular'>"
-            ."</div>"
-            ."</div>"
-            ."<div class='form-group'>"
-            ."<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
-            ."<div class='col-lg-8'>"
-            ."<select class='form-control' id='select' name='asignarCurso'>";
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='email' class='col-lg-2 control-label'>e-mail</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='email' class='form-control' id='inputMail' value = ". $resultado[0]['email']  ."  name='inputMail' >"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Telefono</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputTelefono' value = ". $resultado[0]['telefono']  ." name='inputTelefono' >"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='text' class='col-lg-2 control-label'>Celular</label>"
+            . "<div class='col-lg-8'>"
+            . "<input type='number' class='form-control' id='inputCelular' value = ".$resultado[0]['celular']  ." name='inputCelular'>"
+            . "</div>"
+            . "</div>"
+            . "<div class='form-group'>"
+            . "<label for='select' class='col-lg-2 control-label'>Asignar curso</label>"
+            . "<div class='col-lg-8'>"
+            . "<select class='form-control' id='select' name='asignarCurso'>";
 
             $pagina = $this->load_template("inicio");
             $head = $this->load_page("vistas/html/headPrincipal.html");
@@ -3719,7 +3725,58 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-    
+    function verReporte(){
+        
+        $ci = $_REQUEST["ci"];
+        $curso = $_REQUEST["curso"];
+$pdf = new FPDF();
+$pdf->AddPage();
+$pdf->SetFont('Arial', '', 10);
+$pdf->Image('imagenes/logo.png', 10, 8, 18, 15, 'PNG');
+$pdf->Cell(18, 10, '', 0);
+$pdf->Cell(150, 10, '   ', 0);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(50, 10, 'Fecha: ' . date('d-m-Y') . '', 0);
+$pdf->Ln(15);
+$pdf->SetFont('Arial', 'B', 11);
+$pdf->Cell(70, 8, '', 0);
+
+$pdf->Cell(100, 8, 'EJERCICIOS POR ALUMNO', 0);
+
+$pdf->Ln(23);
+
+$pdf->Line(0, 47, 260-50, 47); 
+
+$pdf->SetFont('Arial','B', 8);
+$pdf->Cell(38, 8, 'ALUMNO', 0);
+$pdf->Cell(58, 8, 'TEMA', 0);
+$pdf->Cell(58, 8, 'FECHA', 0);
+$pdf->Cell(38, 8, 'DEDICACION EN MINUTOS', 0);
+
+$pdf->Ln(8);
+$pdf->SetFont('Arial', '', 8);
+
+$pdf->Line(0, 56, 260-50, 56);
+//CONSULTA
+
+$resultado = $this->verReporteManejador($ci, $curso);
+
+
+        foreach ($resultado as $datos) {
+ 
+    $pdf->Cell(38, 8, $datos['alumno'], 0);
+    $pdf->Cell(58, 8, $datos['tema'], 0);
+    $pdf->Cell(67, 8, $datos['fecha'], 0);
+    $pdf->Cell(30, 8, $datos['dedicacion_en_minutos'], 0);
+
+    $pdf->Ln(8);
+}
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->Cell(114, 8, '', 0);
+
+$pdf->Output();
+        
+    }
 
 }
 
