@@ -1776,8 +1776,17 @@ class controlador_mvc extends manejador {
 
             if (!$resultado){
                 $this->modal("No existen Profesores sin Curso asginado");
-                echo"<button type='submit' name = 'submit' class='btn btn-default btn-lg'>"
-                . "<a onclick='javascript:window.history.back();'>&laquo; Volver atrás</a></button>";
+                                echo "</table>"
+            . "<br>"
+            ."<p align='left'>"
+            ."</form>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" 
+            ."<br>"
+            ."</p>"
+            . "<br>"
+            ."</div>";
+              
             } else{
                 foreach ($resultado as $fila) {
                     echo "<tbody>"
@@ -2652,6 +2661,10 @@ class controlador_mvc extends manejador {
             $resultado = $this->filtrarAlumnosSinCursoManejador($nombre , $apellido , $ci);
             if(!$resultado){
                 $this->modal("No existen Alumnos sin Curso asignado");
+                echo "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                .  "<tbody>"
+                . "</table>"
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
             } else {
                 foreach ($resultado as $fila) {
                     echo "<tbody>"
@@ -2756,6 +2769,11 @@ class controlador_mvc extends manejador {
             $resultado = $this->filtrarProfesoresSinCursoManejador($nombre , $apellido , $ci);
             if(!$resultado){
                 $this->modal("No existen Profesores sin Curso asignado");
+                echo "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+                . "<tbody>"
+                . "</table>"
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ;
+                
             } else {
                 foreach ($resultado as $fila) {
                     echo "<tbody>"
@@ -2767,9 +2785,7 @@ class controlador_mvc extends manejador {
                     . "<td></td>"
                     . "</tr>"
                     . "</tbody>";
-                }
-
-            echo "</table>"
+                                echo "</table>"
             . "<br>"
             ."<p align='left'>"
             ."<button type='submit' name = 'asignarCursoAlumno' class='btn btn-primary btn-lg'>Asignar Curso</button>&nbsp"
@@ -2780,7 +2796,8 @@ class controlador_mvc extends manejador {
             ."</p>"
             . "<br>"
             ."</div>";
-          
+                }
+
             }
 
             }
