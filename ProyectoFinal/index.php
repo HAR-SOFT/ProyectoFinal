@@ -111,6 +111,33 @@ else {
         case "filtrarCurso":
             $mvc->filtrarCurso();
             break;
+        case "importarAlumnos":
+            $mvc->importarAlumnos();
+            break;
+        case "eliminarRegistro":
+            $mvc->eliminarRegistro();
+            break;
+        case "modificarRegistroAlumno":
+            $mvc->modificarAlumno();
+            break;
+        case "modificoRegistro":
+            $mvc->modificoRegistroAlumno();
+            break;
+        case "modificarRegistroProfesor":
+            $mvc->modificarRegistroProfesor();
+            break;
+        case "modificoRegistroProfesor":
+            $mvc->modificoRegistroProfesor();
+            break;
+        case "eliminarCurso":
+            $mvc->eliminarRegistroCurso();
+            break;
+        case "modificarRegistroCurso":
+            $mvc->modificarRegistroCurso();
+            break;
+        case "modificoRegistroCurso":
+            $mvc->modificoRegistroCurso();
+            break;
     }
 }
 
