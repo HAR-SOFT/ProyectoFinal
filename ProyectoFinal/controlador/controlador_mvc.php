@@ -1987,6 +1987,26 @@ class controlador_mvc extends manejador {
                                 explode("-", $objeto)[2]);
                             // la relacion
                             $objeto = explode("-", $objeto)[0];
+                        } else {
+                            // caso de los atributos complejos
+                            // o de categorizacion
+                            if (strpos($objeto, "|") !== false) {
+                                // si es atributo
+                                if (strpos($objeto, "atributo") !== false) {
+                                    $atributoComp[explode("|", $objeto)[0]] = 
+                                            array(explode("|", $objeto)[0],
+                                            explode("|", $objeto)[1]);
+                                    $objeto = explode("|", $objeto)[0];
+                                } else {
+                                    // si es entidad
+                                    if (strpos($objeto, "entidad") !== false) {
+                                        $categorizacion[explode("|", $objeto)[0]] = 
+                                                array(explode("|", $objeto)[0],
+                                                explode("|", $objeto)[1]);
+                                        $objeto = explode("|", $objeto)[0];
+                                    }
+                                }
+                            }
                         }
                     } else {
                         $objeto = explode(":", $inputsString[$i])[0];
@@ -2010,11 +2030,40 @@ class controlador_mvc extends manejador {
                     if (strpos($objeto, "entidad") !== false && $atributoInput === "nombre") {
                         if (strpos($objeto, "Comun")) {
                             $arrayEntidades[$objeto] = array($valor, "comun",
-                                    "null", "null", $nombreMer, $ci);
+                                    NULL, "N/A", $nombreMer, $ci);
                         } else {
-                            if (strpos($objeto, "Debil")) {
+                            if (strpos($objeto, "Debil") !== false) {
                                 $arrayEntidades[$objeto] = array($valor, "debil",
-                                        "null", "null", $nombreMer, $ci);
+                                        NULL, "N/A", $nombreMer, $ci);
+                            } else {
+                                if (strpos($objeto, "Cat") !== false) {
+                                    if (strpos($objeto, "Comp") !== false) {
+                                        $arrayEntidades[$objeto] = array($valor, "supertipo",
+                                                NULL, "completa", $nombreMer, $ci);
+                                    } else {
+                                        if (strpos($objeto, "Dis") !== false) {
+                                            $arrayEntidades[$objeto] = array($valor, "supertipo",
+                                                    NULL, "disjunta", $nombreMer, $ci);
+                                        }
+                                    }
+                                } else {
+                                    if (strpos($objeto, "Sub") !== false) {
+                                        $tipoCategorizacion = $categorizacion[$objeto][1];
+                                        if (strpos($tipoCategorizacion, "Comp") !== false) {
+                                            $tipoCategorizacion = "completa";
+                                            $arrayEntidades[$objeto] = array($valor, "subtipo",
+                                                $arrayEntidades[$categorizacion[$objeto][1]][0], 
+                                                $tipoCategorizacion, $nombreMer, $ci);
+                                        } else {
+                                            if (strpos($tipoCategorizacion, "Dis") !== false) {
+                                                $tipoCategorizacion = "disjunta";
+                                                $arrayEntidades[$objeto] = array($valor, "subtipo",
+                                                    $arrayEntidades[$categorizacion[$objeto][1]][0], 
+                                                    $tipoCategorizacion, $nombreMer, $ci);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -2022,9 +2071,56 @@ class controlador_mvc extends manejador {
                     // armamos el array de los Atributos
                     if (strpos($atributoInput, "atributo") !== false) {
                         if (strpos($atributoInput, "Comun")) {
-                            $arrayAtributos[$objeto."_".$i] = 
-                                    array($valor, "comun", $arrayEntidades[$objeto][0],
-                                        $nombreMer, $ci);
+                            // nos fijamos si se seteo la variable de atributos
+                            // complejos
+                            if (!isset($atributoComp)) {
+                                // si se trata del atributo de una entidad
+                                if (strpos($objeto, "entidad") !== false) {
+                                    $entidadDeAtributo = $arrayEntidades[$objeto][0];
+                                    $relacionDeAtributo = NULL;
+                                // sino, es el atributo de una relacion
+                                } else {
+                                    $entidadDeAtributo = NULL;
+                                    $relacionDeAtributo = $arrayRelaciones[$objeto][0];
+                                }
+                                $arrayAtributos[$objeto."_".$atributoInput."_".$i] = 
+                                    array($valor, "comun", NULL, $entidadDeAtributo, 
+                                        $relacionDeAtributo, $nombreMer, $ci);
+                            // si esta seteada la varibale de atributos complejos
+                            } else {
+                                foreach ($arrayAtributos as $key => $value) {
+                                    $tipoAtributo = $value[1];
+                                    if ($tipoAtributo === "complejo") {
+                                        // si esta creado el array del atributo
+                                        // complejo pero sin atributo multivaluado
+                                        if ($arrayAtributos[$key][2] === NULL) {
+                                            $arrayAtributos[$key][2] = $valor;
+                                        } else {
+                                            // Si esta creado y ya tiene un atributo
+                                            // multivaluado, entonces es un nuevo
+                                            // registro
+                                            $arrayAtributos[$objeto."_".$atributoInput."_".$i] = 
+                                                    $arrayAtributos[$key];
+                                            $arrayAtributos[$objeto."_".$atributoInput."_".$i][2] =
+                                                    $valor;
+                                        }
+                                    }
+                                }
+                                unset($atributoComp);
+                            }
+                            
+                        } else {
+                            if (strpos($atributoInput, "Comp")) {
+                                $arrayAtributos[$objeto."_".$atributoInput."_".$i] = 
+                                        array($valor, "complejo", NULL, $arrayEntidades[$objeto][0],
+                                            NULL, $nombreMer, $ci);
+                            } else {
+                                if (strpos($atributoInput, "Det")) {
+                                    $arrayAtributos[$objeto."_".$atributoInput."_".$i] = 
+                                            array($valor, "determinante", NULL, $arrayEntidades[$objeto][0],
+                                                NULL, $nombreMer, $ci);
+                                }
+                            }
                         }
                     }
                     
@@ -2033,13 +2129,13 @@ class controlador_mvc extends manejador {
                         if (strpos($objeto, "Comun")) {
                             $arrayRelaciones[$objeto] = 
                                     array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
-                                        $arrayEntidades[$entidadesRelacion[1]][0], "null", 
+                                        $arrayEntidades[$entidadesRelacion[1]][0], NULL, 
                                         $nombreMer, $ci);
                         } else {
                             if (strpos($objeto, "Auto")) {
                                 $arrayRelaciones[$objeto] = 
                                         array($valor, "comun", $arrayEntidades[$entidadesRelacion[0]][0],
-                                            $arrayEntidades[$entidadesRelacion[1]][0], "null", 
+                                            $arrayEntidades[$entidadesRelacion[1]][0], NULL, 
                                             $nombreMer, $ci);
                             }
                         }
@@ -2072,10 +2168,17 @@ class controlador_mvc extends manejador {
 
                 // Percistimos sol_entidad.
                 foreach ($arrayEntidades as $key => $value) {
-                    $nombre_entidad = $value[0];
-                    $tipo_entidad = $value[1];
-                    $entidad_supertipo = $value[2];
-                    $tipo_categorizacion = "N/A";
+                    if (sizeof($arrayEntidades[$key]) === 6) {
+                        $nombre_entidad = $value[0];
+                        $tipo_entidad = $value[1];
+                        $entidad_supertipo = $value[2];
+                        $tipo_categorizacion = $value[3];
+                    } else {
+                        $nombre_entidad = $value[0];
+                        $tipo_entidad = $value[1];
+                        $entidad_supertipo = $value[2];
+                        $tipo_categorizacion = "N/A";
+                    }
                     $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
                             $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
                             $ci_usuario);
@@ -2083,11 +2186,23 @@ class controlador_mvc extends manejador {
 
                 // Percistimos sol_atributo.
                 foreach ($arrayAtributos as $key => $value) {
-                    $nombre_atributo = $value[0];
-                    $tipo_atributo = $value[1];
-                    $nombre_entidad = $value[2];
+                    if (sizeof($arrayAtributos[$key]) === 6) {
+                        $nombre_atributo = $value[0];
+                        $tipo_atributo = $value[1];
+                        $nombre_atributo_multivaluado = NULL;
+                        $nombre_entidad = $value[2];
+                        $nombre_relacion = $value[3];
+                    } else {
+                        $nombre_atributo = $value[0];
+                        $tipo_atributo = $value[1];
+                        $nombre_atributo_multivaluado = 
+                               $arrayAtributos[$key][2];
+                        $nombre_entidad = $value[3];
+                        $nombre_relacion = $value[4];
+                    }
                     $this->guardarSolucionMerAtributo($nombre_atributo,
-                            $tipo_atributo, $nombre_entidad, $nombre_mer,
+                            $tipo_atributo, $nombre_atributo_multivaluado, 
+                            $nombre_entidad, $nombre_relacion, $nombre_mer,
                             $ci_usuario);
                 }
 
@@ -2116,10 +2231,17 @@ class controlador_mvc extends manejador {
 
                 // Percistimos sol_entidad.
                 foreach ($arrayEntidades as $key => $value) {
-                    $nombre_entidad = $value[0];
-                    $tipo_entidad = $value[1];
-                    $entidad_supertipo = $value[2];
-                    $tipo_categorizacion = "N/A";
+                    if (sizeof($arrayEntidades[$key]) === 6) {
+                        $nombre_entidad = $value[0];
+                        $tipo_entidad = $value[1];
+                        $entidad_supertipo = $value[2];
+                        $tipo_categorizacion = $value[3];
+                    } else {
+                        $nombre_entidad = $value[0];
+                        $tipo_entidad = $value[1];
+                        $entidad_supertipo = $value[2];
+                        $tipo_categorizacion = "N/A";
+                    }
                     $this->guardarSolucionMerEntidad($nombre_entidad, $tipo_entidad,
                             $entidad_supertipo, $tipo_categorizacion, $nombre_mer,
                             $ci_usuario);
@@ -2127,11 +2249,23 @@ class controlador_mvc extends manejador {
 
                 // Percistimos sol_atributo.
                 foreach ($arrayAtributos as $key => $value) {
-                    $nombre_atributo = $value[0];
-                    $tipo_atributo = $value[1];
-                    $nombre_entidad = $value[2];
+                    if (sizeof($arrayAtributos[$key]) === 6) {
+                        $nombre_atributo = $value[0];
+                        $tipo_atributo = $value[1];
+                        $nombre_atributo_multivaluado = NULL;
+                        $nombre_entidad = $value[2];
+                        $nombre_relacion = $value[3];
+                    } else {
+                        $nombre_atributo = $value[0];
+                        $tipo_atributo = $value[1];
+                        $nombre_atributo_multivaluado = 
+                               $arrayAtributos[$key][2];
+                        $nombre_entidad = $value[3];
+                        $nombre_relacion = $value[4];
+                    }
                     $this->guardarSolucionMerAtributo($nombre_atributo,
-                            $tipo_atributo, $nombre_entidad, $nombre_mer,
+                            $tipo_atributo, $nombre_atributo_multivaluado, 
+                            $nombre_entidad, $nombre_relacion, $nombre_mer,
                             $ci_usuario);
                 }
 
@@ -2159,11 +2293,21 @@ class controlador_mvc extends manejador {
             foreach ($arrayEntidades as $key => $value) {
                 $entidadAlumno = trim(strtolower($value[0]));
                 $tipoEntidadAlumno = $value[1];
+                $entidadSuperTipoAlumno = ($value[2] === null || 
+                        $value[2] === "" || $value[2] === "null" ? null :
+                        trim(strtolower($value[2])));
+                $tipoCategorizacionAlumno = $value[3];
                 foreach ($solucionSistemaEntidades as $key => $value) {
                     $entidadSistema = trim(strtolower($value[0]));
                     $tipoEntidadSistema = $value[1];
+                    $entidadSuperTipoSistema = ($value[2] === null || 
+                        $value[2] === "" || $value[2] === "null" ? null :
+                        trim(strtolower($value[2])));
+                    $tipoCategorizacionSistema = $value[3];
                     if ($entidadAlumno === $entidadSistema && 
-                            $tipoEntidadAlumno === $tipoEntidadSistema) {
+                            $tipoEntidadAlumno === $tipoEntidadSistema && 
+                            $entidadSuperTipoAlumno === $entidadSuperTipoSistema && 
+                            $tipoCategorizacionAlumno === $tipoCategorizacionSistema) {
                         $entidadValidada = true;
                         break;
                     } else {
@@ -2180,9 +2324,33 @@ class controlador_mvc extends manejador {
                 // Validar Atributos
                 foreach ($arrayAtributos as $key => $value) {
                     $atributoAlumno = trim(strtolower($value[0]));
+                    $tipoAtributoAlumno = $value[1];
+                    $nombreAtrMultAlumno = ($value[2] === null || 
+                        $value[2] === "" || $value[2] === "null" ? null :
+                        trim(strtolower($value[2])));
+                    $nombreEntidadAlumno = ($value[3] === null || 
+                        $value[3] === "" || $value[3] === "null" ? null :
+                        trim(strtolower($value[3])));
+                    $nombreRelacionAlumno = ($value[4] === null || 
+                        $value[4] === "" || $value[4] === "null" ? null :
+                        trim(strtolower($value[4])));
                     foreach ($solucionSistemaAtributos as $key => $value) {
                         $atributoSistema = trim(strtolower($value[0]));
-                        if ($atributoAlumno === $atributoSistema) {
+                        $tipoAtributoSistema = $value[1];
+                        $nombreAtrMultSistema = ($value[2] === null || 
+                            $value[2] === "" || $value[2] === "null" ? null :
+                            trim(strtolower($value[2])));
+                        $nombreEntidadSistema = ($value[3] === null || 
+                            $value[3] === "" || $value[3] === "null" ? null :
+                            trim(strtolower($value[3])));
+                        $nombreRelacionSistema = ($value[4] === null || 
+                            $value[4] === "" || $value[4] === "null" ? null :
+                            trim(strtolower($value[4])));
+                        if ($atributoAlumno === $atributoSistema &&
+                                $tipoAtributoAlumno === $tipoAtributoSistema &&
+                                $nombreAtrMultAlumno === $nombreAtrMultSistema && 
+                                $nombreEntidadAlumno === $nombreEntidadSistema && 
+                                $nombreRelacionAlumno === $nombreRelacionSistema) {
                             $atributoValidado = true;
                             break;
                         } else {

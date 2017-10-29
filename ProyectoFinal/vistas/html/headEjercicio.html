@@ -1,5 +1,6 @@
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="vistas/css/bootstrap1.css">
     <link rel="stylesheet" href="vistas/css//bootstrap.min.css.map">
@@ -19,26 +20,26 @@
     <script src="vistas/js/custom.js"></script>
     <!-- Estilos necesarios para funcion draggable de Jquery -->
     <style>
-    .draggable { width: 90px; height: 80px; padding: 0px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
-    .draggableAgregacion { width: 500px; height: 250px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
-    .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
-    #containment-wrapper { width: 1150px; height:530px; border:0px solid #c0c0c0; padding: 1px; margin-top: -60px;}
-    #snaptarget { height: 600px; width: 1100px;}
+        .draggable { width: 90px; height: 80px; padding: 0px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
+        .draggableAgregacion { width: 500px; height: 250px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
+        .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
+        #containment-wrapper { width: 1150px; height:530px; border:0px solid #c0c0c0; padding: 1px; margin-top: -60px;}
+        #snaptarget { height: 600px; width: 1100px;}
     </style>
     <script type="text/javascript">
-        function setTimer () {
+        function setTimer() {
             sessionStorage.setItem("inicioEjercicio", new Date().toISOString().slice(0, 19).replace('T', ' '))
             //var inicioEjercicio = new Date();
             //alert(sessionStorage.getItem("inicioEjercicio"));
         }
         window.onload = setTimer();
-        
-        function modal (mensaje) {
+
+        function modal(mensaje) {
             document.getElementById("mensajeModal").innerHTML = mensaje;
             document.getElementById("source-modal").style.display = "block";
             document.getElementById("modal-backdrop").style.display = "block";
         }
-        
+
         // Cada id que coloquemos en esta function se le va a asignar la propiedad draggable (movimiento)
         // Esto se define en el ID del "padre" o contenedor
         // Por ejemplo:
@@ -48,23 +49,23 @@
         // </div>
         $(function () {
             $("#agregacion").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-            $( "#entidad1" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#entidad2" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#entidad3" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#entidad4" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#entidad5" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#categorizacionDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#categorizacionDragTotalidad" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#categorizacionDisDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#relacion1" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#relacion2" ).draggable({ containment: "#containment-wrapper", scroll: false });
-            $( "#relacion3" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $("#entidad1").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#entidad2").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#entidad3").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#entidad4").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#entidad5").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#categorizacionDrag").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#categorizacionDragTotalidad").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#categorizacionDisDrag").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#relacion1").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#relacion2").draggable({containment: "#containment-wrapper", scroll: false});
+            $("#relacion3").draggable({containment: "#containment-wrapper", scroll: false});
         });
 
         function posicionObjeto(idObjeto) {
             /*// capturar la posicion del elemento por atributo de css
-            var x = document.getElementById("relacion1").getAttribute("style");
-            var largoEstilo = x.length;*/
+             var x = document.getElementById("relacion1").getAttribute("style");
+             var largoEstilo = x.length;*/
 
             // capturar la posicion del elemento por atributo de css
             var objeto = document.getElementById(idObjeto);
@@ -74,60 +75,20 @@
             var y = objeto.offsetTop;
             //alert(x + " - " + y);
             return [x, y];
-
-            /*// capturar la posicion del elemento por las coordenadas x y
-            var offsets = document.getElementById("relacion1").getBoundingClientRect();
-            var top = offsets.top;
-            var left = offsets.left;
-            alert(top + " - " + left);*/
         }
-
-        // funcion final que captura todos los datos y se arma el array
-        /* function validar(Entidades) {
-            var largoEntidades = Entidades.length;
-            var validacion = [];
-
-            for(i = 0; i < largoEntidades; i++) {
-                var divHijo = document.getElementById(Entidades[i]).childNodes[1];
-                validacion.push((divHijo.style.backgroundColor === "green").toString());
-            }
-
-            if(validacion.indexOf("false") !== -1) {
-                alert("Las entidades no están correctamente relacionadas.");
-            } else {
-                var elements = document.getElementsByTagName("input")
-                var arrayElements = [];
-                for (var i = 0; i < elements.length; i++) {
-                    if(elements[i].value === "" && elements[i].required === true) {
-                        alert("Debe completar todos los nombres de Entidades, Relaciones y Atributos.");
-                        break;
-                    } else {
-                        arrayElements.push(elements[i].name + ":" + elements[i].value);
-                    }
-                }
-
-                if(arrayElements.length === elements.length) {
-                    window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=guardarInputsEjercicio&inputs=" + arrayElements + "");
-                    //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio&inputs=" + arrayElements.toString() + "");
-                    //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=inicio");
-                    //document.write(" <?php $_SESSION['ciUsuario'] = " + arrayElements.toString() + " ?> ");
-                }
-                //alert(arrayElements.toString());
-            }
-        } */
 
         // funcion final que captura todos los datos y se arma el array
         function validar(Entidades) {
             var largoEntidades = Entidades.length;
             var validacion = [];
 
-            for(i = 0; i < largoEntidades; i++) {
+            for (i = 0; i < largoEntidades; i++) {
                 var divHijo = document.getElementById(Entidades[i]).childNodes[1];
                 validacion.push((divHijo.style.backgroundColor === "green").toString());
             }
 
-            if(validacion.indexOf("false") !== -1) {
-                document.getElementById("mensajeModal").innerHTML = 
+            if (validacion.indexOf("false") !== -1) {
+                document.getElementById("mensajeModal").innerHTML =
                         "Las entidades no están correctamente relacionadas.";
                 document.getElementById("source-modal").style.display = "block";
                 document.getElementById("modal-backdrop").style.display = "block";
@@ -136,8 +97,8 @@
                 var elements = document.getElementsByTagName("input")
                 var arrayElements = [];
                 for (var i = 0; i < elements.length; i++) {
-                    if(elements[i].value === "" && elements[i].required === true) {
-                        document.getElementById("mensajeModal").innerHTML = 
+                    if (elements[i].value === "" && elements[i].required === true) {
+                        document.getElementById("mensajeModal").innerHTML =
                                 "Debe completar todos los nombres de Entidades, Relaciones y Atributos.";
                         document.getElementById("source-modal").style.display = "block";
                         document.getElementById("modal-backdrop").style.display = "block";
@@ -148,10 +109,11 @@
                     }
                 }
 
-                if(arrayElements.length === elements.length) {
+                if (arrayElements.length === elements.length) {
                     var inicioEjercicio = sessionStorage.getItem("inicioEjercicio");
-                    var finEjercicio = new Date().toISOString().slice(0, 19).replace('T', ' ');;
-                    window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=guardarInputsEjercicio&inputs=" + arrayElements + 
+                    var finEjercicio = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                    ;
+                    window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=guardarInputsEjercicio&inputs=" + arrayElements +
                             "&inicioEjercicio=" + inicioEjercicio + "&finEjercicio=" + finEjercicio + "");
                     //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=validarEjercicio&inputs=" + arrayElements.toString() + "");
                     //window.location.replace("http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=inicio");
@@ -165,7 +127,7 @@
         function validarPosicionRelacion(idRelacion, Entidades) {
             var largoEntidades = Entidades.length;
 
-            for(i = 0; i < largoEntidades; i++) {
+            for (i = 0; i < largoEntidades; i++) {
                 var entidad = posicionObjeto(Entidades[i]);
                 var xEntidad = entidad[0];
                 var yEntidad = entidad[1];
@@ -174,38 +136,36 @@
                 var xRelacion = relacion[0];
                 var yRelacion = relacion[1];
 
-                var minXIzquierda = xRelacion-110-130;
-                var maxXIzquierda = xRelacion-80-130;
-                var minXDerecha = xRelacion+110+130;
-                var maxXDerecha = xRelacion+80+130;
-                var minAlto = yRelacion-20;
-                var maxAlto = yRelacion+20;
+                var minXIzquierda = xRelacion - 110 - 130;
+                var maxXIzquierda = xRelacion - 80 - 130;
+                var minXDerecha = xRelacion + 110 + 130;
+                var maxXDerecha = xRelacion + 80 + 130;
+                var minAlto = yRelacion - 20;
+                var maxAlto = yRelacion + 20;
 
                 var divHijo = document.getElementById(Entidades[i]).childNodes[1];
 
-                if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
-                (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
-                    if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                if ((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                    if (yEntidad >= minAlto && yEntidad <= maxAlto) {
                         divHijo.style.backgroundColor = "green";
                         //var mensaje = "Ok";
-                    }
-                    else {
+                    } else {
                         divHijo.style.backgroundColor = "#e95420";
                         //var mensaje = "Negativo central";
                     }
-                }
-                else {
+                } else {
                     divHijo.style.backgroundColor = "#e95420";
                     //var mensaje = "Negativo central";
                 }
             }
         }
-        
+
         //valida posicion de relacion
         function validarPosicionAutoRelacion(idRelacion, Entidades) {
             var largoEntidades = Entidades.length;
 
-            for(i = 0; i < largoEntidades; i++) {
+            for (i = 0; i < largoEntidades; i++) {
                 var entidad = posicionObjeto(Entidades[i]);
                 var xEntidad = entidad[0];
                 var yEntidad = entidad[1];
@@ -214,27 +174,25 @@
                 var xRelacion = relacion[0];
                 var yRelacion = relacion[1];
 
-                var minXIzquierda = xRelacion-110-130;
-                var maxXIzquierda = xRelacion-80-130;
-                var minXDerecha = xRelacion+110+130;
-                var maxXDerecha = xRelacion+80+130;
-                var minAlto = yRelacion-20;
-                var maxAlto = yRelacion+20;
+                var minXIzquierda = xRelacion - 110 - 130;
+                var maxXIzquierda = xRelacion - 80 - 130;
+                var minXDerecha = xRelacion + 110 + 130;
+                var maxXDerecha = xRelacion + 80 + 130;
+                var minAlto = yRelacion - 20;
+                var maxAlto = yRelacion + 20;
 
                 var divHijo = document.getElementById(Entidades[i]).childNodes[1];
 
-                if((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
-                (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
-                    if(yEntidad >= minAlto && yEntidad <= maxAlto) {
+                if ((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                    if (yEntidad >= minAlto && yEntidad <= maxAlto) {
                         divHijo.style.backgroundColor = "green";
                         //var mensaje = "Ok";
-                    }
-                    else {
+                    } else {
                         divHijo.style.backgroundColor = "#e95420";
                         //var mensaje = "Negativo central";
                     }
-                }
-                else {
+                } else {
                     divHijo.style.backgroundColor = "#e95420";
                     //var mensaje = "Negativo central";
                 }
@@ -253,12 +211,133 @@
             var xRelacion = relacion[0];
             var yRelacion = relacion[1];
 
-            var minXIzquierda = xRelacion-110-130;
-            var maxXIzquierda = xRelacion-80-130;
-            var minXDerecha = xRelacion+110+130;
-            var maxXDerecha = xRelacion+80+130;
-            var minAlto = yRelacion-20;
-            var maxAlto = yRelacion+20;
+            var minXIzquierda = xRelacion - 110 - 130;
+            var maxXIzquierda = xRelacion - 80 - 130;
+            var minXDerecha = xRelacion + 110 + 130;
+            var maxXDerecha = xRelacion + 80 + 130;
+            var minAlto = yRelacion - 20;
+            var maxAlto = yRelacion + 20;
+
+            var divHijo = document.getElementById(idEntidad).childNodes[1];
+
+            if ((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                    (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                if (yEntidad >= minAlto && yEntidad <= maxAlto) {
+                    divHijo.style.backgroundColor = "green";
+                    var validacion = true;
+                    //if(idEntidad.includes("entidad")) {
+                    //    guardarEntidades(idEntidad);
+                    //}
+                } else {
+                    divHijo.style.backgroundColor = "#e95420";
+                    var validacion = false;
+                }
+            } else {
+                divHijo.style.backgroundColor = "#e95420";
+                var validacion = false;
+            }
+
+            //alert(mensaje);
+        }
+
+        //valida posicion de categorizacion con respecto a Entidades
+        function validarPosicionCategorizacion(idCategorizacion, Entidades, idRelacion) {
+            validarPosicionEntidad(idRelacion, idCategorizacion);
+            
+            var largoEntidades = Entidades.length;
+
+            for (i = 0; i < largoEntidades; i++) {
+                var entidad = posicionObjeto(Entidades[i]);
+                var xEntidad = entidad[0];
+                var yEntidad = entidad[1];
+
+                var categorizacion = posicionObjeto(idCategorizacion);
+                var xCategorizacion = categorizacion[0];
+                var yCategorizacion = categorizacion[1];
+
+                var minXIzquierda = xCategorizacion - 75 - 85;
+                var maxXIzquierda = xCategorizacion - 60 - 70;
+                var minXDerecha = xCategorizacion + 75 + 85;
+                var maxXDerecha = xCategorizacion + 60 + 70;
+                var minAlto = yCategorizacion + 175;
+                var maxAlto = yCategorizacion + 220;
+
+                var divHijo = document.getElementById(Entidades[i]).childNodes[1];
+
+                if ((xEntidad >= minXIzquierda && xEntidad <= maxXIzquierda) ||
+                        (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
+                    if (yEntidad >= minAlto && yEntidad <= maxAlto) {
+                        divHijo.style.backgroundColor = "green";
+                        //var mensaje = "Ok";
+                    } else {
+                        divHijo.style.backgroundColor = "#e95420";
+                        //var mensaje = "Negativo central";
+                    }
+                } else {
+                    divHijo.style.backgroundColor = "#e95420";
+                    //var mensaje = "Negativo central";
+                }
+
+                //alert(mensaje);
+            }
+        }
+
+        //valida posicion de categorizacion con respecto a la relacion
+        function validarPosicionRelacionCategorizacion(idRelacion, Categorizaciones) {
+            var largoCategorizaciones = Categorizaciones.length;
+
+
+            for (i = 0; i < largoCategorizaciones; i++) {
+                var categorizacion = posicionObjeto(Categorizaciones[i]);
+                var xCategorizacion = categorizacion[0];
+                var yCategorizacion = categorizacion[1];
+
+                var relacion = posicionObjeto(idRelacion);
+                var xRelacion = relacion[0];
+                var yRelacion = relacion[1];
+
+                var minXIzquierda = xRelacion - 110 - 130;
+                var maxXIzquierda = xRelacion - 80 - 130;
+                var minXDerecha = xRelacion + 110 + 130;
+                var maxXDerecha = xRelacion + 80 + 130;
+                var minAlto = yRelacion - 20;
+                var maxAlto = yRelacion + 20;
+
+                var divHijo = document.getElementById(Categorizaciones[i]).childNodes[1];
+
+                if ((xCategorizacion >= minXIzquierda && xCategorizacion <= maxXIzquierda) ||
+                        (xCategorizacion <= minXDerecha && xCategorizacion >= maxXDerecha)) {
+                    if (yCategorizacion >= minAlto && yCategorizacion <= maxAlto) {
+                        divHijo.style.backgroundColor = "green";
+                        //var mensaje = "Ok";
+                    } else {
+                        divHijo.style.backgroundColor = "#e95420";
+                        //var mensaje = "Negativo central";
+                    }
+                } else {
+                    divHijo.style.backgroundColor = "#e95420";
+                    //var mensaje = "Negativo central";
+                }
+            }
+        }
+        
+        // valida posicion entidad
+        // check de asosiado por id de categorizacion y entidades
+        function validarPosicionSubEntidad(idCategorizacion, idEntidad) {
+            var entidad = posicionObjeto(idEntidad);
+            var xEntidad = entidad[0];
+            var yEntidad = entidad[1];
+
+            var categorizacion = posicionObjeto(idCategorizacion);
+            var xCategorizacion = categorizacion[0];
+            var yCategorizacion = categorizacion[1];
+
+            var minXIzquierda = xCategorizacion-75-85;
+            var maxXIzquierda = xCategorizacion-60-70;
+            var minXDerecha = xCategorizacion+75+85;
+            var maxXDerecha = xCategorizacion+60+70;
+            var minAlto = yCategorizacion+175;
+            var maxAlto = yCategorizacion+220;
 
             var divHijo = document.getElementById(idEntidad).childNodes[1];
 
@@ -266,19 +345,16 @@
             (xEntidad <= minXDerecha && xEntidad >= maxXDerecha)) {
                 if(yEntidad >= minAlto && yEntidad <= maxAlto) {
                     divHijo.style.backgroundColor = "green";
-                    var validacion = true;
-                    //if(idEntidad.includes("entidad")) {
-                    //    guardarEntidades(idEntidad);
-                    //}
+                    //var mensaje = "Ok";
                 }
                 else {
                     divHijo.style.backgroundColor = "#e95420";
-                    var validacion = false;
+                    //var mensaje = "Negativo central";
                 }
             }
             else {
                 divHijo.style.backgroundColor = "#e95420";
-                var validacion = false;
+                //var mensaje = "Negativo central";
             }
 
             //alert(mensaje);

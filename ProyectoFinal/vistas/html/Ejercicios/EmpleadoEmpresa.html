@@ -11,9 +11,9 @@
             <div id="entidad" title=""><p></p><input id="inputEnt" type="text" placeholder="Entidad" name="nombre_entidadComun1" size="10" maxlength="15" required>
                 <input id="inputEnt" name="cardinalidad_entidadComun1" type="tel" size="1" placeholder="1...N" disabled="">
                 <div id="lineaAtributo1"><input type="text" name="atributoComun1_entidadComun1" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required></div>
-                <div id="lineaAtributo2Multi"><input type="text" name="atributoMult1_entidadComun1" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required></div>
-                <div id="lineaAtributoMulti1"><input type="text" name="atributoComun1_atributoMult1" id="inputAtrMult1" placeholder="Atributo" size="4" maxlength="10" required></div>
-                <div id="lineaAtributoMulti2"><input type="text" name="atributoComun2_atributoMult1" id="inputAtrMult2" placeholder="Atributo" size="4" maxlength="10" required></div>
+                <div id="lineaAtributo2Multi"><input type="text" name="atributoComp1_entidadComun1" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required></div>
+                <div id="lineaAtributoMulti1"><input type="text" name="atributoComun2_atributoComp1|entidadComun1" id="inputAtrMult1" placeholder="Atributo" size="4" maxlength="10" required></div>
+                <div id="lineaAtributoMulti2"><input type="text" name="atributoComun3_atributoComp1|entidadComun1" id="inputAtrMult2" placeholder="Atributo" size="4" maxlength="10" required></div>
             </div>
         </div>
 
@@ -44,6 +44,8 @@
         <div class="form">
             <input type="text" name="restricciones" class="form-control" size="125" placeholder="Restricciones no estructurales">
             <a onclick="validar(['entidad1', 'entidad2'])"><button type="submit" class="btn btn-primary btn-lg">Validar</button></a>
+            <a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>
+            <button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>
         </div>
     </div>
 </div>

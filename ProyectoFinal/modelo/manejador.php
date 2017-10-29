@@ -575,7 +575,8 @@ class manejador extends conexionDB {
             $this->query = "SELECT A.nombre_atributo, "
                     . " A.tipo_atributo, "
                     . " A.nombre_atributo_multivaluado, "
-                    . " A.nombre_entidad "
+                    . " A.nombre_entidad, "
+                    . " A.nombre_relacion "
                     . " FROM sol_atributo AS A"
                     . " WHERE A.nombre_mer = '$nombreMer'"
                     . " AND A.ci_usuario = '00000000';";
@@ -792,7 +793,7 @@ class manejador extends conexionDB {
                  . " tipo_categorizacion , nombre_mer , ci_usuario)"
                  . "VALUE"
                 . "(null , '$nombre_entidad' , '$tipo_entidad' , "
-                 . "'$entidad_supertipo' , '$tipo_categorizacion', "
+                 . "NULLIF('$entidad_supertipo', '') , '$tipo_categorizacion', "
                  . "'$nombre_mer' , '$ci_usuario');";
         
         $msjSolMerEntidad = "No se ha cargado la entidad.";
@@ -828,16 +829,19 @@ class manejador extends conexionDB {
     }
     
     public function guardarSolucionMerAtributo($nombre_atributo, $tipo_atributo ,
-                                             $nombre_entidad ,
-                                             $nombre_mer ,
-                                             $ci_usuario) {
+                                            $nombre_atributo_multivaluado,
+                                            $nombre_entidad , $nombre_relacion, 
+                                            $nombre_mer ,
+                                            $ci_usuario) {
         $this->query = "INSERT INTO sol_atributo "
-                . "(id_atributo , nombre_atributo ,tipo_atributo , "
-                . "nombre_entidad , nombre_mer , ci_usuario )"
+                . "(id_atributo , nombre_atributo , tipo_atributo , "
+                . "nombre_atributo_multivaluado, nombre_entidad , nombre_relacion, "
+                . "nombre_mer , ci_usuario )"
                 . "VALUE"
                 . "(null , '$nombre_atributo' , '$tipo_atributo' ,"
-                . " '$nombre_entidad',"
-                . " '$nombre_mer' , '$ci_usuario');";
+                . " NULLIF('$nombre_atributo_multivaluado', ''), "
+                . " NULLIF('$nombre_entidad', ''), "
+                . " NULLIF('$nombre_relacion', ''), '$nombre_mer' , '$ci_usuario');";
         
         $msjSolMerAtributo= "No se ha cargado la entidad.";
               
@@ -923,7 +927,7 @@ class manejador extends conexionDB {
                 . "agregacion , nombre_mer , ci_usuario)"
                 . "VALUE"
                 . "(null , '$nombre_relacion' , '$nombre_entidadA' , "
-                . "'$nombre_entidadB' , NULLIF('', '$agregacion') , '$nombre_mer' ,"
+                . "'$nombre_entidadB' , NULLIF('$agregacion', '') , '$nombre_mer' ,"
                 . " '$ci_usuario');";
                  
         $msjSolMerRelacion = "No se ha cargado la relacion.";
