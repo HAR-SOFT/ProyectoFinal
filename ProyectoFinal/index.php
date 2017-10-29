@@ -114,23 +114,26 @@ else {
         case "importarAlumnos":
             $mvc->importarAlumnos();
             break;
+        case "importarProfesores":
+            $mvc->importarProfesores();
+            break;
         case "eliminarRegistro":
             $mvc->eliminarRegistro();
             break;
         case "modificarRegistroAlumno":
             $mvc->modificarAlumno();
             break;
-        case "modificoRegistro":
+        case "modificoRegistroAlumno":
             $mvc->modificoRegistroAlumno();
+            break;
+        case "eliminarRegistroProfesor":
+            $mvc->eliminarRegistroProfesor();
             break;
         case "modificarRegistroProfesor":
             $mvc->modificarRegistroProfesor();
             break;
         case "modificoRegistroProfesor":
             $mvc->modificoRegistroProfesor();
-            break;
-        case "eliminarCurso":
-            $mvc->eliminarRegistroCurso();
             break;
         case "modificarRegistroCurso":
             $mvc->modificarRegistroCurso();

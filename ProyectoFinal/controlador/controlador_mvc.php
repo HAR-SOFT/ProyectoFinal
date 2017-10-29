@@ -649,13 +649,12 @@ class controlador_mvc extends manejador {
                 . "</div>"
                 . "</div>";        
     
-            
                 $contenido = $contenido. "</div>"
                 . "<div class='container'>"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verReporte&ci=$ciUsuario&curso=$curso'>"
-                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px'name='reporte'>Ver reporte</button>&nbsp;"
+                . "<button type='button' class='btn btn-primary btn-lg' style='position: relative; float: right;' name='reporte'>Ver reporte</button>"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
-                . "<button type='bitton' class='btn btn-primary btn-lg' style='position: relative; align: right; margin-left: 1050px' name='volver'>Volver</button></a>"   
+                . "<button type='button' class='btn btn-primary btn-lg' style='position: relative; float: right; margin-right:10px;' name='volver'>Volver</button></a>"
                 . "</div>"
                 . "</div>"
                 . "</div>";
@@ -763,13 +762,12 @@ class controlador_mvc extends manejador {
                 $contenido = $contenido. "<br><br><br>"
                 . "<div class='container'>"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asociarTema&curso=$curso&tema=$tema' >"
-                . "<button type='submit' style='position: relative; align: right; margin-left: 838px' class='btn btn-primary btn-lg' name='guardar'>Agregar</button></a>&nbsp;"
+                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; margin-right:10px; float: right;' name='guardar'>Agregar</button></a>&nbsp;"
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=desasociarTema&curso=$curso&tema=$tema'>"
-                . "<button type='submit' class='btn btn-primary btn-lg' name='guardar'>Eliminar</button></a>&nbsp;"
+                . "<button type='submit' class='btn btn-primary btn-lg' style='position: relative; margin-right:10px; float: right;' name='guardar'>Eliminar</button></a>&nbsp;"
                 . "</form>"        
                 . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"
-                . "<button type='button' class='btn btn-primary btn-lg' name='volver'>Volver</button></a>"                            
-                . "</div>"
+                . "<button type='button' class='btn btn-primary btn-lg' style='position: relative; margin-right:10px; float: right;'name='volver'>Volver</button></a>"                            
                 . "</div>";
                                
                 $pagina = $this->load_template("inicio");
@@ -955,9 +953,9 @@ class controlador_mvc extends manejador {
                     $tema  = $_REQUEST["tema"];                
                     $curso = $_REQUEST["curso"];               
                     
-                    $existe = $this->comprobarTema($curso, $tema);
-                    //var_dump($existe[0]['nombre_tema']);
-                        if( ($existe[0]['nombre_tema']) == $tema  ){   
+                    $existe = $this->comprobarTema($curso,$tema);
+
+                        if( ($existe[0]['nombre_tema']) == $tema){   
                             $resultado = $this->verTemaSeleccionadoProfesor($tema);
                             if($resultado == !NULL){
                                 for($i = 0 ; $i < sizeof($resultado) ; $i++){                   
@@ -1138,7 +1136,7 @@ class controlador_mvc extends manejador {
                     . "<td>" . $fila['profesor'] . "</td>"
                     . "<td>" . $fila['ci'] . "</td>"
                     . "<td>" . $fila['curso'] . "</td>"
-                   . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=eliminarRegistro&curso=$fila[curso]&ci=$fila[ci]'>
+                   . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=eliminarRegistroProfesor&curso=$fila[curso]&ci=$fila[ci]'>
                   <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
                  . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificarRegistroProfesor&curso=$fila[curso]&ci=$fila[ci]'>
                   <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"                    
@@ -1151,7 +1149,7 @@ class controlador_mvc extends manejador {
 
             echo "<br>"
             . "<p align='left'>"
-            . "<form action='../importarAlumnos.php' method='post' enctype='multipart/form-data'>"
+            . "<form action= 'http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=importarProfesores' method='post' enctype='multipart/form-data'>"
             . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
             . "<input type='button'  value='Importar grupo profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"
             . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
@@ -1206,7 +1204,7 @@ class controlador_mvc extends manejador {
             . "</div>"
             . "</th>"
             . "<th>"
-            . "<th>"
+            
             . "<div>"
              . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>" 
             . "</div>"
@@ -1241,9 +1239,6 @@ class controlador_mvc extends manejador {
                 . "<td>" . $fila['horario'] . "</td>"
                 . "<td>" . $fila['profesor'] . "</td>"
                 . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?"
-                        . "action=eliminarCurso&curso=$fila[curso]&horario=$fila[horario]&profesor=$fila[profesor]'>
-                <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
-                . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?"
                         . "action=modificarRegistroCurso&curso=$fila[curso]&anio=$fila[anio]&horario=$fila[horario]&profesor=$fila[profesor]'>
                 <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"               
                 . "</tr>"
@@ -1277,7 +1272,7 @@ class controlador_mvc extends manejador {
             . "<div class='form-group'>"
             . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
             . "<div class='col-lg-8'>"
-            . "<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            . "<input type='number' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
             . "</div>"
             . "</div>"
             . "<div class='form-group'>"
@@ -1398,7 +1393,7 @@ class controlador_mvc extends manejador {
 
                 if(!$resultado){
                     $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
-                    var_dump($asignar);
+                   
                         if(!$asignar) {
                           $this->modal("Se agrego el Alumno $nombreUsuario "
                                     . "$apellidoUsuario y se asocio al Curso "
@@ -1441,7 +1436,7 @@ class controlador_mvc extends manejador {
             . "<div class='form-group'>"
             . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
             . "<div class='col-lg-8'>"
-            . "<input type='text' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
+            . "<input type='number' class='form-control' id='inputNombre' name='inputCI' placeholder='12345678' required>"
             . "</div>"
             . "</div>"
             . "<div class='form-group'>"
@@ -1686,31 +1681,38 @@ class controlador_mvc extends manejador {
                 
                 $horarioCurso = str_replace(":","-",$horarioCurso);
 
-                $resultado = $this->altaCursoManejador($nombreCurso,
+                $comprobarNombreCurso = $this->comprobarNombreCurso($nombreCurso);
+                
+                if($comprobarNombreCurso[0]['nombre'] == $nombreCurso){
+                    
+                    $this->agregarCurso();
+                    $this->modal("Ya existe un Curso con el nombre $nombreCurso.");
+                    
+                }
+                else {
+                    $resultado = $this->altaCursoManejador($nombreCurso,
                                                        $anioCurso,
                                                        $horarioCurso,
                                                        $inicioCurso,
                                                        $finCurso);
-                $profesor = $_REQUEST["asignarProfesor"];
+                    $profesor = $_REQUEST["asignarProfesor"];
                 
-                $consulta = $this->listarProfesoresPorNombre($profesor);
+                    $consulta = $this->listarProfesoresPorNombre($profesor);
   
-                $ci = $consulta[0][2];
+                    $ci = $consulta[0][2];
 
-                $valores = "'".$nombreCurso."' ," .$ci;
+                    $valores = "'".$nombreCurso."' ," .$ci;
 
-                $asignarProfesor= $this->asignarCursoUsuarios($valores);
-                                
-                if($resultado == NULL){
-                   $this->modal("Se agrego el Curso $nombreCurso y se asigno "
-                           . "el Profesor $profesor");
-                   $this->agregarCurso();
-                } else {
-                    $this->modal("No se ha podido agregar el Curso.");
-                    $this->agregarCurso();
-                }
+                    $asignarProfesor = $this->asignarCursoUsuarios($valores);
+                     
+                    $asignacionTemas = $this->asociacionCursoTemaSubtemaEjercicio($nombreCurso);               
+                    if($resultado == NULL){
+                        $this->modal("Se agrego el Curso $nombreCurso y se asigno "
+                                   . "el Profesor $profesor");
+                        $this->agregarCurso();              
+                    }
+                  }
             }
-
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
@@ -1767,7 +1769,7 @@ class controlador_mvc extends manejador {
 
             $this->view_page($pagina);
 
-            $cursos = $this->listarCursosActivos();
+            $cursos = $this->listarCursosSinProfesor();
 
             foreach ($cursos as $filaCurso ) {
                 echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
@@ -3109,17 +3111,20 @@ class controlador_mvc extends manejador {
             $this->alumnosBedelia();
             $DB = new conexionDB();        
             $DB->conectar();
-
+            
             $archivo = $_FILES['archivos-excel']['name'];
-
-            if($archivo == NULL){     
-               
-                $this->modal("Debe seleccionar un archivo");        
+            $destino = 'bak_'.$archivo;
+            
+            if(!strpos($archivo, 'xlsx')  || ($archivo == NULL)  ){
+                
+                 $this->modal(" Debe seleccionar un archivo correcto ");             
             }
-            else{
+            else{                  
+                                    
+                $objPHPExcel = $objReader->load('bak_'.$archivo);
 
                 $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
-
+                
                 $objPHPExcel->setActiveSheetIndex(0);
 
                 $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
@@ -3144,29 +3149,88 @@ class controlador_mvc extends manejador {
                     
                         if ($resultado == !false){     
                        
-                              $this->modal(" No se ha podido realizar la importacion") ;
+                              //$this->modal(" No se ha podido realizar la importacion") ;
                         }
                         else{
                            
-                            $this->modal("Se ha realizado correctamente la "
-                                    . "importacion del Alumno: <br>"
-                                    . " $ci $nombre <br>") ;
-                   
+                            //$this->modal("Se ha realizado correctamente la "
+                            //        . "importacion del Alumno: <br>"
+                            //        . " $ci $nombre <br>") ;                  
                         }          
                 }
-            
-                
-                        }
-               
+                        
+             }      
     }catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
 
-    function eliminarRegistro(){
-        try {     
-            if (isset($_REQUEST["ci"])){
+        function importarProfesores(){
+        try {      
+ 
+            //session_start();
+            $this->profesoresBedelia();
+            $DB = new conexionDB();        
+            $DB->conectar();
+            
+            $archivo = $_FILES['archivos-excel']['name'];
+            $destino = 'bak_'.$archivo;
+            
+            if(!strpos($archivo, 'xlsx')  || ($archivo == NULL)  ){
                 
+                 $this->modal(" Debe seleccionar un archivo correcto ");             
+            }
+            else{                  
+                                    
+                $objPHPExcel = $objReader->load('bak_'.$archivo);
+
+                $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
+                
+                $objPHPExcel->setActiveSheetIndex(0);
+
+                $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+
+                for ($i = 2; $i <= $numRows; $i++) {
+                //Insertamos los datos con los valores...
+
+                    $ci = $objPHPExcel->getActiveSheet()->getCell('A' . $i)->getCalculatedValue();
+                    $nombre = $objPHPExcel->getActiveSheet()->getCell('B' . $i)->getCalculatedValue();
+                    $apellido = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getCalculatedValue();
+                    $sexo = $objPHPExcel->getActiveSheet()->getCell('D' . $i)->getCalculatedValue();
+                    $email = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
+                    $telefono = $objPHPExcel->getActiveSheet()->getCell('F' . $i)->getCalculatedValue();
+                    $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
+                    $pass = md5($ci);
+
+
+                
+                    $resultado = $this->importarProfesoresManejador($ci ,$nombre , $apellido ,
+                                                        $sexo ,$email ,
+                                                        $pass ,$telefono , $celular); 
+                    
+                        if ($resultado == !false){     
+                       
+                              //$this->modal(" No se ha podido realizar la importacion") ;
+                        }
+                        else{
+                           
+                            //$this->modal("Se ha realizado correctamente la "
+                            //        . "importacion del Alumno: <br>"
+                            //        . " $ci $nombre <br>") ;                  
+                        }          
+                }
+                        
+             }      
+    }catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+    function eliminarRegistroProfesor(){
+        try {       
+             
+            if (isset($_REQUEST["ci"])){
+             
                 if(isset($_REQUEST['curso'])){
                                                       
                     $ci_usuario = $_REQUEST["ci"];
@@ -3174,16 +3238,46 @@ class controlador_mvc extends manejador {
 
                     $asociacion = $this->eliminarRegistroAsociacionManejador($curso,$ci_usuario);
                
-                     $resultado = $this->eliminarRegistroManejador($ci_usuario);
-                
-                     $this->modal(" Registro eliminado correctamente") ;
-                     $this->alumnosBedelia();
-                                          
+                    $resultado = $this->eliminarRegistroManejador($ci_usuario);
+                                         
+                    $this->profesoresBedelia(); 
+                    $this->modal(" Registro eliminado correctamente") ;
+                                                            
                 }
                         
                 }                     
                 else{
-                     $this->alumnosBedelia();
+                     $this->profesoresBedelia(); 
+                     $this->modal(" No se ha podido eliminar el registro") ;
+                }  
+       
+        }catch (Exception $ex) {
+            echo "Excepción capturada: ", $ex->getMessage(), "\n";
+        }
+    }
+    
+        function eliminarRegistro(){
+        try {       
+             
+            if (isset($_REQUEST["ci"])){
+             
+                if(isset($_REQUEST['curso'])){
+                                                      
+                    $ci_usuario = $_REQUEST["ci"];
+                    $curso = $_REQUEST["curso"];
+
+                    $asociacion = $this->eliminarRegistroAsociacionManejador($curso,$ci_usuario);
+               
+                    $resultado = $this->eliminarRegistroManejador($ci_usuario);
+                                         
+                    $this->alumnosBedelia(); 
+                    $this->modal(" Registro eliminado correctamente") ;
+                                                            
+                }
+                        
+                }                     
+                else{
+                     //$this->alumnosBedelia();
                      $this->modal(" No se ha podido eliminar el registro") ;
                 }  
        
@@ -3209,7 +3303,7 @@ class controlador_mvc extends manejador {
             . "<div class='page-header' id='tables'>"
             . "<h1 style='color:#d3d3d3;' align='center'>Modificar Datos Alumno</h1>"
             . "</div>"
-            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroProfesor'>"
+            . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificoRegistroAlumno'>"
             . "<fieldset>"
             . "<div class='form-group'>"
             . "<label for='text' class='col-lg-2 control-label'>Cedula</label>"
@@ -3474,17 +3568,17 @@ class controlador_mvc extends manejador {
                  $modficacionCurso = $this->modificoAsociacionCurso($curso, $ciUsuario);                                  
                 
                 if($modficacionUsuario == NULL){
-                         $this->profesoresBedelia();
+                         $this->alumnosBedelia();
                          $this->modal("Registro actualizado correctamente");
                          
                 }else{
-                          $this->profesoresBedelia();
+                          $this->alumnosBedelia();
                           $this->modal("No se ha podido actualizar el registro");
                           
                 }
                
             }else{
-                          $this->profesoresBedelia();
+                          $this->alumnosBedelia();
                           $this->modal("En este momento no se puede actualizar"
                                        . "  el registro");
                           
@@ -3540,41 +3634,8 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-    
-    function eliminarRegistroCurso(){
-        try {                     
-             if(isset($_REQUEST['curso'])){
-                $profesor = $_REQUEST["profesor"];                                      
-                $curso = $_REQUEST["curso"];                
-                $horario = $_REQUEST["horario"];
-                
-                $nomProfesor = $this->listarProfesoresPorNombre($profesor);
-                $ci_usuario = $nomProfesor[0][2];
- 
-                $asociacion = $this->eliminarRegistroAsociacionManejador($curso,
-                                                                         $ci_usuario);        
-                 
-                $resultado = $this->eliminarCursoManejador($curso , $horario);
-                
-                if($resultado == !true){
-                
-                $this->modal(" Registro eliminado correctamente") ;
-                $this->cursosBedelia();
-                }                           
-            }                   
-            else{
-                $this->cursosBedelia();
-                $this->modal(" No se ha podido eliminar el registro") ;
-            }  
-       
-        }catch (Exception $ex) {
-            echo "Excepción capturada: ", $ex->getMessage(), "\n";
-        }
-    }
-
-    
-    
-          function modificarRegistroCurso(){
+   
+    function modificarRegistroCurso(){
         try {
             session_start();
                        
