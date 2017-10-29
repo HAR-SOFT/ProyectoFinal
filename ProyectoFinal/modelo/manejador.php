@@ -182,6 +182,26 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarCursos);
     }
+    
+    public function listarCursosSinProfesor() {
+        $this->query = "SELECT * FROM dim_curso "
+                . "where nombre NOT IN "
+                . "( select nombre_curso from asc_curso_usuario );";
+        $msjListarCursos = "No hay cursos para mostrar";
+
+        return $this->ejecutarQuery($this->query, $msjListarCursos);
+    }
+    
+    public function listarCursosPorNombreHorarioProfesorAnio($curso ,$horario ,
+                                                             $anio) {
+        $this->query = "SELECT * FROM dim_curso "
+                . " where nombre = '$curso' "
+                . " and horario = '$horario' "
+                . " and anio = '$anio' ;";
+        $msjListarCursos = "No hay cursos para mostrar";
+
+        return $this->ejecutarQuery($this->query, $msjListarCursos);
+    }
 
     public function listarAlumnosPorCurso($curso) {
         $this->query = "SELECT U.nombre, U.apellido"
@@ -214,6 +234,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjlistarProfesoresSinCurso);
     }
+
     
     public function buscarCursoDeUsuario($ciUsuario) {
         $this->query = "SELECT C.nombre_curso"
@@ -232,7 +253,7 @@ class manejador extends conexionDB {
                 . " curso.horario as horario,"
                 . " GROUP_CONCAT(DISTINCT dt.nombre SEPARATOR ' - ') as tema,"
                 . " GROUP_CONCAT(DISTINCT asctse.nombre_ejercicio SEPARATOR ' - ') as ejercicio,"
-                . " if(curso.estado = 1 , 'activo' , 'finalizado') as estado"
+                . " if(curso.estado = 1 , 'activo' , 'Inactivo') as estado"
                 . " FROM"
                 . " asc_curso_usuario AS c,"
                 . " dim_curso AS curso,"
@@ -278,6 +299,17 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
     }
+    
+    public function listarCursosActivosSinProfesor() {
+        $this->query = "SELECT *"
+                . " FROM dim_curso AS C"
+                . " WHERE C.estado = 1"
+                . " AND ;";
+        $msjListarCursosActivos = "No hay cursos activos.";
+
+        return $this->ejecutarQuery($this->query, $msjListarCursosActivos);
+    }
+    
 
     public function listarCursosInactivos() {
         $this->query = "SELECT *"
@@ -626,6 +658,15 @@ class manejador extends conexionDB {
         
     }
 
+    public function comprobarNombreCurso($nombreCurso) {
+        $this->query = "SELECT nombre"
+                . " from dim_curso"
+                . " where nombre like '%$nombreCurso%';";
+        $msjcomprobarNombreCurso = "No hay registro para ese Curso";
+        
+        return $this->ejecutarQuery($this->query, $msjcomprobarNombreCurso);
+    }   
+    
     public function altaProfesorManejador($ciUsuario,$nombreUsuario,$apellidoUsuario,
                                         $sexoUsuario,$emailUsuario,$claveUsuario,
                                         $telefonoUsuario,$celularUsuario) {      
@@ -658,23 +699,24 @@ class manejador extends conexionDB {
     }
 
      public function asignarCursoUsuario($curso,$ci) {
-       $cedula = $ci[0];
+       //$cedula = $ci[0];
          
         $this->query = "INSERT INTO asc_curso_usuario "
                 . "(nombre_curso , ci_usuario) VALUE "
-                . "('$curso',$cedula);";
+                . "('$curso',$ci);";
+        
         $msjasignarCursoUsuario = "No se pudo ingresar al curso seleccionado.";
-
+        
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuario);
     }
        
     
      public function asignarCursoUsuarios($valores) {                
-        $this->query = "INSERT INTO asc_curso_usuario "
-                . "(nombre_curso , ci_usuario)"
+        $this->query = " INSERT INTO asc_curso_usuario "
+                . " (nombre_curso , ci_usuario) "
                 . " VALUE ($valores);";
         $msjasignarCursoUsuarios = "No se pudo ingresar al curso seleccionado.";
-
+        
         return $this->ejecutarQuery($this->query, $msjasignarCursoUsuarios);
     }
     
@@ -939,11 +981,11 @@ class manejador extends conexionDB {
         $this->query = "SELECT DISTINCT actse.nombre_tema "
                 . "from asc_curso_tema_subtema_ejercicio actse "
                 . "where actse.nombre_curso = '$curso' "
-                . "and actse.nombre_tema = '$tema' ";
+                . "and actse.nombre_tema LIKE '%$tema%'";
                  
-        $msjcomprobarTema = "No se ha cargado la relacion.";
- 
-        return $this->ejecutarTransaccion($this->query, $msjcomprobarTema); 
+        $msjcomprobarTema = "No se ha encontrado resultado.";
+        
+        return $this->ejecutarQuery($this->query, $msjcomprobarTema); 
     } 
     
     public function verTemaSeleccionadoProfesor($tema ) {      
@@ -1131,6 +1173,382 @@ class manejador extends conexionDB {
 
         return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    public function listarProfesores() {
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
+                . " ci as ci "
+                . "FROM dim_usuario WHERE categoria_usuario = 'Profesor' ;";
+                
+        $msjlistarProfesores = "No hay profesores.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarProfesores);
+    }
+    
+        public function listarProfesoresPorNombre($profesor) {
+        $this->query = "SELECT nombre , apellido , "
+                . " ci  "
+                . " FROM dim_usuario WHERE categoria_usuario = 'Profesor' "
+                . " and CONCAT(nombre,' ',apellido) = '$profesor' ;";
+                
+        $msjlistarProfesoresPorNombre = "No hay profesores.";
+
+        return $this->ejecutarQuery($this->query, $msjlistarProfesoresPorNombre);
+    }
+        public function comprobarCedula($ci_usuario) {
+        $this->query = "select ci as cedula "
+                . "from dim_usuario "
+                . "where ci = '$ci_usuario';";
+                 
+        $msjcomprobarCedula = "No se ha encontrado registros.";
+
+        return $this->ejecutarTransaccion($this->query, $msjcomprobarCedula); 
+    }
+    
+    public function eliminarRegistroAsociacionManejador($curso,$ci_usuario) {
+        $this->query = "DELETE FROM asc_curso_usuario "
+                . "WHERE nombre_curso='$curso' "
+                . "AND ci_usuario = '$ci_usuario';";
+                 
+        $msjeliminarRegistroAsociacionManejador = "No se ha podido elimniar.";
+ 
+        return $this->ejecutarTransaccion($this->query, $msjeliminarRegistroAsociacionManejador); 
+    }
+    
+    public function eliminarRegistroManejador($ci_usuario) {
+        $this->query = "delete from dim_usuario "
+                . " where ci = '$ci_usuario';";
+        
+        $msjceliminarRegistroManejador= "No se ha podido elimniar.";
+
+        return $this->ejecutarTransaccion($this->query, $msjceliminarRegistroManejador); 
+        
+    }
+        
+    public function recuperarDatos($ci_usuario) {
+        $this->query = "select nombre , apellido , sexo , email , telefono , "
+                . " celular "
+                . " from dim_usuario "
+                . " where ci = '$ci_usuario';";
+        
+        $msjrecuperarDatos= "No se han encontrado datos.";
+
+        return $this->ejecutarTransaccion($this->query, $msjrecuperarDatos); 
+        
+    }
+    
+    public function modificoRegistroManejador($nombre,$apellido , 
+                                                  $sexo , $email , $telefonoUsuario ,
+                                                  $celular , $ciUsuario) {
+        $this->query = "UPDATE dim_usuario "
+                . " SET nombre ='$nombre' , apellido = '$apellido' , "
+                . " sexo = '$sexo' , email = '$email' , telefono = '$telefonoUsuario' ,"
+                . " celular = '$celular' WHERE ci='$ciUsuario' ;";
+        
+        $msjrecuperarDatos= "No se han encontrado datos.";
+
+        return $this->ejecutarQuery($this->query, $msjrecuperarDatos);
+        
+    }
+    
+    public function modificoAsociacionCurso($curso,$ciUsuario) {
+        $this->query = "UPDATE asc_curso_usuario "
+                . " SET nombre_curso='$curso' "
+                . " WHERE ci_usuario = '$ciUsuario' LIMIT 1 ;";
+        
+        $msjmodificoAsociacionCurso= "No se han encontrado datos.";
+
+        return $this->ejecutarQuery($this->query, $msjmodificoAsociacionCurso);
+        
+    }
+    
+    public function modificoAsociacionCursoProfesor($curso,$ciUsuario) {
+        $this->query = "UPDATE asc_curso_usuario "
+                . " SET ci_usuario='$ciUsuario' "
+                . " WHERE nombre_curso = '$curso' LIMIT 1 ;";
+        
+        $msjmodificoAsociacionCursoProfesor = "No se han encontrado datos.";
+
+        return $this->ejecutarQuery($this->query, $msjmodificoAsociacionCursoProfesor);
+        
+    }
+    
+    public function modificoCurso($idCurso,$curso,$anio,$horario,$fechaInicio,
+                                  $fechaFin,$estado) {
+        $this->query = "UPDATE dim_curso "
+                . " SET nombre ='$curso' , "
+                . "  anio ='$anio' , "
+                . "  horario ='$horario' , "
+                . "  fecha_inicio = '$fechaInicio' , "
+                . "  fecha_fin = '$fechaFin' , "
+                . "  estado = '$estado'  "
+                . "WHERE id_curso = '$idCurso' LIMIT 1 ;";
+       
+        $msjmodificoCurso = "No se han podido modificar los datos.";
+        
+        return $this->ejecutarQuery($this->query, $msjmodificoCurso);
+        
+    }
+    
+    public function importarAlumnosManejador($ci ,$nombre , $apellido ,$sexo ,$email ,
+                                    $pass ,$telefono , $celular) {        
+         
+        $this->query = "INSERT INTO `dim_usuario`"
+                        . "(`id_usuario`, `ci`, `nombre`, `apellido`,"
+                        . " `sexo`, `email`, `clave`, `telefono`, `celular`,"
+                        . " `categoria_usuario`)"
+                        . "values(null,'$ci','$nombre','$apellido','$sexo',"
+                        . "'$email','$pass','$telefono','$celular', 'alumno')";
+        
+        $msjimportarAlumnos = "No se han podido importar los datos.";
+
+        return $this->ejecutarQuery($this->query, $msjimportarAlumnos);
+    }
+    
+     public function importarProfesoresManejador($ci ,$nombre , $apellido ,$sexo ,$email ,
+                                    $pass ,$telefono , $celular) {        
+         
+        $this->query = "INSERT INTO `dim_usuario`"
+                        . "(`id_usuario`, `ci`, `nombre`, `apellido`,"
+                        . " `sexo`, `email`, `clave`, `telefono`, `celular`,"
+                        . " `categoria_usuario`)"
+                        . "values(null,'$ci','$nombre','$apellido','$sexo',"
+                        . "'$email','$pass','$telefono','$celular', 'profesor')";
+        
+        $msjimportarProfesoresManejador = "No se han podido importar los datos.";
+
+        return $this->ejecutarQuery($this->query, $msjimportarProfesoresManejador);
+    }
+        
+    public function verReporteManejador($ci ,$curso) {        
+         
+        $this->query = "SELECT CONCAT(dua.nombre ,' ', dua.apellido ) as alumno ,"
+                . " sm.nombre  as tema , sm.inicioEjercicio , sm.finEjercicio ,"
+                . "DATE_FORMAT(sm.inicioEjercicio , '%d/%m/%y ')as fecha , "
+                . " FORMAT(SUM(sm.finEjercicio - sm.inicioEjercicio)/(60),2)  AS dedicacion_en_minutos "
+                . " from sol_mer sm , dim_usuario dua ,"
+                . " dim_usuario dup "
+                . " where dua.ci = sm.ci_usuario "
+                . " and dup.ci = $ci "
+                . " and dua.ci IN (SELECT ci_usuario 
+                                   FROM asc_curso_usuario 
+                                   where nombre_curso = '$curso' 
+                                   and ci_usuario <> $ci ) "
+                . " group by alumno ,tema, inicioEjercicio , sm.finEjercicio;";
+        
+        $msjverReporteManejador = "No se han podido importar los datos.";
+
+        return $this->ejecutarQuery($this->query, $msjverReporteManejador);
+    }
+    
+    public function asociacionCursoTemaSubtemaEjercicio($curso) {        
+         
+        $this->query = "INSERT INTO `asc_curso_tema_subtema_ejercicio` "
+                . " (`nombre_curso`,`nombre_tema`,`nombre_subtema`,`nombre_ejercicio`) "
+                . " VALUES "
+                . " ('$curso','Atributos','Atributos Simples','AlumnoPractico'),"
+                . " ('$curso','Atributos','Atributos Complejos','EmpleadoEmpresa'),"
+                . " ('$curso','Atributos','Atributos Determinantes','AlumnoUniversidadDet'),"
+                . " ('$curso','Entidades','','AutoDueno'),"
+                . " ('$curso','Entidades Debiles','','AutoMotor'),"
+                . " ('$curso','Relaciones','Relacion con Atributos','EmpleadoEmpresaRelAtr'),"
+                . " ('$curso','Autorelacion','','EmpleadoSupervisaEmpleados'),"
+                . " ('$curso','Categorizacion ','Categorizacion Completa','EmpresaEmpleadosTotalidad'),"
+                . " ('$curso','Categorizacion','Categorizacion Disjunta','AvionesAccidentesDisjunto'),"
+                . " ('$curso','Relaciones','Relacion con Atributos','PersonaAutoRelAtr'),"
+                . " ('$curso','Entidades','','PerroCucha'),"
+                . " ('$curso','Atributos','Atributos Simples','PersonaCasa'),"
+                . " ('$curso','Atributos','Atributos Complejos','PersonasCasasVerano'),"
+                . " ('$curso','Atributos','Atributos Determinantes','AutoPersonaDet'),"
+                . " ('$curso','Autorelacion','','JugadorCapitaneaJugador'),"
+                . " ('$curso','Relaciones','','ChoferCamionRel'),"
+                . " ('$curso','Relaciones','','MusicoInstrumento'),"
+                . " ('$curso','Entidades Debiles','','HospitalSala'),"
+                . " ('$curso','Categorizacion ','Categorizacion Completa','PersonaUniversidadCategorizacion'),"
+                . " ('$curso','Categorizacion','Categorizacion Disjunta','EmpresaVehiculosDisjunto');";
+        
+        $msjasociacionCursoTemaSubtemaEjercicio = "No se han podido importar los datos.";
+        
+        return $this->ejecutarTransaccion($this->query, $msjasociacionCursoTemaSubtemaEjercicio);
+    }
+    
     
 }
 

@@ -1,73 +1,75 @@
-<br><br><br>
+<br><br><br><br><br>
 <!-- Contenedor -->
 <div class="col-lg-9">
     <!-- Respetar el orden de creacion para que no se pisen los divs -->
     <!-- Si necesitamos una agregacion, dibujarla primero para que las entidades se vean sobre ella y no por detras -->
 
     <!-- area de trabajo -->
-    <div id="snaptarget" class="ui-widget-header">
-        <!-- categorizacion disjunta con dos "hijos" -->
-        <div id="categorizacionDrag" class="draggable ui-widget-content" onmousemove="validarPosicionCategorizacion(this.id, ['entidad1', 'entidad3'], 'relacion1')">
-            <div id="entidad" title=""><br><input id="inputEnt" placeholder="Entidad" type="text" name="nombre_entidadCatDis1" size="10" maxlength="15" required>
-                <input name="cardinalidad_entidadCatDis1" id="inputEnt" type="tel" size="1" placeholder="1...N" disabled="">
-                <div id="categorizacion"></div>
-                <div id="disjunta"></div>
-                <div id="lineaCategorizacionIzq"></div>
-                <div id="lineaCategorizacionDer"></div>
-            </div>
-        </div>
-        
-        <!-- Entidad con 1 atributo -->
-        <!-- con funcion onmousemove=validarPosicionEntidad -->
-        <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionSubEntidad('categorizacionDrag', this.id)">
-            <div id="entidad" title=""><p></p>
-                <input id="inputEnt" name="nombre_entidadSub1|entidadCatDis1" type="text" placeholder="Entidad" size="10" maxlength="15" required>
-                <input id="inputEnt" name="cardinalidad_entidadSub1|entidadCatDis1" type="tel" size="1" placeholder="" disabled="">
-                <div id="lineaAtributo1"><input name="atributoComun1_entidadSub1|entidadCatDis1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+    <div id="containment-wrapper">
+        <div id="snaptarget" class="ui-widget-header">
+            <!-- categorizacion disjunta con dos "hijos" -->
+            <div id="categorizacionDrag" class="draggable ui-widget-content" onmousemove="validarPosicionCategorizacion(this.id, ['entidad1', 'entidad3'], 'relacion1')">
+                <div id="entidad" title=""><br><input id="inputEnt" placeholder="Entidad" type="text" name="nombre_entidadCatDis1" size="10" maxlength="15" required>
+                    <input name="cardinalidad_entidadCatDis1" id="inputEnt" type="tel" size="1" placeholder="1...N" disabled="">
+                    <div id="categorizacion"></div>
+                    <div id="disjunta"></div>
+                    <div id="lineaCategorizacionIzq"></div>
+                    <div id="lineaCategorizacionDer"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Entidad con 1 atributo -->
-        <!-- con funcion onmousemove=validarPosicionEntidad -->
-        <div id="entidad3" class="draggable ui-widget-content" onmousemove="validarPosicionSubEntidad('categorizacionDrag', this.id)">
-            <div id="entidad" title=""><p></p>
-                <input id="inputEnt" name="nombre_entidadSub2|entidadCatDis1" type="text" placeholder="Entidad" size="10" maxlength="15" required>
-                <input id="inputEnt" name="cardinalidad_entidadSub2|entidadCatDis1" type="tel" size="1" placeholder="" disabled="">
-                <div id="lineaAtributo1"><input name="atributoComun1_entidadSub2|entidadCatDis1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+            <!-- Entidad con 1 atributo -->
+            <!-- con funcion onmousemove=validarPosicionEntidad -->
+            <div id="entidad1" class="draggable ui-widget-content" onmousemove="validarPosicionSubEntidad('categorizacionDrag', this.id)">
+                <div id="entidad" title=""><p></p>
+                    <input id="inputEnt" name="nombre_entidadSub1|entidadCatDis1" type="text" placeholder="Entidad" size="10" maxlength="15" required>
+                    <input id="inputEnt" name="cardinalidad_entidadSub1|entidadCatDis1" type="tel" size="1" placeholder="" disabled="">
+                    <div id="lineaAtributo1"><input name="atributoComun1_entidadSub1|entidadCatDis1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Entidad con 2 atributo -->
-        <!-- con funcion onmousemove=validarPosicionEntidad -->
-        <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
-            <div id="entidad" title=""><p></p><input id="inputEnt" placeholder="Entidad" type="text" name="nombre_entidadComun1" size="10" maxlength="15" required>
-                <input id="inputEnt" name="cardinalidad_entidadComun1" type="tel" size="1" placeholder="1...N" disabled="">
-                <div id="lineaAtributo1"><input name="atributoComun1_entidadComun1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
-                </div>
-                <div id="lineaAtributo2"><input name="atributoComun2_entidadComun1" type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required>
+            <!-- Entidad con 1 atributo -->
+            <!-- con funcion onmousemove=validarPosicionEntidad -->
+            <div id="entidad3" class="draggable ui-widget-content" onmousemove="validarPosicionSubEntidad('categorizacionDrag', this.id)">
+                <div id="entidad" title=""><p></p>
+                    <input id="inputEnt" name="nombre_entidadSub2|entidadCatDis1" type="text" placeholder="Entidad" size="10" maxlength="15" required>
+                    <input id="inputEnt" name="cardinalidad_entidadSub2|entidadCatDis1" type="tel" size="1" placeholder="" disabled="">
+                    <div id="lineaAtributo1"><input name="atributoComun1_entidadSub2|entidadCatDis1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Relacion con 2 "relaciones" -->
-        <!-- con funcion onmousemove=validarPosicionRelacion -->
-        <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacionCategorizacion(this.id, ['categorizacionDrag', 'entidad2'])">
-            <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" name="nombre_relacionComun1-entidadComun1-entidadCatDis1" size="7" maxlength="15" required>
-                <div id="lineaEntidadDerecha"></div>
-                <div id="lineaEntidadIzquierda"></div>
+            <!-- Entidad con 2 atributo -->
+            <!-- con funcion onmousemove=validarPosicionEntidad -->
+            <div id="entidad2" class="draggable ui-widget-content" onmousemove="validarPosicionEntidad('relacion1', this.id)">
+                <div id="entidad" title=""><p></p><input id="inputEnt" placeholder="Entidad" type="text" name="nombre_entidadComun1" size="10" maxlength="15" required>
+                    <input id="inputEnt" name="cardinalidad_entidadComun1" type="tel" size="1" placeholder="1...N" disabled="">
+                    <div id="lineaAtributo1"><input name="atributoComun1_entidadComun1" type="text" id="inputAtr1" placeholder="Atributo" size="4" maxlength="10" required>
+                    </div>
+                    <div id="lineaAtributo2"><input name="atributoComun2_entidadComun1" type="text" id="inputAtr2" placeholder="Atributo" size="4" maxlength="10" required>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <!-- Relacion con 2 "relaciones" -->
+            <!-- con funcion onmousemove=validarPosicionRelacion -->
+            <div id="relacion1" class="draggable ui-widget-content" onmousemove="validarPosicionRelacionCategorizacion(this.id, ['categorizacionDrag', 'entidad2'])">
+                <div id="relacion" title=""><br><input id="inputRel" type="text" placeholder="Relacion" name="nombre_relacionComun1-entidadComun1-entidadCatDis1" size="7" maxlength="15" required>
+                    <div id="lineaEntidadDerecha"></div>
+                    <div id="lineaEntidadIzquierda"></div>
+                </div>
+            </div>
 
 
 
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <div class="form">
-            <input type="text" name="restricciones" class="form-control" size="125" placeholder="Restricciones no estructurales">
-            <a onclick="validar(['categorizacionDrag', 'entidad2', 'entidad3', 'entidad1'])"><button type="submit" class="btn btn-primary btn-lg">Validar</button></a>
-            <a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>
-            <button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="form">
+                <input type="text" name="restricciones" class="form-control" size="125" placeholder="Restricciones no estructurales">
+                <a onclick="validar(['categorizacionDrag', 'entidad2', 'entidad3', 'entidad1'])"><button type="submit" class="btn btn-primary btn-lg">Validar</button></a>
+                <a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>
+                    <button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>
+            </div>
         </div>
     </div>
 </div>

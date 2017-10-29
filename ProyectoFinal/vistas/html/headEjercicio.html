@@ -23,7 +23,7 @@
         .draggable { width: 90px; height: 80px; padding: 0px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
         .draggableAgregacion { width: 500px; height: 250px; padding: 5px; float: left; margin: 20px 20px 10px  40px; font-size: .9em; }
         .ui-widget-header p, .ui-widget-content input{ margin: 10px 0px 0px 0px; }
-        #containment-wrapper { width: 1150px; height:530px; border:0px solid #c0c0c0; padding: 1px; margin-top: -60px;}
+        #containment-wrapper { width: 1100px; height:530px; border:0px solid #c0c0c0; padding: 1px; margin-top: -60px;}
         #snaptarget { height: 600px; width: 1100px;}
     </style>
     <script type="text/javascript">
@@ -49,17 +49,17 @@
         // </div>
         $(function () {
             $("#agregacion").draggable({snap: ".ui-widget-header", snapMode: "outer"});
-            $("#entidad1").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#entidad2").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#entidad3").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#entidad4").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#entidad5").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#categorizacionDrag").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#categorizacionDragTotalidad").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#categorizacionDisDrag").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#relacion1").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#relacion2").draggable({containment: "#containment-wrapper", scroll: false});
-            $("#relacion3").draggable({containment: "#containment-wrapper", scroll: false});
+            $( "#entidad1" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#entidad2" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#entidad3" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#entidad4" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#entidad5" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#categorizacionDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#categorizacionDragTotalidad" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#categorizacionDisDrag" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#relacion1" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#relacion2" ).draggable({ containment: "#containment-wrapper", scroll: false });
+            $( "#relacion3" ).draggable({ containment: "#containment-wrapper", scroll: false });
         });
 
         function posicionObjeto(idObjeto) {
