@@ -1419,7 +1419,7 @@ class controlador_mvc extends manejador {
                 }
                 else{
                     
-                     $this->modal("La Cedula Nro. $ciUsuario ya existe en el Sistema ");                                
+                     $this->modal("CI Nro. $ciUsuario ya ingresada");                                
                      $this->agregarAlumno();
                 }
             }
@@ -1581,7 +1581,7 @@ class controlador_mvc extends manejador {
                 }
                 else{
                     
-                     $this->modal("La Cedula Nro. $ciUsuario ya existe en el Sistema ");                                
+                     $this->modal("CI Nro. $ciUsuario ya ingresada");                                
                      $this->agregarAlumno();
                 }
 

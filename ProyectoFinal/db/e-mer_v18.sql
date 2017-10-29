@@ -228,6 +228,39 @@ INSERT INTO `dim_usuario` VALUES (4,'00000000','Sistema','Sistema','M','admin@ad
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sol_agregacion`
+--
+
+DROP TABLE IF EXISTS `sol_agregacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sol_agregacion` (
+  `id_agregacion` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_agregacion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_entidad` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre_mer` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`id_agregacion`,`nombre_agregacion`,`nombre_entidad`,`nombre_mer`,`ci_usuario`),
+  KEY `FK_nombre_mer_idx` (`nombre_mer`),
+  KEY `FK_ci_usuario_idx` (`ci_usuario`),
+  KEY `FK_nombre_entidad_idx` (`nombre_entidad`),
+  KEY `FK_agregacion` (`nombre_agregacion`),
+  CONSTRAINT `FK_ci_usu` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_nombreEntidad` FOREIGN KEY (`nombre_entidad`) REFERENCES `sol_entidad` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_nombreMer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sol_agregacion`
+--
+
+LOCK TABLES `sol_agregacion` WRITE;
+/*!40000 ALTER TABLE `sol_agregacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sol_agregacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sol_atributo`
 --
 
@@ -345,12 +378,15 @@ CREATE TABLE `sol_relacion` (
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadA` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `nombre_entidadB` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `agregacion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `nombre_mer` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `ci_usuario` char(8) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`nombre`,`nombre_entidadA`,`nombre_entidadB`,`nombre_mer`,`ci_usuario`),
   UNIQUE KEY `id_relacion_UNIQUE` (`id_relacion`),
   KEY `FK_ci_usuario_idx` (`ci_usuario`),
   KEY `FK_nombreMer_idx` (`nombre_mer`),
+  KEY `FK_agregacion2_idx` (`agregacion`),
+  CONSTRAINT `FK_agregacion2` FOREIGN KEY (`agregacion`) REFERENCES `sol_agregacion` (`nombre_agregacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_ciUsu` FOREIGN KEY (`ci_usuario`) REFERENCES `dim_usuario` (`ci`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_nombMer` FOREIGN KEY (`nombre_mer`) REFERENCES `sol_mer` (`nombre`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -362,7 +398,7 @@ CREATE TABLE `sol_relacion` (
 
 LOCK TABLES `sol_relacion` WRITE;
 /*!40000 ALTER TABLE `sol_relacion` DISABLE KEYS */;
-INSERT INTO `sol_relacion` VALUES (4,'Vive','Perro','Cucha','PerroCucha','00000000'),(34,'Tiene','Dueño','Auto','AutoDueno','00000000'),(39,'Tiene','Auto','Motor','AutoMotor','00000000'),(50,'Trabaja','Empleado','Seccion','EmpleadoEmpresaRelAtr','00000000'),(51,'Realiza','Alumno','Ejercicio','AlumnoPractico','00000000'),(54,'Trabaja','Empleado','Empresa','EmpleadoEmpresa','00000000'),(55,'Supervisa','Empleado','Empleado','EmpleadoSupervisaEmpleados','00000000'),(57,'Capitanea','Jugador','Jugador','JugadorCapitaneaJugador','00000000'),(73,'Estudia','Alumno','Universidad','AlumnoUniversidadDet','00000000'),(85,'seccion','trabaja','empleado','EmpleadoEmpresaRelAtr','38072948'),(89,'fdsa','ejercicio','alumno','AlumnoPractico','38072948'),(95,'tiene','dueño','auto','AutoDueno','38072948'),(96,'vive','cucha','perro','PerroCucha','38072948'),(99,'Estudia','Persona','Universidad','PersonaUniversidadCategorizacion','00000000'),(136,'tiene','motor','auto','AutoMotor','38072948'),(145,'estudia','universidad','persona','PersonaUniversidadCategorizacion','38072948'),(147,'estudia','universidad','alumno','AlumnoUniversidadDet','38072948'),(148,'capitanea','jugador','jugador','JugadorCapitaneaJugador','38072948'),(151,'Contrata','Empleado','Empresa','EmpresaEmpleadosTotalidad','00000000'),(155,'contrata','empresa','empleado','EmpresaEmpleadosTotalidad','38072948'),(156,'Tiene','Accidente','Avion','AvionesAccidentesDisjunto','00000000'),(160,'Posee','Hospital','Sala','HospitalSala','00000000'),(162,'posee','sala','hospital','HospitalSala','38072948'),(163,'supervisa','empleado','empleado','EmpleadoSupervisaEmpleados','38072948'),(165,'tiene','avion','accidente','AvionesAccidentesDisjunto','38072948'),(166,'trabaja','empresa','empleado','EmpleadoEmpresa','38072948');
+INSERT INTO `sol_relacion` VALUES (57,'Capitanea','Jugador','Jugador',NULL,'JugadorCapitaneaJugador','00000000'),(148,'capitanea','jugador','jugador',NULL,'JugadorCapitaneaJugador','38072948'),(151,'Contrata','Empleado','Empresa',NULL,'EmpresaEmpleadosTotalidad','00000000'),(155,'contrata','empresa','empleado',NULL,'EmpresaEmpleadosTotalidad','38072948'),(73,'Estudia','Alumno','Universidad',NULL,'AlumnoUniversidadDet','00000000'),(99,'Estudia','Persona','Universidad',NULL,'PersonaUniversidadCategorizacion','00000000'),(147,'estudia','universidad','alumno',NULL,'AlumnoUniversidadDet','38072948'),(145,'estudia','universidad','persona',NULL,'PersonaUniversidadCategorizacion','38072948'),(89,'fdsa','ejercicio','alumno',NULL,'AlumnoPractico','38072948'),(160,'Posee','Hospital','Sala',NULL,'HospitalSala','00000000'),(162,'posee','sala','hospital',NULL,'HospitalSala','38072948'),(51,'Realiza','Alumno','Ejercicio',NULL,'AlumnoPractico','00000000'),(85,'seccion','trabaja','empleado',NULL,'EmpleadoEmpresaRelAtr','38072948'),(55,'Supervisa','Empleado','Empleado',NULL,'EmpleadoSupervisaEmpleados','00000000'),(163,'supervisa','empleado','empleado',NULL,'EmpleadoSupervisaEmpleados','38072948'),(156,'Tiene','Accidente','Avion',NULL,'AvionesAccidentesDisjunto','00000000'),(39,'Tiene','Auto','Motor',NULL,'AutoMotor','00000000'),(165,'tiene','avion','accidente',NULL,'AvionesAccidentesDisjunto','38072948'),(34,'Tiene','Dueño','Auto',NULL,'AutoDueno','00000000'),(95,'tiene','dueño','auto',NULL,'AutoDueno','38072948'),(136,'tiene','motor','auto',NULL,'AutoMotor','38072948'),(54,'Trabaja','Empleado','Empresa',NULL,'EmpleadoEmpresa','00000000'),(50,'Trabaja','Empleado','Seccion',NULL,'EmpleadoEmpresaRelAtr','00000000'),(166,'trabaja','empresa','empleado',NULL,'EmpleadoEmpresa','38072948'),(96,'vive','cucha','perro',NULL,'PerroCucha','38072948'),(4,'Vive','Perro','Cucha',NULL,'PerroCucha','00000000');
 /*!40000 ALTER TABLE `sol_relacion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -375,4 +411,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-29 17:48:39
+-- Dump completed on 2017-10-29 16:59:03
