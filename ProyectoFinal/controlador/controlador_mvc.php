@@ -3051,30 +3051,31 @@ class controlador_mvc extends manejador {
 
             $resultado = $this->filtrarManejadorCursos($nombre ,$apellido , $anio ,$horario ,$curso);
             if(!$resultado == NULL){
-            foreach ($resultado as $fila) {
-                echo "<tbody>"
-                . "<tr class='active'>"
-                . "<td>" . $fila['curso'] . "</td>"
-                . "<td>" . $fila['anio'] . "</td>"
-                . "<td>" . $fila['horario'] . "</td>"
-                . "<td>" . $fila['profesor'] . "</td>"
-                . "<td></td>"
-                . "</tr>"
-                . "</tbody>";
-            }
+                foreach ($resultado as $fila) {
+                     echo "<tbody>"
+                    . "<tr class='active'>"
+                    . "<td>" . $fila['curso'] . "</td>"
+                    . "<td>" . $fila['anio'] . "</td>"
+                    . "<td>" . $fila['horario'] . "</td>"
+                    . "<td>" . $fila['profesor'] . "</td>"
+                    . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?"
+                    . "action=modificarRegistroCurso&curso=$fila[curso]&anio=$fila[anio]&horario=$fila[horario]&profesor=$fila[profesor]'>
+                    <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"               
+                    . "</tr>"
+                    . "</tbody>";
+                }
             echo "</table>";
 
-             echo "<br>"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
-             . "<button type='button' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar curso</button></a>&nbsp"
-             . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"          
-             . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
+            echo "<br>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
+            . "<button type='button' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar curso</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>"          
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>" ; 
         
-              }
+            }
         else{
              $this->modal("No existen registros para la busqueda seleccionada");
              echo "</table>";
-
              echo "<br>"
              . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarCurso'>"
              . "<button type='button' name = 'agregarCurso' class='btn btn-primary btn-lg'>Agregar curso</button></a> &nbsp"
