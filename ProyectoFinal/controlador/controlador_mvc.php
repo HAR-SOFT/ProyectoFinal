@@ -1037,18 +1037,23 @@ class controlador_mvc extends manejador {
 
             $resultado = $this->listarUsuariosYCurso();
 
-            foreach ($resultado as $fila) {
-                echo "<tbody>"
-                 . "<tr class='active'>"
-                 . "<td>" . $fila['alumno'] . "</td>"
-                 . "<td>" . $fila['ci'] . "</td>"
-                 . "<td>" . $fila['curso'] . "</td>"
-                 . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=eliminarRegistro&curso=$fila[curso]&ci=$fila[ci]'>
-                  <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
-                 . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificarRegistroAlumno&curso=$fila[curso]&ci=$fila[ci]'>
-                  <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"                    
-                 . "</tr>"
-                 . "</tbody>";
+            
+            if ($resultado !== null) {
+                foreach ($resultado as $fila) {
+                    echo "<tbody>"
+                     . "<tr class='active'>"
+                     . "<td>" . $fila['alumno'] . "</td>"
+                     . "<td>" . $fila['ci'] . "</td>"
+                     . "<td>" . $fila['curso'] . "</td>"
+                     . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=eliminarRegistro&curso=$fila[curso]&ci=$fila[ci]'>
+                      <button type='button' name = 'eliminarRegistro' class='btn btn-primary'>Eliminar</button></a>"."</td>" 
+                     . "<td>". "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=modificarRegistroAlumno&curso=$fila[curso]&ci=$fila[ci]'>
+                      <button type='button' name = 'modificarRegistro' class='btn btn-primary'>Modificar</button></a>"."</td>"                    
+                     . "</tr>"
+                     . "</tbody>";
+                }
+            } else {
+                $this->modal("No hay alumnos asignados a cursos activos");
             }
 
              echo "</table>";
