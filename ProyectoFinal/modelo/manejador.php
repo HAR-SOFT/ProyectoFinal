@@ -112,6 +112,7 @@ class manejador extends conexionDB {
                 return $datos;
             } else {
                 $this->mensaje = $msjParametro;
+               // return $query;
             }
         }
     }
@@ -138,6 +139,7 @@ class manejador extends conexionDB {
                 return $datos;
             } else {
                 $this->mensaje = $msjParametro;
+                //return $query;
             }
         }
     }
@@ -145,12 +147,17 @@ class manejador extends conexionDB {
      public function ejecutarTransaccion($queryParametro, $msjParametro) {
         $this->conectar();
         $this->autocommit(FALSE);
-        if (strpos($queryParametro, "DELETE") !== false) {
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false or 
+             (strpos($queryParametro, "DELETE" ) !== false )))) {
             $this->checkConstraints(0);
         }
         $query = $this->consulta($queryParametro);
-        if (strpos($queryParametro, "DELETE") !== false) {
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false or 
+             (strpos($queryParametro, "DELETE" ) !== false )))){
             $this->checkConstraints(1);
+            return $query;
         }
         if ($query == true) {
             $this->commit();
@@ -172,6 +179,7 @@ class manejador extends conexionDB {
                 return $datos;
             } else {
                 $this->mensaje = $msjParametro;
+                
             }
         }
     }
@@ -677,8 +685,8 @@ class manejador extends conexionDB {
                 . " '$apellidoUsuario','$sexoUsuario','$emailUsuario',"
                 . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor');";
         $msjaltaProfesorManejador = "No se pudo agregar el Profesor";
-        
-        return $this->ejecutarQuery($this->query, $msjaltaProfesorManejador);
+      
+        return $this->ejecutarTransaccion($this->query, $msjaltaProfesorManejador);
         
     }
 
@@ -1530,7 +1538,7 @@ class manejador extends conexionDB {
                 . " ('$curso','Entidades Debiles','','AutoMotor'),"
                 . " ('$curso','Relaciones','Relacion con Atributos','EmpleadoEmpresaRelAtr'),"
                 . " ('$curso','Autorelacion','','EmpleadoSupervisaEmpleados'),"
-                . " ('$curso','Categorizacion ','Categorizacion Completa','EmpresaEmpleadosTotalidad'),"
+                . " ('$curso','Categorizacion','Categorizacion Completa','EmpresaEmpleadosTotalidad'),"
                 . " ('$curso','Categorizacion','Categorizacion Disjunta','AvionesAccidentesDisjunto'),"
                 . " ('$curso','Relaciones','Relacion con Atributos','PersonaAutoRelAtr'),"
                 . " ('$curso','Entidades','','PerroCucha'),"
@@ -1541,7 +1549,7 @@ class manejador extends conexionDB {
                 . " ('$curso','Relaciones','','ChoferCamionRel'),"
                 . " ('$curso','Relaciones','','MusicoInstrumento'),"
                 . " ('$curso','Entidades Debiles','','HospitalSala'),"
-                . " ('$curso','Categorizacion ','Categorizacion Completa','PersonaUniversidadCategorizacion'),"
+                . " ('$curso','Categorizacion','Categorizacion Completa','PersonaUniversidadCategorizacion'),"
                 . " ('$curso','Categorizacion','Categorizacion Disjunta','EmpresaVehiculosDisjunto');";
         
         $msjasociacionCursoTemaSubtemaEjercicio = "No se han podido importar los datos.";
