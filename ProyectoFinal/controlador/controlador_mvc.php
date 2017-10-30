@@ -858,7 +858,7 @@ class controlador_mvc extends manejador {
 
                 if($ejercicio == !NULL){
                     foreach ($ejercicio as $ej){
-                        $contenido = $contenido. "<div class='col-lg-3'>"
+                        $contenido = $contenido. "<div class='col-lg-4'>"
                         . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=verEjercicio&tema=$tema&curso=$curso&ejercicio=$ej[0]'>"
                         . "<button type='button' class='btn btn-default-lg btn-lg' name=$ej[0]>Ejercicio $ej[0]</button></a>"
                         . "</div>";
@@ -1561,7 +1561,7 @@ class controlador_mvc extends manejador {
                                                       $telefonoUsuario,
                                                       $celularUsuario);
 
-                if(!$resultado){
+                if($resultado === TRUE){
                     $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
                     if(!$asignar) {
                         $this->modal("Se agrego el Profesor $nombreUsuario "
@@ -1592,7 +1592,7 @@ class controlador_mvc extends manejador {
         }
     }
 
-        public function agregarCurso(){
+    public function agregarCurso(){
         try {
             session_start();
              
@@ -2243,9 +2243,8 @@ class controlador_mvc extends manejador {
                     $nombre_relacion = $value[0];
                     $nombre_entidadA = $value[2];
                     $nombre_entidadB = $value[3];
-                    $agregacion = "";
                     $this->guardarSolucionMerRelacion($nombre_relacion,
-                            $nombre_entidadA, $nombre_entidadB, $agregacion,
+                            $nombre_entidadA, $nombre_entidadB,
                             $nombre_mer, $ci_usuario);
                 }
             }

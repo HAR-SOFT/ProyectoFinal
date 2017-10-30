@@ -163,6 +163,7 @@ class manejador extends conexionDB {
              (strpos($queryParametro, "UPDATE" ) !== false or 
              (strpos($queryParametro, "DELETE" ) !== false )))) {
             $this->mensaje = $msjParametro;
+            return $query;
         } else {
             if (!$this->cantidadRegistros($query) == 0) {
                 while ($array = $this->retornarRegistros($query)) {
@@ -237,9 +238,12 @@ class manejador extends conexionDB {
 
     
     public function buscarCursoDeUsuario($ciUsuario) {
-        $this->query = "SELECT C.nombre_curso"
-                . " FROM asc_curso_usuario AS C"
-                . " WHERE C.ci_usuario = $ciUsuario";
+        $this->query = "SELECT CU.nombre_curso "
+                . "FROM asc_curso_usuario AS CU "
+                . "INNER JOIN dim_curso AS C "
+                . "ON CU.nombre_curso = C.nombre "
+                . "WHERE CU.ci_usuario = $ciUsuario "
+                . "AND C.estado = 1";
         $buscarCursoDeUsuario = "No tiene ningún curso activo asigando."
                 . " Comuníquese con Bedelía.";
 
@@ -456,21 +460,28 @@ class manejador extends conexionDB {
     public function listarTemasPorCurso($nombreCurso) {
         $nombreCurso = $nombreCurso[0]["nombre_curso"];
 
-        $this->query = "SELECT DISTINCT ASCCTSE.nombre_tema"
+        $this->query = "SELECT DISTINCT ASCCTSE.nombre_tema, T.indice"
                 . " FROM asc_curso_tema_subtema_ejercicio AS ASCCTSE"
-                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso'";
+                . " INNER JOIN dim_tema AS T"
+                . " ON ASCCTSE.nombre_tema = T.nombre"
+                . " WHERE ASCCTSE.nombre_curso = '$nombreCurso'"
+                . " ORDER BY T.indice ASC";
         $msjListarTemasPorCurso = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjListarTemasPorCurso);
     }
     
     public function listarTemasPorCursoSeleccionado($ciUsuario, $curso) {
-        $this->query = "select DISTINCT dt.nombre as nombre_tema "
-                . "from dim_tema dt  , "
-                . "asc_curso_tema_subtema_ejercicio actse,dim_usuario dm"
-                . " where dt.nombre =  actse.nombre_tema "
-                . "and actse.nombre_curso = '$curso' "
-                . "and dm.ci = '$ciUsuario';";
+        $this->query = "SELECT DISTINCT dt.nombre AS nombre_tema,"
+                . " dt.indice"
+                . " FROM dim_tema dt, "
+                . " asc_curso_tema_subtema_ejercicio AS actse, "
+                . " dim_usuario AS dm"
+                . " WHERE dt.nombre = actse.nombre_tema "
+                . " AND actse.nombre_curso = '$curso' "
+                . " AND dm.ci = '$ciUsuario'"
+                . " ORDER BY dt.indice";
+
         $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
@@ -621,8 +632,7 @@ class manejador extends conexionDB {
         if (isset($colAtributos)) {
             $this->query = "SELECT R.nombre, "
                     . " R.nombre_entidadA, "
-                    . " R.nombre_entidadB, "
-                    . " R.agregacion "
+                    . " R.nombre_entidadB"
                     . " FROM sol_relacion AS R"
                     . " WHERE R.nombre_mer = '$nombreMer'"
                     . " AND R.ci_usuario = '00000000';";
@@ -678,7 +688,7 @@ class manejador extends conexionDB {
                 . " '$claveUsuario', '$telefonoUsuario','$celularUsuario','Profesor');";
         $msjaltaProfesorManejador = "No se pudo agregar el Profesor";
         
-        return $this->ejecutarQuery($this->query, $msjaltaProfesorManejador);
+        return $this->ejecutarTransaccion($this->query, $msjaltaProfesorManejador);
         
     }
 
@@ -962,14 +972,14 @@ class manejador extends conexionDB {
     }
 
     public function guardarSolucionMerRelacion($nombre_relacion,$nombre_entidadA,
-                                               $nombre_entidadB,$agregacion,
+                                               $nombre_entidadB,
                                                $nombre_mer , $ci_usuario) {
         $this->query = "INSERT INTO sol_relacion "
                 . "(id_relacion , nombre , nombre_entidadA , nombre_entidadB , "
-                . "agregacion , nombre_mer , ci_usuario)"
+                . "nombre_mer , ci_usuario)"
                 . "VALUE"
                 . "(null , '$nombre_relacion' , '$nombre_entidadA' , "
-                . "'$nombre_entidadB' , NULLIF('$agregacion', '') , '$nombre_mer' ,"
+                . "'$nombre_entidadB' , '$nombre_mer' ,"
                 . " '$ci_usuario');";
                  
         $msjSolMerRelacion = "No se ha cargado la relacion.";
