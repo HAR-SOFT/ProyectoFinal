@@ -112,6 +112,7 @@ class manejador extends conexionDB {
                 return $datos;
             } else {
                 $this->mensaje = $msjParametro;
+               // return $query;
             }
         }
     }
@@ -138,6 +139,7 @@ class manejador extends conexionDB {
                 return $datos;
             } else {
                 $this->mensaje = $msjParametro;
+                //return $query;
             }
         }
     }
@@ -145,11 +147,15 @@ class manejador extends conexionDB {
      public function ejecutarTransaccion($queryParametro, $msjParametro) {
         $this->conectar();
         $this->autocommit(FALSE);
-        if (strpos($queryParametro, "DELETE") !== false) {
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false or 
+             (strpos($queryParametro, "DELETE" ) !== false )))) {
             $this->checkConstraints(0);
         }
         $query = $this->consulta($queryParametro);
-        if (strpos($queryParametro, "DELETE") !== false) {
+        if ( (strpos($queryParametro, "INSERT" ) !== false or 
+             (strpos($queryParametro, "UPDATE" ) !== false or 
+             (strpos($queryParametro, "DELETE" ) !== false )))) {
             $this->checkConstraints(1);
         }
         if ($query == true) {
@@ -187,7 +193,7 @@ class manejador extends conexionDB {
     public function listarCursosSinProfesor() {
         $this->query = "SELECT * FROM dim_curso "
                 . "where nombre NOT IN "
-                . "( select nombre_curso from asc_curso_usuario );";
+                . "( SELECT nombre_curso from asc_curso_usuario );";
         $msjListarCursos = "No hay cursos para mostrar";
 
         return $this->ejecutarQuery($this->query, $msjListarCursos);
@@ -220,7 +226,7 @@ class manejador extends conexionDB {
         $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno ,"
                 . "ci as ci , 'Sin Curso Asignado' as curso "
                 . "FROM dim_usuario WHERE categoria_usuario = 'Alumno' "
-                . "and ci NOT IN (select ci_usuario from asc_curso_usuario);";
+                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario);";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
@@ -230,7 +236,7 @@ class manejador extends conexionDB {
         $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
                 . "ci as ci , 'Sin Curso Asignado' as curso "
                 . "FROM dim_usuario WHERE categoria_usuario = 'Profesor' "
-                . "and ci NOT IN (select ci_usuario from asc_curso_usuario);";
+                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario);";
         $msjlistarProfesoresSinCurso = "No hay profesores para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarProfesoresSinCurso);
@@ -1135,7 +1141,7 @@ class manejador extends conexionDB {
                 . "'Sin Curso Asignado' as curso "
                 . "FROM dim_usuario "
                 . "WHERE categoria_usuario = 'Alumno' "
-                . "and ci NOT IN (select ci_usuario from asc_curso_usuario) "
+                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario) "
                 . "and (nombre like'%$nombre%' or apellido like'%$apellido%')" 
                 . "and ci like '%$cedula%';";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
@@ -1151,7 +1157,7 @@ class manejador extends conexionDB {
                 . "'Sin Curso Asignado' as curso "
                 . "FROM dim_usuario "
                 . "WHERE categoria_usuario = 'Profesor' "
-                . "and ci NOT IN (select ci_usuario from asc_curso_usuario) "
+                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario) "
                 . "and nombre like'%$nombre%'"
                 . "and ci like '%$cedula%';";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
@@ -1383,7 +1389,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjlistarProfesoresPorNombre);
     }
         public function comprobarCedula($ci_usuario) {
-        $this->query = "select ci as cedula "
+        $this->query = "SELECT ci as cedula "
                 . "from dim_usuario "
                 . "where ci = '$ci_usuario';";
                  
@@ -1403,7 +1409,7 @@ class manejador extends conexionDB {
     }
     
     public function eliminarRegistroManejador($ci_usuario) {
-        $this->query = "delete from dim_usuario "
+        $this->query = "DELETE from dim_usuario "
                 . " where ci = '$ci_usuario';";
         
         $msjceliminarRegistroManejador= "No se ha podido elimniar.";
@@ -1413,7 +1419,7 @@ class manejador extends conexionDB {
     }
         
     public function recuperarDatos($ci_usuario) {
-        $this->query = "select nombre , apellido , sexo , email , telefono , "
+        $this->query = "SELECT nombre , apellido , sexo , email , telefono , "
                 . " celular "
                 . " from dim_usuario "
                 . " where ci = '$ci_usuario';";
@@ -1540,7 +1546,7 @@ class manejador extends conexionDB {
                 . " ('$curso','Entidades Debiles','','AutoMotor'),"
                 . " ('$curso','Relaciones','Relacion con Atributos','EmpleadoEmpresaRelAtr'),"
                 . " ('$curso','Autorelacion','','EmpleadoSupervisaEmpleados'),"
-                . " ('$curso','Categorizacion ','Categorizacion Completa','EmpresaEmpleadosTotalidad'),"
+                . " ('$curso','Categorizacion','Categorizacion Completa','EmpresaEmpleadosTotalidad'),"
                 . " ('$curso','Categorizacion','Categorizacion Disjunta','AvionesAccidentesDisjunto'),"
                 . " ('$curso','Relaciones','Relacion con Atributos','PersonaAutoRelAtr'),"
                 . " ('$curso','Entidades','','PerroCucha'),"
@@ -1551,7 +1557,7 @@ class manejador extends conexionDB {
                 . " ('$curso','Relaciones','','ChoferCamionRel'),"
                 . " ('$curso','Relaciones','','MusicoInstrumento'),"
                 . " ('$curso','Entidades Debiles','','HospitalSala'),"
-                . " ('$curso','Categorizacion ','Categorizacion Completa','PersonaUniversidadCategorizacion'),"
+                . " ('$curso','Categorizacion','Categorizacion Completa','PersonaUniversidadCategorizacion'),"
                 . " ('$curso','Categorizacion','Categorizacion Disjunta','EmpresaVehiculosDisjunto');";
         
         $msjasociacionCursoTemaSubtemaEjercicio = "No se han podido importar los datos.";
