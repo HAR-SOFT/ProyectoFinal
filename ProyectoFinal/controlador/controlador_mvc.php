@@ -1127,7 +1127,25 @@ class controlador_mvc extends manejador {
             $resultado = $this->listarProfesosYCurso();
 
             if(!$resultado){
-                $this->modal("No existen Profesores con Curso asginado");
+                $this->modal("No existen Profesores con Curso asignado");
+             
+            echo "</table>";
+            $onclick = "document.getElementById('selectedFile').click();";
+
+            echo "<br>"
+            . "<p align='left'>"
+            . "<form action= 'http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=importarProfesores' method='post' enctype='multipart/form-data'>"
+            . "<input type='file'name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
+            . "<input type='button'  value='Importar grupo profesores' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"
+            . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
+            . "</form>"
+            . "</p><p align='left'>"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=agregarProfesor'><button type='button' name = 'agregarProfesor' class='btn btn-primary btn-lg'>Agregar profesor</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignarCursoProfesor'><button type='button' name = 'asignarCursoProfesor' class='btn btn-primary btn-lg'>Profesores sin curso</button></a>&nbsp"
+            . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=redireccionar'>" 
+            . "<button type='button' name = 'volver' class='btn btn-default btn-lg'>Volver</button></a>"
+            . "</p>";
+                
             } else {
                 foreach ($resultado as $fila) {
                     echo "<tbody>"
@@ -1393,7 +1411,7 @@ class controlador_mvc extends manejador {
                                                             $telefonoUsuario,
                                                             $celularUsuario);
 
-                    if($resultado == true){
+                    if($resultado === TRUE){
                         $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
                    
                             if(!$asignar) {
@@ -1760,7 +1778,8 @@ class controlador_mvc extends manejador {
             . "<div>"
             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
             . "</div>"
-            . "</th>"        
+            . "</th>" 
+            . "<th>"        
             . "</form>"        
             . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoProfesores'>"        
             . "<th><div>"
@@ -1786,9 +1805,9 @@ class controlador_mvc extends manejador {
                 foreach ($cursos as $filaCurso ) {
                     echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
                 }
+             
             }
-            
-            echo"</select>"
+               echo"</select>"
                 . "</div>"
                 . "</th>"
                 . "<th>"
@@ -1796,11 +1815,10 @@ class controlador_mvc extends manejador {
                 . "</thead>";
 
             $resultado = $this->listarProfesoresSinCurso();
-
-
+            
             if (!$resultado){
                 $this->modal("No existen Profesores sin Curso asignado");
-                                echo "</table>"
+             echo "</table>"
             . "<br>"
             . "<p align='left'>"
             . "</form>"
@@ -3112,23 +3130,30 @@ class controlador_mvc extends manejador {
                         $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
                         $pass = md5($ci);
 
+                        $resultado = NULL;
+                        $comprobacionCI = $this->comprobarCedula($ci);
+                        
+                        if ($comprobacionCI[0][0] != $ci) {
+                            $resultado = $this->importarAlumnosManejador($ci ,$nombre , $apellido ,
+                                                                $sexo ,$email ,
+                                                                $pass ,$telefono , $celular); 
+                        }
 
-
-                        $resultado = $this->importarAlumnosManejador($ci ,$nombre , $apellido ,
-                                                            $sexo ,$email ,
-                                                            $pass ,$telefono , $celular); 
-
-                            if ($resultado !== TRUE){
-                                if (!isset($arrayNoImportados)) {
-                                    $arrayNoImportados = ["Fila:".$i." CI:".$ci];
-                                } else {
+                        if ($resultado !== TRUE || $comprobacionCI[0][0] == $ci){
+                            if (!isset($arrayNoImportados)) {
+                                $arrayNoImportados = ["Fila:".$i." CI:".$ci];
+                            } else {
+                                $filaNueva = "Fila:".$i." CI:".$ci;
+                                array_push($arrayNoImportados, $filaNueva);
+                                if ($comprobacionCI[0][0] == $ci) {
                                     $filaNueva = "Fila:".$i." CI:".$ci;
-                                    array_push($arrayNoImportados, $filaNueva);
+                                    array_push($arrayNoImportados, $filaNueva);                                        
                                 }
                             }
-                            else{
-                                                
-                            }          
+                        }
+                        else{
+
+                        }
                     }
 
                     if (isset($arrayNoImportados)) {
@@ -3182,23 +3207,30 @@ class controlador_mvc extends manejador {
                         $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
                         $pass = md5($ci);
 
+                        $resultado = NULL;
+                        $comprobacionCI = $this->comprobarCedula($ci);
+                        
+                        if ($comprobacionCI[0][0] != $ci) {
+                            $resultado = $this->importarProfesoresManejador($ci ,$nombre , $apellido ,
+                                                                $sexo ,$email ,
+                                                                $pass ,$telefono , $celular); 
+                        }
 
-
-                        $resultado = $this->importarProfesoresManejador($ci ,$nombre , $apellido ,
-                                                            $sexo ,$email ,
-                                                            $pass ,$telefono , $celular); 
-
-                            if ($resultado !== TRUE){
-                                if (!isset($arrayNoImportados)) {
-                                    $arrayNoImportados = ["Fila:".$i." CI:".$ci];
-                                } else {
+                        if ($resultado !== TRUE || $comprobacionCI[0][0] == $ci){
+                            if (!isset($arrayNoImportados)) {
+                                $arrayNoImportados = ["Fila:".$i." CI:".$ci];
+                            } else {
+                                $filaNueva = "Fila:".$i." CI:".$ci;
+                                array_push($arrayNoImportados, $filaNueva);
+                                if ($comprobacionCI[0][0] == $ci) {
                                     $filaNueva = "Fila:".$i." CI:".$ci;
-                                    array_push($arrayNoImportados, $filaNueva);
+                                    array_push($arrayNoImportados, $filaNueva);                                        
                                 }
                             }
-                            else{
-                                              
-                            }          
+                        }
+                        else{
+
+                        }
                     }
 
                     if (isset($arrayNoImportados)) {
@@ -3500,9 +3532,17 @@ class controlador_mvc extends manejador {
             $this->view_page($pagina);
 
             $resultado = $this->listarCursosSinProfesor();
-
-            foreach ($resultado as $fila ) {
-                echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+            
+            if ($resultado === NULL) {
+                $resultado = $this->listarCursosActivos();
+                
+                foreach ($resultado as $fila ) {
+                    echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+                }
+            } else {
+                foreach ($resultado as $fila ) {
+                    echo'<OPTION VALUE="' . $fila['nombre']. '">' . $fila['nombre'] . '</OPTION>';
+                }
             }
 
             echo"</select>"
@@ -3521,7 +3561,7 @@ class controlador_mvc extends manejador {
             . "</form>";
 
             echo "</table>";
-         }
+                }
             }
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -3553,7 +3593,7 @@ class controlador_mvc extends manejador {
                 
                  $modficacionCurso = $this->modificoAsociacionCurso($curso, $ciUsuario);                                  
                 
-                if($modficacionUsuario == NULL){
+                if($modficacionUsuario === TRUE){
                          $this->alumnosBedelia();
                          $this->modal("Registro actualizado correctamente");
                          
@@ -3600,7 +3640,7 @@ class controlador_mvc extends manejador {
                 
                                                   
                 
-                if($modficacionUsuario == null){
+                if($modficacionUsuario === TRUE){
                          $this->profesoresBedelia();
                          $this->modal("Registro actualizado correctamente");
                          
@@ -3753,7 +3793,7 @@ class controlador_mvc extends manejador {
                                                          $fechaFin,
                                                          $estado);
                                                                                                  
-                if($modficacionCurso == null){
+                if($modficacionCurso == TRUE){
                          $this->cursosBedelia();
                          $this->modal("Registro actualizado correctamente");
                          
