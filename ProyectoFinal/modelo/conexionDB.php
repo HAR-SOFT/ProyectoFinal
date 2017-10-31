@@ -59,7 +59,6 @@ class conexionDB {
     }
 
     public function cantidadRegistros($resultado) {
-//        var_dump(gettype($resultado));
         try {
             $cant = mysqli_num_rows($resultado);
             return $cant;

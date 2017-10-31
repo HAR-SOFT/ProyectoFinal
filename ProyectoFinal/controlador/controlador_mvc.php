@@ -350,13 +350,9 @@ class controlador_mvc extends manejador {
 
     public function ejercicio() {
         try {
-//            $mer = $this->armarMerSolucionSistema("PerroCucha");
-//            var_dump($this->armarMerSolucionSistema("PerroCucha"));
+
             session_start();
 
-//            if (!isset($_SESSION["ciUsuario"])) {
-//                $this->inicio();
-//            } else {
                 if (!$this->getMensajeManejador() == NULL) {
                     $pagina = $this->load_template("inicio");
                     $head = $this->load_page("vistas/html/headEjercicio.html");
@@ -381,7 +377,7 @@ class controlador_mvc extends manejador {
                     $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
                 }
                 $this->view_page($pagina);
-//            }
+
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
@@ -490,7 +486,7 @@ class controlador_mvc extends manejador {
                        . "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=practicar&ejercicio=$ej[0]'><button type='submit' class='btn btn-default-lg btn-lg' name='practica'>Ejercicio $ej[0]</button></a>"
                        . "</div>";
                };
-            //$contenido = $contenido. "</div>";
+            
             };
             $contenido = $contenido. "</div>";
 
@@ -515,7 +511,7 @@ class controlador_mvc extends manejador {
             $pagina = $this->replace_content("/Titulo/", "Teórico curso", $pagina);
             $pagina = $this->replace_content("/NombreUsuario/", $_SESSION["nombreUsuario"] . " " . $_SESSION["apellidoUsuario"], $pagina);
             
-//            var_dump($_SESSION["mensajeValidacion"]);
+
             if (isset($_SESSION["mensajeValidacion"]) && 
                     $_SESSION["mensajeValidacion"] === "Felicitaciones, MER realizado correctamente!") {
                 $this->modal($_SESSION["mensajeValidacion"]);
@@ -602,7 +598,7 @@ class controlador_mvc extends manejador {
                 . "<div class=container'>"                               
                 . "<button  class='btn btn-default btn-lg' style='width: 180px; text-align:left;'>Introduccion</button>"
                 . "</div>";
-                //lista los temas que hay en e curso $curso         
+                //lista los temas que hay en e curso          
                 $temas = $this->listarTemasPorCursoSeleccionado($ciUsuario, $curso);
                 if($temas == NULL){
                     ;
@@ -619,7 +615,6 @@ class controlador_mvc extends manejador {
                     }
                 }
                 $temasSeleccionar = $this->listarTemasSinCursoProfesor($ciUsuario, $curso);
-                //var_dump($temasSeleccionar);
                 if($temasSeleccionar == NULL){
                     
                 }
@@ -907,7 +902,7 @@ class controlador_mvc extends manejador {
     
     public function asociarTema() {
         try {
-            //session_start();
+            
             if(isset($_REQUEST["tema"])){
                     $tema  = $_REQUEST["tema"];                
                     $curso = $_REQUEST["curso"];               
@@ -948,7 +943,7 @@ class controlador_mvc extends manejador {
     
     public function desasociarTema() {
         try {
-            //session_start();
+            
             if(isset($_REQUEST["tema"])){
                     $tema  = $_REQUEST["tema"];                
                     $curso = $_REQUEST["curso"];               
@@ -1078,7 +1073,6 @@ class controlador_mvc extends manejador {
 
     }
 
-    
     public function profesoresBedelia() {
          try {
              session_start();
@@ -1568,7 +1562,7 @@ class controlador_mvc extends manejador {
                                                       $claveUsuario,
                                                       $telefonoUsuario,
                                                       $celularUsuario);
-                    //var_dump($resultado);
+                    
                     if($resultado === TRUE){
                         $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
                         if(!$asignar) {
@@ -1690,7 +1684,7 @@ class controlador_mvc extends manejador {
         try {
             if (isset($_REQUEST['aceptar'])){
                 $nombreCurso = $_REQUEST["inputNombre"];
-                $anioCurso = $_REQUEST["inputAnio"];   //date("Y-m-d")
+                $anioCurso = $_REQUEST["inputAnio"];
                 $horarioCurso = $_REQUEST["inputHorario"];
                 $inicioCurso = $_REQUEST["inputFechaIni"];
                 $finCurso = $_REQUEST["inputFechaFin"];
@@ -1735,7 +1729,6 @@ class controlador_mvc extends manejador {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
     }
-
 
     public function asignarCursoProfesores(){
          try {
@@ -1846,7 +1839,6 @@ class controlador_mvc extends manejador {
         }
     }
 
-
     public function practicar() {
         try{
             session_start();
@@ -1859,7 +1851,7 @@ class controlador_mvc extends manejador {
             }
 
             $letraEjercicio =  $this->letraEjercicioTemaManejador($ejercicio);
-            //var_dump($letraEjercicio[0][0]);
+            
             $verLetra = $letraEjercicio[0][0];
 
             $contenido = "<div class='col-lg-3'>"
@@ -1895,9 +1887,9 @@ class controlador_mvc extends manejador {
                 if ($_SESSION["mensajeValidacion"] === "Felicitaciones, MER realizado correctamente!") {
                     header("location: http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=temarioCurso&tema=Introduccion");
                 } else {
-    //                var_dump($_SESSION["mensajeValidacion"]);
+   
                     $contenido = $contenido . "<script type='text/javascript'>"
-    //                            . "alert('" . $_SESSION['mensajeValidacion'] . "');"
+    
                                 . "modal('" . $_SESSION["mensajeValidacion"] . "');"
                                 . "</script>";
                 }
@@ -1914,7 +1906,6 @@ class controlador_mvc extends manejador {
 
             $this->view_page($pagina);
             
-//            unset($_SESSION["mensajeValidacion"]);
             unset($_SESSION["inputs"]);
             unset($_SESSION["inicioEjercicio"]);
             unset($_SESSION["finEjercicio"]);
@@ -2124,13 +2115,7 @@ class controlador_mvc extends manejador {
                     }
                 }
             }
-            
-//            var_dump($inputsString);
-//            var_dump($arrayMer);
-//            var_dump($arrayEntidades);
-//            var_dump($arrayAtributos);
-//            var_dump($arrayRelaciones);
-            
+                        
             $nombre_mer = $arrayMer[0];
             $ci_usuario = $arrayMer[2];
             $nombre_ejercicio = $arrayMer[3];
@@ -2552,8 +2537,7 @@ class controlador_mvc extends manejador {
         }
     }
     
-    public function filtrarAlumnos() {
-        
+    public function filtrarAlumnos() {        
         try {
             session_start();            
             if (!isset($_POST["filtrar"])) {
@@ -2634,8 +2618,7 @@ class controlador_mvc extends manejador {
             . "<p align='left'>"
             . "<form action= 'http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=importarAlumnos' method='post' enctype='multipart/form-data'>"
             . "<input type='file' name='archivos-excel' id='selectedFile' style='display:none;' class='btn btn-primary btn-lg'/>"
-            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"
-            //. "<a href='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=importarAlumnos'>"            
+            . "<input type='button' value='Importar grupo alumnos' onclick=" . $onclick ." class='btn btn-primary btn-lg' />&nbsp"           
             . "<button type='submit' name = 'submit' class='btn btn-primary btn-lg'>Aceptar</button>"
             . "</form>"
             . "</p><p align='left'>"
@@ -3091,12 +3074,9 @@ class controlador_mvc extends manejador {
 
     public function importarAlumnos(){
        try {      
- 
-            //session_start();
+           
             $this->alumnosBedelia();
-            //$DB = new conexionDB();        
-            //$DB->conectar();
-            
+           
             $archivo = $_FILES['archivos-excel']['name'];
             if ($archivo !== "") {
                 $formatoArchivo = explode(".", $archivo)[1];
@@ -3144,9 +3124,7 @@ class controlador_mvc extends manejador {
                                 }
                             }
                             else{
-                                //$this->modal("Se ha realizado correctamente la "
-                                //        . "importacion del Alumno: <br>"
-                                //        . " $ci $nombre <br>") ;                  
+                                                
                             }          
                     }
 
@@ -3166,10 +3144,8 @@ class controlador_mvc extends manejador {
     public function importarProfesores(){
         try {      
  
-            //session_start();
+           
             $this->profesoresBedelia();
-            //$DB = new conexionDB();        
-            //$DB->conectar();
             
             $archivo = $_FILES['archivos-excel']['name'];
             if ($archivo !== "") {
@@ -3218,9 +3194,7 @@ class controlador_mvc extends manejador {
                                 }
                             }
                             else{
-                                //$this->modal("Se ha realizado correctamente la "
-                                //        . "importacion del Alumno: <br>"
-                                //        . " $ci $nombre <br>") ;                  
+                                              
                             }          
                     }
 
@@ -3288,7 +3262,6 @@ class controlador_mvc extends manejador {
                         
                 }                     
                 else{
-                     //$this->alumnosBedelia();
                      $this->modal(" No se ha podido eliminar el registro") ;
                 }  
        
@@ -3424,8 +3397,7 @@ class controlador_mvc extends manejador {
         }
 
     }
-
-    
+  
     public function modificarRegistroProfesor(){
         try {
             session_start();
@@ -3840,7 +3812,6 @@ class controlador_mvc extends manejador {
         
         $pdf->SetFont('Arial', 'B', 8);
         $pdf->Cell(114, 8, '', 0);
-        //$pdf->Cell(100, -190, 'Fecha: ' . date('d-m-Y') . '', 0);
         $pdf->Output();
         
     }
