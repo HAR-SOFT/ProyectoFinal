@@ -1393,7 +1393,7 @@ class controlador_mvc extends manejador {
                                                             $telefonoUsuario,
                                                             $celularUsuario);
 
-                    if($resultado == true){
+                    if($resultado === TRUE){
                         $asignar = $this->asignarCursoUsuario($curso, $ciUsuario);
                    
                             if(!$asignar) {
@@ -1760,7 +1760,8 @@ class controlador_mvc extends manejador {
             . "<div>"
             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
             . "</div>"
-            . "</th>"        
+            . "</th>" 
+            . "<th>"        
             . "</form>"        
             . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoProfesores'>"        
             . "<th><div>"
@@ -1795,8 +1796,7 @@ class controlador_mvc extends manejador {
             }
 
             $resultado = $this->listarProfesoresSinCurso();
-
-
+            
             if (!$resultado){
                 $this->modal("No existen Profesores sin Curso asginado");
                                 echo "</table>"

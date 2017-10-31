@@ -638,7 +638,7 @@ class manejador extends conexionDB {
         
        $msjaltaAlumnoManejador = "No se pudo agregar el Alumno.";
 
-       return $this->ejecutarQuery($this->query, $msjaltaAlumnoManejador);
+       return $this->ejecutarTransaccion($this->query, $msjaltaAlumnoManejador);
         
     }
 
