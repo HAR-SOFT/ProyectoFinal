@@ -1139,13 +1139,15 @@ class manejador extends conexionDB {
     
     public function filtrarAlumnosSinCursoManejador($nombre ,$apellido , $cedula) {
         $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno ,"
-                . "ci as ci ,"
-                . "'Sin Curso Asignado' as curso "
-                . "FROM dim_usuario "
-                . "WHERE categoria_usuario = 'Alumno' "
-                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario) "
-                . "and (nombre like'%$nombre%' or apellido like'%$apellido%')" 
-                . "and ci like '%$cedula%';";
+                . " ci as ci ,"
+                . " 'Sin Curso Asignado' as curso "
+                . " FROM dim_usuario "
+                . " WHERE categoria_usuario = 'Alumno' "
+                . " and ci NOT IN (SELECT ci_usuario from asc_curso_usuario "
+                . " WHERE nombre_curso NOT IN "
+                . " (SELECT nombre from dim_curso where estado = 0) ) "
+                . " and (nombre like'%$nombre%' or apellido like'%$apellido%')" 
+                . " and ci like '%$cedula%';";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
 
         return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
