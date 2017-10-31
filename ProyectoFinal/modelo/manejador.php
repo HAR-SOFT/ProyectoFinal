@@ -223,13 +223,15 @@ class manejador extends conexionDB {
     }
     
     public function listarAlumnosSinCurso() {
-        $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno ,"
-                . "ci as ci , 'Sin Curso Asignado' as curso "
-                . "FROM dim_usuario WHERE categoria_usuario = 'Alumno' "
-                . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario);";
+        $this->query = "SELECT CONCAT(nombre,' ',apellido) as alumno , 
+                ci as ci , 'Sin Curso Asignado' as curso 
+                FROM dim_usuario WHERE categoria_usuario = 'Alumno' 
+                and ci NOT IN (SELECT ci_usuario from asc_curso_usuario  
+                where nombre_curso NOT IN 
+                (SELECT nombre from dim_curso where estado = 0 ));";
         $msjlistarAlumnosSinCurso = "No hay alumnos para el curso seleccionado.";
 
-        return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
+        return $this->ejecutarTransaccion($this->query, $msjlistarAlumnosSinCurso);
     }
     
     public function listarProfesoresSinCurso() {
@@ -1495,7 +1497,7 @@ class manejador extends conexionDB {
         
         $msjimportarAlumnos = "No se han podido importar los datos.";
 
-        return $this->ejecutarQuery($this->query, $msjimportarAlumnos);
+        return $this->ejecutarTransaccion($this->query, $msjimportarAlumnos);
     }
     
      public function importarProfesoresManejador($ci ,$nombre , $apellido ,$sexo ,$email ,
@@ -1510,7 +1512,7 @@ class manejador extends conexionDB {
         
         $msjimportarProfesoresManejador = "No se han podido importar los datos.";
 
-        return $this->ejecutarQuery($this->query, $msjimportarProfesoresManejador);
+        return $this->ejecutarTransaccion($this->query, $msjimportarProfesoresManejador);
     }
         
     public function verReporteManejador($ci ,$curso) {        

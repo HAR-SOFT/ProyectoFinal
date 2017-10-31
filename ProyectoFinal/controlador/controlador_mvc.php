@@ -3094,55 +3094,69 @@ class controlador_mvc extends manejador {
  
             //session_start();
             $this->alumnosBedelia();
-            $DB = new conexionDB();        
-            $DB->conectar();
+            //$DB = new conexionDB();        
+            //$DB->conectar();
             
             $archivo = $_FILES['archivos-excel']['name'];
-            
-            if(!strpos($archivo, 'xlsx')  || ($archivo == NULL)  ){
-                
-                 $this->modal(" Debe seleccionar un archivo correcto ");             
+            if ($archivo !== "") {
+                $formatoArchivo = explode(".", $archivo)[1];
             }
-            else{                    
-                                    
-                $objPHPExcel = $objReader->load('bak_'.$archivo);
+            $formatos = ["xlsx", "xls", "csv"];
+            
+            if ($archivo === "") {
+                $this->modal("Debe seleccionar un archivo.");
+            } else {
+                if(!in_array($formatoArchivo, $formatos)){
+                    $this->modal("El archivo a importar debe tener alguno de los "
+                            . "siguientes formatos: xlsx, xls, csv");             
+                } else{                    
 
-                $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
-                
-                $objPHPExcel->setActiveSheetIndex(0);
+                    $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
 
-                $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+                    $objPHPExcel->setActiveSheetIndex(0);
 
-                for ($i = 2; $i <= $numRows; $i++) {
-                //Insertamos los datos con los valores...
+                    $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
 
-                    $ci = $objPHPExcel->getActiveSheet()->getCell('A' . $i)->getCalculatedValue();
-                    $nombre = $objPHPExcel->getActiveSheet()->getCell('B' . $i)->getCalculatedValue();
-                    $apellido = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getCalculatedValue();
-                    $sexo = $objPHPExcel->getActiveSheet()->getCell('D' . $i)->getCalculatedValue();
-                    $email = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
-                    $telefono = $objPHPExcel->getActiveSheet()->getCell('F' . $i)->getCalculatedValue();
-                    $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
-                    $pass = md5($ci);
+                    for ($i = 2; $i <= $numRows; $i++) {
+                    //Insertamos los datos con los valores...
+
+                        $ci = $objPHPExcel->getActiveSheet()->getCell('A' . $i)->getCalculatedValue();
+                        $nombre = $objPHPExcel->getActiveSheet()->getCell('B' . $i)->getCalculatedValue();
+                        $apellido = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getCalculatedValue();
+                        $sexo = $objPHPExcel->getActiveSheet()->getCell('D' . $i)->getCalculatedValue();
+                        $email = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
+                        $telefono = $objPHPExcel->getActiveSheet()->getCell('F' . $i)->getCalculatedValue();
+                        $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
+                        $pass = md5($ci);
 
 
-                
-                    $resultado = $this->importarAlumnosManejador($ci ,$nombre , $apellido ,
-                                                        $sexo ,$email ,
-                                                        $pass ,$telefono , $celular); 
-                    
-                        if ($resultado == !false){     
-                       
-                              //$this->modal(" No se ha podido realizar la importacion") ;
-                        }
-                        else{
-                           
-                            //$this->modal("Se ha realizado correctamente la "
-                            //        . "importacion del Alumno: <br>"
-                            //        . " $ci $nombre <br>") ;                  
-                        }          
+
+                        $resultado = $this->importarAlumnosManejador($ci ,$nombre , $apellido ,
+                                                            $sexo ,$email ,
+                                                            $pass ,$telefono , $celular); 
+
+                            if ($resultado !== TRUE){
+                                if (!isset($arrayNoImportados)) {
+                                    $arrayNoImportados = ["Fila:".$i." CI:".$ci];
+                                } else {
+                                    $filaNueva = "Fila:".$i." CI:".$ci;
+                                    array_push($arrayNoImportados, $filaNueva);
+                                }
+                            }
+                            else{
+                                //$this->modal("Se ha realizado correctamente la "
+                                //        . "importacion del Alumno: <br>"
+                                //        . " $ci $nombre <br>") ;                  
+                            }          
+                    }
+
+                    if (isset($arrayNoImportados)) {
+                        $this->modal("Los siguientes registros no se pudieron insertar: <br>"
+                                . implode(", ", $arrayNoImportados));
+                    } else {
+                        $this->modal("Archivo importado correctamente");
+                    }
                 }
-                        
              }      
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
@@ -3154,56 +3168,70 @@ class controlador_mvc extends manejador {
  
             //session_start();
             $this->profesoresBedelia();
-            $DB = new conexionDB();        
-            $DB->conectar();
+            //$DB = new conexionDB();        
+            //$DB->conectar();
             
             $archivo = $_FILES['archivos-excel']['name'];
-            
-            if(!strpos($archivo, 'xlsx')  || ($archivo == NULL)  ){
-                
-                 $this->modal(" Debe seleccionar un archivo correcto ");             
+            if ($archivo !== "") {
+                $formatoArchivo = explode(".", $archivo)[1];
             }
-            else{                  
-                                    
-                $objPHPExcel = $objReader->load('bak_'.$archivo);
+            $formatos = ["xlsx", "xls", "csv"];
+            
+            if ($archivo === "") {
+                $this->modal("Debe seleccionar un archivo.");
+            } else {
+                if(!in_array($formatoArchivo, $formatos)){
+                    $this->modal("El archivo a importar debe tener alguno de los "
+                            . "siguientes formatos: xlsx, xls, csv");             
+                } else{                    
 
-                $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
-                
-                $objPHPExcel->setActiveSheetIndex(0);
+                    $objPHPExcel = PHPEXCEL_IOFACTORY::load($archivo);
 
-                $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+                    $objPHPExcel->setActiveSheetIndex(0);
 
-                for ($i = 2; $i <= $numRows; $i++) {
-                //Insertamos los datos con los valores...
+                    $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
 
-                    $ci = $objPHPExcel->getActiveSheet()->getCell('A' . $i)->getCalculatedValue();
-                    $nombre = $objPHPExcel->getActiveSheet()->getCell('B' . $i)->getCalculatedValue();
-                    $apellido = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getCalculatedValue();
-                    $sexo = $objPHPExcel->getActiveSheet()->getCell('D' . $i)->getCalculatedValue();
-                    $email = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
-                    $telefono = $objPHPExcel->getActiveSheet()->getCell('F' . $i)->getCalculatedValue();
-                    $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
-                    $pass = md5($ci);
+                    for ($i = 2; $i <= $numRows; $i++) {
+                    //Insertamos los datos con los valores...
+
+                        $ci = $objPHPExcel->getActiveSheet()->getCell('A' . $i)->getCalculatedValue();
+                        $nombre = $objPHPExcel->getActiveSheet()->getCell('B' . $i)->getCalculatedValue();
+                        $apellido = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getCalculatedValue();
+                        $sexo = $objPHPExcel->getActiveSheet()->getCell('D' . $i)->getCalculatedValue();
+                        $email = $objPHPExcel->getActiveSheet()->getCell('E' . $i)->getCalculatedValue();
+                        $telefono = $objPHPExcel->getActiveSheet()->getCell('F' . $i)->getCalculatedValue();
+                        $celular = $objPHPExcel->getActiveSheet()->getCell('G' . $i)->getCalculatedValue();       
+                        $pass = md5($ci);
 
 
-                
-                    $resultado = $this->importarProfesoresManejador($ci ,$nombre , $apellido ,
-                                                        $sexo ,$email ,
-                                                        $pass ,$telefono , $celular); 
-                    
-                        if ($resultado == !false){     
-                       
-                              //$this->modal(" No se ha podido realizar la importacion") ;
-                        }
-                        else{
-                           
-                            //$this->modal("Se ha realizado correctamente la "
-                            //        . "importacion del Alumno: <br>"
-                            //        . " $ci $nombre <br>") ;                  
-                        }          
+
+                        $resultado = $this->importarProfesoresManejador($ci ,$nombre , $apellido ,
+                                                            $sexo ,$email ,
+                                                            $pass ,$telefono , $celular); 
+
+                            if ($resultado !== TRUE){
+                                if (!isset($arrayNoImportados)) {
+                                    $arrayNoImportados = ["Fila:".$i." CI:".$ci];
+                                } else {
+                                    $filaNueva = "Fila:".$i." CI:".$ci;
+                                    array_push($arrayNoImportados, $filaNueva);
+                                }
+                            }
+                            else{
+                                //$this->modal("Se ha realizado correctamente la "
+                                //        . "importacion del Alumno: <br>"
+                                //        . " $ci $nombre <br>") ;                  
+                            }          
+                    }
+
+                    if (isset($arrayNoImportados)) {
+                        $this->modal("Los siguientes registros no se pudieron insertar: <br>"
+                                . implode(", ", $arrayNoImportados));
+                    } else {
+                        $this->modal("Archivo importado correctamente");
+                    }
                 }
-                        
-             }      
+             }       
         } catch (Exception $ex) {
             echo "Excepción capturada: ", $ex->getMessage(), "\n";
         }
