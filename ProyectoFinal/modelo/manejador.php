@@ -241,7 +241,7 @@ class manejador extends conexionDB {
                 . "and ci NOT IN (SELECT ci_usuario from asc_curso_usuario);";
         $msjlistarProfesoresSinCurso = "No hay profesores para el curso seleccionado.";
 
-        return $this->ejecutarQuery($this->query, $msjlistarProfesoresSinCurso);
+        return $this->ejecutarTransaccion($this->query, $msjlistarProfesoresSinCurso);
     }
 
     
@@ -586,7 +586,7 @@ class manejador extends conexionDB {
                 . " WHERE ci = '$ci';";
         $msjCambiarClaveManejador = "Clave actualizada correctamente.";
 
-        return $this->ejecutarQuery($this->query, $msjCambiarClaveManejador);
+        return $this->ejecutarTransaccion($this->query, $msjCambiarClaveManejador);
     }
     
     public function altaCursoManejador($nombreCurso,$anioCurso,$horarioCurso,
@@ -598,7 +598,7 @@ class manejador extends conexionDB {
                 . " '$horarioCurso', '$inicioCurso','$finCurso','1');";
         $msjaltaCursoManejador = "No se pudo agregar el Curso";
         
-        return $this->ejecutarQuery($this->query, $msjaltaCursoManejador);
+        return $this->ejecutarTransaccion($this->query, $msjaltaCursoManejador);
         
     }
 
@@ -660,7 +660,7 @@ class manejador extends conexionDB {
                 . " VALUE ($valores);";
         $msjasignarCursoUsuarios = "No se pudo ingresar al curso seleccionado.";
         
-        return $this->ejecutarQuery($this->query, $msjasignarCursoUsuarios);
+        return $this->ejecutarTransaccion($this->query, $msjasignarCursoUsuarios);
     }
     
     public function temaManejador($tema, $subtema) {
@@ -1189,7 +1189,7 @@ class manejador extends conexionDB {
         
         $msjrecuperarDatos= "No se han encontrado datos.";
 
-        return $this->ejecutarQuery($this->query, $msjrecuperarDatos);
+        return $this->ejecutarTransaccion($this->query, $msjrecuperarDatos);
         
     }
     
@@ -1200,7 +1200,7 @@ class manejador extends conexionDB {
         
         $msjmodificoAsociacionCurso= "No se han encontrado datos.";
 
-        return $this->ejecutarQuery($this->query, $msjmodificoAsociacionCurso);
+        return $this->ejecutarTransaccion($this->query, $msjmodificoAsociacionCurso);
         
     }
     
@@ -1211,7 +1211,7 @@ class manejador extends conexionDB {
         
         $msjmodificoAsociacionCursoProfesor = "No se han encontrado datos.";
 
-        return $this->ejecutarQuery($this->query, $msjmodificoAsociacionCursoProfesor);
+        return $this->ejecutarTransaccion($this->query, $msjmodificoAsociacionCursoProfesor);
         
     }
     
@@ -1228,7 +1228,7 @@ class manejador extends conexionDB {
        
         $msjmodificoCurso = "No se han podido modificar los datos.";
         
-        return $this->ejecutarQuery($this->query, $msjmodificoCurso);
+        return $this->ejecutarTransaccion($this->query, $msjmodificoCurso);
         
     }
     
