@@ -2937,9 +2937,12 @@ class controlador_mvc extends manejador {
 
             $cursos = $this->listarCursosSinProfesor();
 
-            foreach ($cursos as $filaCurso ) {
-               echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
+            if ($cursos !== NULL) {
+                foreach ($cursos as $filaCurso ) {
+                   echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
+                }
             }
+            
              echo"</select>"
             . "</div>"
             . "</th>"
