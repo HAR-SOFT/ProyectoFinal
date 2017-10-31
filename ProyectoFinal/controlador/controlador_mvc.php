@@ -1786,19 +1786,20 @@ class controlador_mvc extends manejador {
                 foreach ($cursos as $filaCurso ) {
                     echo'<OPTION VALUE="' . $filaCurso['nombre']. '">' . $filaCurso['nombre'] . '</OPTION>';
                 }
-                echo"</select>"
+            }
+            
+            echo"</select>"
                 . "</div>"
                 . "</th>"
                 . "<th>"
                 . "</th>"
                 . "</thead>";
-            }
 
             $resultado = $this->listarProfesoresSinCurso();
 
 
             if (!$resultado){
-                $this->modal("No existen Profesores sin Curso asginado");
+                $this->modal("No existen Profesores sin Curso asignado");
                                 echo "</table>"
             . "<br>"
             . "<p align='left'>"
