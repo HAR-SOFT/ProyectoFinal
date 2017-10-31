@@ -99,7 +99,7 @@ class manejador extends conexionDB {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
-// var_dump(strpos($queryParametro, "UPDATE"));
+
         if (strpos($queryParametro, "INSERT" ) !== false ||
                 strpos($queryParametro, "UPDATE" ) !== false) {
             $this->mensaje = $msjParametro;
@@ -126,7 +126,7 @@ class manejador extends conexionDB {
         $this->conectar();
         $query = $this->consulta($queryParametro);
         $this->cerrarDB();
-// var_dump(strpos($queryParametro, "UPDATE"));
+
         if (strpos($queryParametro, "DELETE" ) !== false || 
             strpos($queryParametro, "UPDATE" ) !== false){
             $this->mensaje = $msjParametro;
@@ -281,28 +281,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjcursoAsingadosProfesor);
     }
-/*
-    public function editarCursoManejador($nombreCurso) {
-        $this->query = "SELECT "
-                . " c.nombre_curso as nombre_curso,"
-                . " dt.nombre as tema,"
-                . " asctse.nombre_ejercicio as ejercicio"
-                . " FROM"
-                . " asc_curso_usuario AS c,"
-                . " dim_curso AS curso,"
-                . " asc_curso_tema_subtema_ejercicio AS asctse,"
-                . " dim_tema AS dt"
-                . " WHERE curso.nombre = '$nombreCurso'"
-                . " AND c.nombre_curso = asctse.nombre_curso"
-                . " AND dt.nombre = asctse.nombre_tema"
-                . " AND curso.nombre = c.nombre_curso"
-                . " group by nombre_curso , tema ,nombre_subtema, ejercicio";
-        $msjeditarCurso = "No tiene ningún curso activo asigando."
-                . " Comuníquese con Bedelía.";
-
-        return $this->ejecutarQuery($this->query, $msjeditarCurso);
-    }
-   */     
+  
     public function listarCursosActivos() {
         $this->query = "SELECT *"
                 . " FROM dim_curso AS C"
@@ -464,7 +443,6 @@ class manejador extends conexionDB {
         }
     }
 
-//
     public function listarTemasPorCurso($nombreCurso) {
         $nombreCurso = $nombreCurso[0]["nombre_curso"];
 
@@ -506,9 +484,9 @@ class manejador extends conexionDB {
                 . "dim_usuario dm where dt.nombre =  actse.nombre_tema "
                 . "and actse.nombre_curso = '$curso'"
                 . " and dm.ci = '$ciUsuario');";
-        $msjlistarTemasPorCursoSeleccionado = "No hay temas para el curso seleccionado.";
+        $msjlistarTemasSinCursoProfesor = "No hay temas para el curso seleccionado.";
 
-        return $this->ejecutarQuery($this->query, $msjlistarTemasPorCursoSeleccionado);
+        return $this->ejecutarQuery($this->query, $msjlistarTemasSinCursoProfesor);
     }
 
     public function listarSubTemasPorCursoYTema($nombreCurso, $tema) {
@@ -542,59 +520,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjListarTemasSubTemasPorCurso);
     }
-    
-//    public function armarMerSolucionSistema($nombreEjercicio) {
-//        $this->query = "SELECT M.nombre "
-//                . " FROM sol_mer AS M"
-//                . " WHERE M.nombre_ejercicio = '$nombreEjercicio'"
-//                . " AND M.tipo = 'sol_sistema';";
-//        $msjArmarMer = "No hay un MER para el ejercicio indicado. Comuníquese con Bedelía.";
-//
-//        $resutado = $this->ejecutarQuery($this->query, $msjArmarMer);
-//        $nombreMer = $resutado[0]["nombre"];
-//        
-//        if (isset($nombreMer)) {
-//            $this->query = "SELECT E.nombre, "
-//                    . " E.tipo_entidad, "
-//                    . " E.entidad_supertipo, "
-//                    . " E.atributo_simple, "
-//                    . " E.atributo_multivaluado, "
-//                    . " E.agregacion, "
-//                    . " E.nombre_mer, "
-//                    . " E.tipo_categorizacion "
-//                    . " FROM sol_entidad AS E"
-//                    . " WHERE E.nombre_mer = '$nombreMer'";
-//            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
-//
-//            $colEntidades = $this->ejecutarQuery($this->query, $msjArmarMer);
-//        }
-//        
-//        if (isset($colEntidades)) {
-//            $this->query = "SELECT R.nombre, "
-//                    . " R.nombre_entidadA, "
-//                    . " R.nombre_entidadB, "
-//                    . " R.cardinalidadA, "
-//                    . " R.cardinalidadB, "
-//                    . " R.nombre_atributo_simple, "
-//                    . " R.nombre_mer "
-//                    . " FROM sol_relacion AS R"
-//                    . " WHERE R.nombre_mer = '$nombreMer'";
-//            $msjArmarMer = "No hay un MER para el ejercicio indicado.";
-//
-//            $colRelaciones = $this->ejecutarQuery($this->query, $msjArmarMer);
-//        }
-//        
-//        if (!$this->mensaje) {
-//            $nombreMer = $nombreMer;
-//            $colEntidadesMer = $colEntidades;
-//            $colRelacionesMer = $colRelaciones;
-//
-//            $mer = new mer($nombreMer, $colEntidadesMer, $colRelacionesMer);
-//
-//            return $mer;
-//        }
-//    }
-    
+        
     public function armarMerSolucionSistema($nombreEjercicio) {
         // Consulta de MER
         $this->query = "SELECT M.nombre, "
@@ -717,7 +643,6 @@ class manejador extends conexionDB {
     }
 
      public function asignarCursoUsuario($curso,$ci) {
-       //$cedula = $ci[0];
          
         $this->query = "INSERT INTO asc_curso_usuario "
                 . "(nombre_curso , ci_usuario) VALUE "
@@ -759,7 +684,7 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjtemaManejador);
     }
     
-        public function ejercicioManejador($ejercicio) {
+    public function ejercicioManejador($ejercicio) {
         
             $this->query = "SELECT de.letra "
                     . "FROM dim_ejercicio de "
@@ -819,7 +744,6 @@ class manejador extends conexionDB {
         return $this->ejecutarQuery($this->query, $msjBuscarEjercicioAlumno);
     }
     
-    //SOLO SE DEBE EJECUTAR UNA VEZ
     public function guardarSolucionMer($nombre_mer, $ci, $nombre_ejercicio, 
             $restriccion, $inicioEjercicio, $finEjercicio){                                                             
         $this->query = "INSERT INTO sol_mer "
@@ -1152,9 +1076,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarQuery($this->query, $msjlistarAlumnosSinCurso);
     }
-    
-    
-    
+
     public function filtrarProfesoresSinCursoManejador($nombre ,$apellido , $cedula) {
         $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
                 . "ci as ci ,"
@@ -1193,184 +1115,7 @@ class manejador extends conexionDB {
 
         return $this->ejecutarTransaccion($this->query, $msjSolMerRelacion); 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
         
     public function listarProfesores() {
         $this->query = "SELECT CONCAT(nombre,' ',apellido) as profesor ,"
@@ -1416,9 +1161,9 @@ class manejador extends conexionDB {
         $this->query = "DELETE from dim_usuario "
                 . " where ci = '$ci_usuario';";
         
-        $msjceliminarRegistroManejador= "No se ha podido elimniar.";
+        $msjeliminarRegistroManejador= "No se ha podido elimniar.";
 
-        return $this->ejecutarTransaccion($this->query, $msjceliminarRegistroManejador); 
+        return $this->ejecutarTransaccion($this->query, $msjeliminarRegistroManejador); 
         
     }
         
@@ -1521,7 +1266,7 @@ class manejador extends conexionDB {
          
         $this->query = "SELECT CONCAT(dua.nombre ,' ', dua.apellido ) as alumno ,"
                 . " sm.nombre  as tema , sm.inicioEjercicio , sm.finEjercicio ,"
-                . "DATE_FORMAT(sm.inicioEjercicio , '%d/%m/%y ')as fecha , "
+                . " DATE_FORMAT(sm.inicioEjercicio , '%d/%m/%y ')as fecha , "
                 . " FORMAT(SUM(sm.finEjercicio - sm.inicioEjercicio)/(60),2)  AS dedicacion_en_minutos "
                 . " from sol_mer sm , dim_usuario dua ,"
                 . " dim_usuario dup "
