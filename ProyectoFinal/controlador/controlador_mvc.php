@@ -1779,7 +1779,7 @@ class controlador_mvc extends manejador {
             . "<input type='submit' name 'filtrar' value = 'FILTRAR' class='btn btn-primary'></button>"       
             . "</div>"
             . "</th>" 
-            . "<th>"        
+            . "</th>"        
             . "</form>"        
             . "<form class='form-horizontal' method='post' action='http://localhost/ProyectoFinal/ProyectoFinal/index.php?action=asignoCursoProfesores'>"        
             . "<th><div>"
