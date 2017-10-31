@@ -252,7 +252,7 @@ class manejador extends conexionDB {
                 . "ON CU.nombre_curso = C.nombre "
                 . "WHERE CU.ci_usuario = $ciUsuario "
                 . "AND C.estado = 1";
-        $buscarCursoDeUsuario = "No tiene ningún curso activo asigando."
+        $buscarCursoDeUsuario = "No tiene ningún curso activo asignado."
                 . " Comuníquese con Bedelía.";
 
         return $this->ejecutarQuery($this->query, $buscarCursoDeUsuario);
